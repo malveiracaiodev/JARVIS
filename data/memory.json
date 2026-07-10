@@ -1,0 +1,32 @@
+[
+    {
+        "event": "system.start",
+        "message": "JARVIS iniciou o processo de inicialização",
+        "timestamp": "2026-07-10 19:04:46"
+    },
+    {
+        "event": "system.ready",
+        "message": "JARVIS está online e operacional",
+        "timestamp": "2026-07-10 19:04:46"
+    },
+    {
+        "event": "system.start",
+        "message": "JARVIS iniciou o processo de inicialização",
+        "timestamp": "2026-07-10 19:16:39"
+    },
+    {
+        "event": "system.ready",
+        "message": "JARVIS está online e operacional",
+        "timestamp": "2026-07-10 19:16:39"
+    },
+    {
+        "event": "system.start",
+        "message": "JARVIS iniciou o processo de inicialização",
+        "timestamp": "2026-07-10 19:27:07"
+    },
+    {
+        "event": "system.ready",
+        "message": "JARVIS está online e operacional",
+        "timestamp": "2026-07-10 19:27:07"
+    }
+]

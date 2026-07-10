@@ -33,6 +33,8 @@ from core.config_manager import ConfigManager
 
 from core.event_bus import EventBus
 
+from core.memory_manager import MemoryManager
+
 from core.system_monitor import SystemMonitor
 
 
@@ -49,8 +51,9 @@ class Kernel(Module):
     Responsável por:
     - Inicializar módulos
     - Controlar ciclo de vida
-    - Emitir eventos
-    - Gerenciar saúde do sistema
+    - Gerenciar comunicação
+    - Controlar memória
+    - Monitorar saúde
     """
 
 
@@ -62,10 +65,6 @@ class Kernel(Module):
 
 
     def __init__(self):
-        """
-        Inicializa o Kernel.
-        """
-
 
         super().__init__(
             "Kernel"
@@ -97,6 +96,13 @@ class Kernel(Module):
 
 
 
+        self.memory = MemoryManager(
+            self.logger,
+            self.event_bus
+        )
+
+
+
         self.monitor = SystemMonitor(
             self,
             self.logger,
@@ -115,6 +121,8 @@ class Kernel(Module):
 
             self.event_bus,
 
+            self.memory,
+
             self.monitor
 
         ]
@@ -129,8 +137,9 @@ class Kernel(Module):
 
 
     def boot(self):
+
         """
-        Processo principal de inicialização.
+        Inicia o JARVIS.
         """
 
 
@@ -164,6 +173,7 @@ class Kernel(Module):
 
 
     def initialize(self):
+
         """
         Inicializa todos os módulos.
         """
@@ -185,7 +195,6 @@ class Kernel(Module):
 
         for module in self.modules:
 
-
             module.initialize()
 
 
@@ -194,6 +203,18 @@ class Kernel(Module):
 
         self.event_bus.emit(
             SystemEvents.START
+        )
+
+
+
+        # Primeira memória do sistema
+
+        self.memory.remember(
+
+            "system.start",
+
+            "JARVIS iniciou o processo de inicialização"
+
         )
 
 
@@ -216,6 +237,7 @@ class Kernel(Module):
 
 
     def shutdown(self):
+
         """
         Encerra todos os módulos.
         """
@@ -279,6 +301,7 @@ class Kernel(Module):
 
 
     def _finish_boot(self):
+
         """
         Finaliza inicialização.
         """
@@ -314,6 +337,16 @@ class Kernel(Module):
 
 
 
+        self.memory.remember(
+
+            "system.ready",
+
+            "JARVIS está online e operacional"
+
+        )
+
+
+
         user = self.config.get(
             "user",
             "name"
@@ -331,7 +364,9 @@ class Kernel(Module):
 
 
         self.logger.info(
+
             f"Tempo de inicialização: {elapsed:.2f}s"
+
         )
 
 
@@ -350,10 +385,6 @@ class Kernel(Module):
 
 
     def status(self):
-        """
-        Retorna o estado do Kernel.
-        """
-
 
         return self.get_status()
 
@@ -367,15 +398,10 @@ class Kernel(Module):
 
 
     def _show_banner(self):
-        """
-        Exibe a tela inicial.
-        """
-
 
         print(
             "=" * 45
         )
-
 
 
         print(
@@ -383,17 +409,14 @@ class Kernel(Module):
         )
 
 
-
         print(
             f"         {self.VERSION}"
         )
 
 
-
         print(
             "=" * 45
         )
-
 
 
         print()

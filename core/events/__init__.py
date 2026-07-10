@@ -25,6 +25,7 @@ from .plugin_events import PluginEvents
 
 from .character_events import CharacterEvents
 
+from .memory_events import MemoryEvents
 
 
 __all__ = [
@@ -39,6 +40,8 @@ __all__ = [
 
     "PluginEvents",
 
-    "CharacterEvents"
+    "CharacterEvents",
+
+    "MemoryEvents",
 
 ]

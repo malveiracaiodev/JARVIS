@@ -30,3 +30,80 @@
 [2026-07-10 18:46:58] [INFO] Saúde do sistema: 100%
 [2026-07-10 18:46:58] [INFO] Bem-vindo, Caio.
 [2026-07-10 18:46:58] [INFO] Tempo de inicialização: 0.08s
+[2026-07-10 18:49:29] [BOOT] Inicializando sistema de logs
+[2026-07-10 18:49:29] [ OK ] Logger iniciado
+[2026-07-10 18:49:29] [ OK ] Config Manager iniciado
+[2026-07-10 18:49:29] [ OK ] Event Bus iniciado
+[2026-07-10 18:49:29] [INFO] Listener registrado: system.ready
+[2026-07-10 18:49:29] [ OK ] System Monitor iniciado
+[2026-07-10 18:49:29] [INFO] Evento emitido: system.start
+[2026-07-10 18:49:29] [ OK ] Kernel iniciado
+[2026-07-10 18:49:29] [ OK ] Sistema Online
+[2026-07-10 18:49:29] [INFO] Evento emitido: system.ready
+[2026-07-10 18:49:29] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-10 18:49:29] [INFO] Saúde do sistema: 100%
+[2026-07-10 18:49:29] [INFO] Bem-vindo, Caio.
+[2026-07-10 18:49:29] [INFO] Tempo de inicialização: 0.12s
+[2026-07-10 19:04:46] [BOOT] Inicializando sistema de logs
+[2026-07-10 19:04:46] [ OK ] Logger iniciado
+[2026-07-10 19:04:46] [ OK ] Config Manager iniciado
+[2026-07-10 19:04:46] [ OK ] Event Bus iniciado
+[2026-07-10 19:04:46] [INFO] Listener registrado: memory.search
+[2026-07-10 19:04:46] [ OK ] Memory Manager iniciado
+[2026-07-10 19:04:46] [INFO] Listener registrado: system.ready
+[2026-07-10 19:04:46] [ OK ] System Monitor iniciado
+[2026-07-10 19:04:46] [INFO] Evento emitido: system.start
+[2026-07-10 19:04:46] [INFO] Evento emitido: memory.saved
+[2026-07-10 19:04:46] [INFO] Evento emitido: memory.created
+[2026-07-10 19:04:46] [ OK ] Kernel iniciado
+[2026-07-10 19:04:46] [ OK ] Sistema Online
+[2026-07-10 19:04:46] [INFO] Evento emitido: system.ready
+[2026-07-10 19:04:46] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-10 19:04:46] [INFO] Saúde do sistema: 100%
+[2026-07-10 19:04:46] [INFO] Evento emitido: memory.saved
+[2026-07-10 19:04:46] [INFO] Evento emitido: memory.created
+[2026-07-10 19:04:46] [INFO] Bem-vindo, Caio.
+[2026-07-10 19:04:46] [INFO] Tempo de inicialização: 0.06s
+[2026-07-10 19:16:39] [BOOT] Inicializando sistema de logs
+[2026-07-10 19:16:39] [ OK ] Logger iniciado
+[2026-07-10 19:16:39] [ OK ] Config Manager iniciado
+[2026-07-10 19:16:39] [ OK ] Event Bus iniciado
+[2026-07-10 19:16:39] [INFO] Evento emitido: memory.loaded
+[2026-07-10 19:16:39] [INFO] Listener registrado: memory.search
+[2026-07-10 19:16:39] [ OK ] Memory Manager iniciado
+[2026-07-10 19:16:39] [INFO] Listener registrado: system.ready
+[2026-07-10 19:16:39] [ OK ] System Monitor iniciado
+[2026-07-10 19:16:39] [INFO] Evento emitido: system.start
+[2026-07-10 19:16:39] [INFO] Evento emitido: memory.created
+[2026-07-10 19:16:39] [INFO] Evento emitido: memory.saved
+[2026-07-10 19:16:39] [ OK ] Kernel iniciado
+[2026-07-10 19:16:39] [ OK ] Sistema Online
+[2026-07-10 19:16:39] [INFO] Evento emitido: system.ready
+[2026-07-10 19:16:39] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-10 19:16:39] [INFO] Saúde do sistema: 100%
+[2026-07-10 19:16:39] [INFO] Evento emitido: memory.created
+[2026-07-10 19:16:39] [INFO] Evento emitido: memory.saved
+[2026-07-10 19:16:39] [INFO] Bem-vindo, Caio.
+[2026-07-10 19:16:39] [INFO] Tempo de inicialização: 0.09s
+[2026-07-10 19:27:07] [BOOT] Inicializando sistema de logs
+[2026-07-10 19:27:07] [ OK ] Logger iniciado
+[2026-07-10 19:27:07] [ OK ] Config Manager iniciado
+[2026-07-10 19:27:07] [ OK ] Event Bus iniciado
+[2026-07-10 19:27:07] [INFO] Memórias carregadas: 4
+[2026-07-10 19:27:07] [INFO] Evento emitido: memory.loaded
+[2026-07-10 19:27:07] [INFO] Listener registrado: memory.search
+[2026-07-10 19:27:07] [ OK ] Memory Manager iniciado
+[2026-07-10 19:27:07] [INFO] Listener registrado: system.ready
+[2026-07-10 19:27:07] [ OK ] System Monitor iniciado
+[2026-07-10 19:27:07] [INFO] Evento emitido: system.start
+[2026-07-10 19:27:07] [INFO] Evento emitido: memory.created
+[2026-07-10 19:27:07] [INFO] Evento emitido: memory.saved
+[2026-07-10 19:27:07] [ OK ] Kernel iniciado
+[2026-07-10 19:27:07] [ OK ] Sistema Online
+[2026-07-10 19:27:07] [INFO] Evento emitido: system.ready
+[2026-07-10 19:27:07] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-10 19:27:07] [INFO] Saúde do sistema: 100%
+[2026-07-10 19:27:07] [INFO] Evento emitido: memory.created
+[2026-07-10 19:27:07] [INFO] Evento emitido: memory.saved
+[2026-07-10 19:27:07] [INFO] Bem-vindo, Caio.
+[2026-07-10 19:27:07] [INFO] Tempo de inicialização: 0.10s
