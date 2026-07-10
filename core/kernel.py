@@ -37,6 +37,8 @@ from core.memory_manager import MemoryManager
 
 from core.system_monitor import SystemMonitor
 
+from core.diagnostics import Diagnostics
+
 
 from core.events import SystemEvents
 
@@ -51,11 +53,11 @@ class Kernel(Module):
     Responsável por:
     - Inicializar módulos
     - Controlar ciclo de vida
-    - Gerenciar comunicação
+    - Gerenciar eventos
     - Controlar memória
     - Monitorar saúde
+    - Gerar diagnósticos
     """
-
 
 
     VERSION = "Mark I - Heartbeat"
@@ -76,7 +78,7 @@ class Kernel(Module):
 
 
         # ======================================================
-        # Módulos principais
+        # Inicialização dos módulos
         # ======================================================
 
 
@@ -111,6 +113,13 @@ class Kernel(Module):
 
 
 
+        self.diagnostics = Diagnostics(
+            self,
+            self.logger
+        )
+
+
+
         # Ordem de inicialização
 
         self.modules = [
@@ -123,7 +132,9 @@ class Kernel(Module):
 
             self.memory,
 
-            self.monitor
+            self.monitor,
+
+            self.diagnostics
 
         ]
 
@@ -137,16 +148,13 @@ class Kernel(Module):
 
 
     def boot(self):
-
         """
-        Inicia o JARVIS.
+        Processo principal de inicialização.
         """
-
 
         try:
 
             self.initialize()
-
 
 
         except Exception as error:
@@ -158,7 +166,6 @@ class Kernel(Module):
 
 
             print(error)
-
 
 
             self.shutdown()
@@ -173,7 +180,6 @@ class Kernel(Module):
 
 
     def initialize(self):
-
         """
         Inicializa todos os módulos.
         """
@@ -182,7 +188,6 @@ class Kernel(Module):
         self.set_status(
             ModuleStatus.INITIALIZING
         )
-
 
 
         self.start_time = time.time()
@@ -199,15 +204,11 @@ class Kernel(Module):
 
 
 
-        # Primeiro evento do sistema
-
         self.event_bus.emit(
             SystemEvents.START
         )
 
 
-
-        # Primeira memória do sistema
 
         self.memory.remember(
 
@@ -237,7 +238,6 @@ class Kernel(Module):
 
 
     def shutdown(self):
-
         """
         Encerra todos os módulos.
         """
@@ -277,7 +277,6 @@ class Kernel(Module):
                 module.shutdown()
 
 
-
             except Exception as error:
 
 
@@ -301,7 +300,6 @@ class Kernel(Module):
 
 
     def _finish_boot(self):
-
         """
         Finaliza inicialização.
         """
@@ -364,9 +362,7 @@ class Kernel(Module):
 
 
         self.logger.info(
-
             f"Tempo de inicialização: {elapsed:.2f}s"
-
         )
 
 
@@ -377,16 +373,7 @@ class Kernel(Module):
 
 
 
-
-
-    # ==========================================================
-    # STATUS
-    # ==========================================================
-
-
-    def status(self):
-
-        return self.get_status()
+        self.diagnostics.display()
 
 
 
@@ -398,6 +385,10 @@ class Kernel(Module):
 
 
     def _show_banner(self):
+        """
+        Exibe a tela inicial.
+        """
+
 
         print(
             "=" * 45

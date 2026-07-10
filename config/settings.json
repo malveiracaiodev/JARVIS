@@ -5,15 +5,12 @@
         "language": "pt-BR",
         "debug": true
     },
-
     "user": {
         "name": "Caio"
     },
-
     "voice": {
         "enabled": false
     },
-
     "ai": {
         "enabled": false,
         "provider": "none"
