@@ -1,28 +1,66 @@
 """
 =========================================
-System Events
+JARVIS CORE
+
+Arquivo:
+system_events.py
+
+Descrição:
+Eventos relacionados ao sistema.
+
+Mark:
+I - Heartbeat
+
+Autor:
+Caio Vitor Malveira
 =========================================
 """
 
 
+
 class SystemEvents:
+    """
+    Eventos do núcleo do JARVIS.
+    """
 
-    SYSTEM_STARTING = "SYSTEM_STARTING"
 
-    SYSTEM_STARTED = "SYSTEM_STARTED"
 
-    SYSTEM_SHUTDOWN = "SYSTEM_SHUTDOWN"
+    START = (
+        "system.start"
+    )
 
-    CONFIG_LOADED = "CONFIG_LOADED"
 
-    LOGGER_READY = "LOGGER_READY"
 
-    MEMORY_READY = "MEMORY_READY"
+    READY = (
+        "system.ready"
+    )
 
-    EVENT_BUS_READY = "EVENT_BUS_READY"
 
-    PLUGINS_READY = "PLUGINS_READY"
 
-    CHARACTERS_READY = "CHARACTERS_READY"
+    SHUTDOWN = (
+        "system.shutdown"
+    )
 
-    AI_READY = "AI_READY"
+
+
+    ERROR = (
+        "system.error"
+    )
+
+
+
+    MODULE_STARTED = (
+        "system.module.started"
+    )
+
+
+
+    MODULE_STOPPED = (
+        "system.module.stopped"
+    )
+
+
+
+    HEALTH_CHECK = (
+        "system.health.check"
+    )

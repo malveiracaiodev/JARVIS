@@ -1,18 +1,35 @@
 """
 =========================================
-Plugin Events
+JARVIS CORE
+
+Arquivo:
+plugin_events.py
+
+Descrição:
+Eventos de plugins.
+
+Mark:
+I - Heartbeat
 =========================================
 """
 
 
 class PluginEvents:
+    """
+    Eventos de plugins.
+    """
 
-    PLUGIN_LOADED = "PLUGIN_LOADED"
 
-    PLUGIN_UNLOADED = "PLUGIN_UNLOADED"
+    LOADED = (
+        "plugin.loaded"
+    )
 
-    PLUGIN_INSTALLED = "PLUGIN_INSTALLED"
 
-    PLUGIN_REMOVED = "PLUGIN_REMOVED"
+    UNLOADED = (
+        "plugin.unloaded"
+    )
 
-    PLUGIN_ERROR = "PLUGIN_ERROR"
+
+    ERROR = (
+        "plugin.error"
+    )

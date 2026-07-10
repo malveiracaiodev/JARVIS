@@ -1,16 +1,40 @@
 """
 =========================================
-Voice Events
+JARVIS CORE
+
+Arquivo:
+voice_events.py
+
+Descrição:
+Eventos do sistema de voz.
+
+Mark:
+I - Heartbeat
 =========================================
 """
 
 
 class VoiceEvents:
+    """
+    Eventos relacionados à voz.
+    """
 
-    VOICE_STARTED = "VOICE_STARTED"
 
-    VOICE_STOPPED = "VOICE_STOPPED"
+    LISTEN_START = (
+        "voice.listen.start"
+    )
 
-    VOICE_RECOGNIZED = "VOICE_RECOGNIZED"
 
-    VOICE_SYNTHESIZED = "VOICE_SYNTHESIZED"
+    SPEECH_RECEIVED = (
+        "voice.speech.received"
+    )
+
+
+    SPEAK_START = (
+        "voice.speak.start"
+    )
+
+
+    SPEAK_END = (
+        "voice.speak.end"
+    )

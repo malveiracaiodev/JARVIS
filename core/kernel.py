@@ -21,11 +21,24 @@ Caio Vitor Malveira
 import time
 
 
-from core.base.module import Module, ModuleStatus
+from core.base.module import (
+    Module,
+    ModuleStatus
+)
+
 
 from core.logger import Logger
+
 from core.config_manager import ConfigManager
+
 from core.event_bus import EventBus
+
+from core.system_monitor import SystemMonitor
+
+
+from core.events import SystemEvents
+
+
 
 
 
@@ -36,11 +49,15 @@ class Kernel(Module):
     Responsável por:
     - Inicializar módulos
     - Controlar ciclo de vida
-    - Gerenciar estado do sistema
+    - Emitir eventos
+    - Gerenciar saúde do sistema
     """
 
 
+
     VERSION = "Mark I - Heartbeat"
+
+
 
 
 
@@ -49,18 +66,23 @@ class Kernel(Module):
         Inicializa o Kernel.
         """
 
-        super().__init__("Kernel")
+
+        super().__init__(
+            "Kernel"
+        )
 
 
         self.start_time = None
 
 
+
         # ======================================================
-        # Inicialização dos módulos principais
+        # Módulos principais
         # ======================================================
 
 
         self.logger = Logger()
+
 
 
         self.config = ConfigManager(
@@ -68,13 +90,22 @@ class Kernel(Module):
         )
 
 
+
         self.event_bus = EventBus(
             self.logger
         )
 
 
-        # Ordem importa:
-        # Logger -> Config -> Eventos
+
+        self.monitor = SystemMonitor(
+            self,
+            self.logger,
+            self.event_bus
+        )
+
+
+
+        # Ordem de inicialização
 
         self.modules = [
 
@@ -82,9 +113,13 @@ class Kernel(Module):
 
             self.config,
 
-            self.event_bus
+            self.event_bus,
+
+            self.monitor
 
         ]
+
+
 
 
 
@@ -95,12 +130,14 @@ class Kernel(Module):
 
     def boot(self):
         """
-        Processo principal de inicialização do JARVIS.
+        Processo principal de inicialização.
         """
+
 
         try:
 
             self.initialize()
+
 
 
         except Exception as error:
@@ -114,7 +151,10 @@ class Kernel(Module):
             print(error)
 
 
+
             self.shutdown()
+
+
 
 
 
@@ -125,13 +165,14 @@ class Kernel(Module):
 
     def initialize(self):
         """
-        Inicializa o Kernel e seus módulos.
+        Inicializa todos os módulos.
         """
 
 
         self.set_status(
             ModuleStatus.INITIALIZING
         )
+
 
 
         self.start_time = time.time()
@@ -149,9 +190,18 @@ class Kernel(Module):
 
 
 
+        # Primeiro evento do sistema
+
+        self.event_bus.emit(
+            SystemEvents.START
+        )
+
+
+
         self.set_status(
             ModuleStatus.ONLINE
         )
+
 
 
         self._finish_boot()
@@ -171,7 +221,22 @@ class Kernel(Module):
         """
 
 
-        if hasattr(self, "logger"):
+        if hasattr(
+            self,
+            "event_bus"
+        ):
+
+
+            self.event_bus.emit(
+                SystemEvents.SHUTDOWN
+            )
+
+
+
+        if hasattr(
+            self,
+            "logger"
+        ):
 
 
             self.logger.warning(
@@ -180,12 +245,15 @@ class Kernel(Module):
 
 
 
-        for module in reversed(self.modules):
+        for module in reversed(
+            self.modules
+        ):
 
 
             try:
 
                 module.shutdown()
+
 
 
             except Exception as error:
@@ -206,20 +274,24 @@ class Kernel(Module):
 
 
     # ==========================================================
-    # BOOT FINAL
+    # FINALIZAÇÃO DO BOOT
     # ==========================================================
 
 
     def _finish_boot(self):
         """
-        Finaliza o processo de inicialização.
+        Finaliza inicialização.
         """
 
 
         elapsed = (
+
             time.time()
+
             -
+
             self.start_time
+
         )
 
 
@@ -229,8 +301,15 @@ class Kernel(Module):
         )
 
 
+
         self.logger.success(
             "Sistema Online"
+        )
+
+
+
+        self.event_bus.emit(
+            SystemEvents.READY
         )
 
 
@@ -272,8 +351,9 @@ class Kernel(Module):
 
     def status(self):
         """
-        Retorna o estado atual do Kernel.
+        Retorna o estado do Kernel.
         """
+
 
         return self.get_status()
 
@@ -288,11 +368,14 @@ class Kernel(Module):
 
     def _show_banner(self):
         """
-        Exibe a tela inicial do JARVIS.
+        Exibe a tela inicial.
         """
 
 
-        print("=" * 45)
+        print(
+            "=" * 45
+        )
+
 
 
         print(
@@ -300,12 +383,17 @@ class Kernel(Module):
         )
 
 
+
         print(
             f"         {self.VERSION}"
         )
 
 
-        print("=" * 45)
+
+        print(
+            "=" * 45
+        )
+
 
 
         print()

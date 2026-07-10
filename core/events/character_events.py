@@ -1,16 +1,40 @@
 """
 =========================================
-Character Events
+JARVIS CORE
+
+Arquivo:
+character_events.py
+
+Descrição:
+Eventos de personalidade.
+
+Mark:
+I - Heartbeat
 =========================================
 """
 
 
 class CharacterEvents:
+    """
+    Eventos da personalidade do JARVIS.
+    """
 
-    CHARACTER_SELECTED = "CHARACTER_SELECTED"
 
-    CHARACTER_CHANGED = "CHARACTER_CHANGED"
+    GREETING = (
+        "character.greeting"
+    )
 
-    CHARACTER_RESPONSE = "CHARACTER_RESPONSE"
 
-    CHARACTER_LOADED = "CHARACTER_LOADED"
+    MOOD_CHANGED = (
+        "character.mood.changed"
+    )
+
+
+    MEMORY_CREATED = (
+        "character.memory.created"
+    )
+
+
+    ADVICE_REQUESTED = (
+        "character.advice.requested"
+    )

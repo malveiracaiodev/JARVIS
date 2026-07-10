@@ -1,16 +1,40 @@
 """
 =========================================
-AI Events
+JARVIS CORE
+
+Arquivo:
+ai_events.py
+
+Descrição:
+Eventos da inteligência artificial.
+
+Mark:
+I - Heartbeat
 =========================================
 """
 
 
 class AIEvents:
+    """
+    Eventos da IA.
+    """
 
-    AI_REQUEST = "AI_REQUEST"
 
-    AI_RESPONSE = "AI_RESPONSE"
+    REQUEST = (
+        "ai.request"
+    )
 
-    AI_ERROR = "AI_ERROR"
 
-    AI_MODEL_CHANGED = "AI_MODEL_CHANGED"
+    RESPONSE = (
+        "ai.response"
+    )
+
+
+    MODEL_LOADED = (
+        "ai.model.loaded"
+    )
+
+
+    MEMORY_REQUIRED = (
+        "ai.memory.required"
+    )

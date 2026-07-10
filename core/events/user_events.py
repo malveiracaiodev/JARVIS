@@ -1,20 +1,35 @@
 """
 =========================================
-User Events
+JARVIS CORE
+
+Arquivo:
+user_events.py
+
+Descrição:
+Eventos relacionados ao usuário.
+
+Mark:
+I - Heartbeat
 =========================================
 """
 
 
 class UserEvents:
+    """
+    Eventos do usuário.
+    """
 
-    USER_CONNECTED = "USER_CONNECTED"
 
-    USER_DISCONNECTED = "USER_DISCONNECTED"
+    COMMAND_RECEIVED = (
+        "user.command.received"
+    )
 
-    USER_MESSAGE = "USER_MESSAGE"
 
-    USER_COMMAND = "USER_COMMAND"
+    MESSAGE_SENT = (
+        "user.message.sent"
+    )
 
-    USER_LOGIN = "USER_LOGIN"
 
-    USER_LOGOUT = "USER_LOGOUT"
+    PROFILE_UPDATED = (
+        "user.profile.updated"
+    )
