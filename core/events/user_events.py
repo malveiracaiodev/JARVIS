@@ -10,6 +10,9 @@ Eventos relacionados ao usuário.
 
 Mark:
 I - Heartbeat
+
+Autor:
+Caio Vitor Malveira
 =========================================
 """
 
@@ -19,17 +22,14 @@ class UserEvents:
     Eventos do usuário.
     """
 
+    CREATED = "user.created"
 
-    COMMAND_RECEIVED = (
-        "user.command.received"
-    )
+    LOADED = "user.loaded"
 
+    UPDATED = "user.updated"
 
-    MESSAGE_SENT = (
-        "user.message.sent"
-    )
+    LOGIN = "user.login"
 
+    LOGOUT = "user.logout"
 
-    PROFILE_UPDATED = (
-        "user.profile.updated"
-    )
+    SAVED = "user.saved"

@@ -186,3 +186,374 @@
 [2026-07-10 20:09:22] [INFO] Evento emitido: memory.saved
 [2026-07-10 20:09:22] [INFO] Bem-vindo, Caio.
 [2026-07-10 20:09:22] [INFO] Tempo de inicialização: 2.20s
+[2026-07-11 08:42:55] [BOOT] Inicializando sistema de logs
+[2026-07-11 08:42:55] [ OK ] Logger iniciado
+[2026-07-11 08:42:56] [ OK ] Config Manager iniciado
+[2026-07-11 08:42:56] [ OK ] Event Bus iniciado
+[2026-07-11 08:42:56] [INFO] Memórias carregadas: 12
+[2026-07-11 08:42:56] [INFO] Evento emitido: memory.loaded
+[2026-07-11 08:42:56] [INFO] Listener registrado: memory.search
+[2026-07-11 08:42:56] [ OK ] Memory Manager iniciado
+[2026-07-11 08:42:56] [INFO] Listener registrado: system.ready
+[2026-07-11 08:42:56] [ OK ] System Monitor iniciado
+[2026-07-11 08:42:56] [ OK ] Diagnostics Core iniciado
+[2026-07-11 08:42:56] [INFO] Evento emitido: system.start
+[2026-07-11 08:42:56] [INFO] Evento emitido: memory.created
+[2026-07-11 08:42:56] [INFO] Evento emitido: memory.saved
+[2026-07-11 08:42:56] [ OK ] Kernel iniciado
+[2026-07-11 08:42:56] [ OK ] Sistema Online
+[2026-07-11 08:42:56] [INFO] Evento emitido: system.ready
+[2026-07-11 08:42:56] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-11 08:42:56] [INFO] Saúde do sistema: 100%
+[2026-07-11 08:42:56] [INFO] Evento emitido: memory.created
+[2026-07-11 08:42:56] [INFO] Evento emitido: memory.saved
+[2026-07-11 08:42:56] [INFO] Bem-vindo, Caio.
+[2026-07-11 08:42:56] [INFO] Tempo de inicialização: 0.24s
+[2026-07-11 09:04:24] [BOOT] Inicializando sistema de logs
+[2026-07-11 09:04:24] [ OK ] Logger iniciado
+[2026-07-11 09:04:24] [ OK ] Config Manager iniciado
+[2026-07-11 09:04:24] [ OK ] Event Bus iniciado
+[2026-07-11 09:04:24] [INFO] Memórias carregadas: 14
+[2026-07-11 09:04:24] [INFO] Evento emitido: memory.loaded
+[2026-07-11 09:04:24] [INFO] Listener registrado: memory.search
+[2026-07-11 09:04:24] [ OK ] Memory Manager iniciado
+[2026-07-11 09:04:24] [ OK ] Plugin Manager iniciado
+[2026-07-11 09:04:24] [ OK ] Runtime iniciado
+[2026-07-11 09:04:24] [INFO] Listener registrado: system.ready
+[2026-07-11 09:04:24] [ OK ] System Monitor iniciado
+[2026-07-11 09:04:25] [ OK ] Diagnostics Core iniciado
+[2026-07-11 09:04:25] [INFO] Evento emitido: system.start
+[2026-07-11 09:04:25] [INFO] Evento emitido: memory.created
+[2026-07-11 09:04:25] [INFO] Evento emitido: memory.saved
+[2026-07-11 09:04:25] [ OK ] Kernel iniciado
+[2026-07-11 09:04:25] [ OK ] Todos os sistemas online
+[2026-07-11 09:04:25] [INFO] Evento emitido: system.ready
+[2026-07-11 09:04:25] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-11 09:04:25] [INFO] Saúde do sistema: 100%
+[2026-07-11 09:04:25] [INFO] Evento emitido: memory.created
+[2026-07-11 09:04:25] [INFO] Evento emitido: memory.saved
+[2026-07-11 09:04:25] [INFO] Bem-vindo, Caio.
+[2026-07-11 09:04:25] [INFO] Tempo de inicialização: 0.88s
+[2026-07-11 09:20:09] [BOOT] Inicializando sistema de logs
+[2026-07-11 09:20:09] [ OK ] Logger iniciado
+[2026-07-11 09:20:09] [ OK ] Config Manager iniciado
+[2026-07-11 09:20:09] [ OK ] Event Bus iniciado
+[2026-07-11 09:20:09] [INFO] Memórias carregadas: 16
+[2026-07-11 09:20:09] [INFO] Evento emitido: memory.loaded
+[2026-07-11 09:20:09] [INFO] Listener registrado: memory.search
+[2026-07-11 09:20:09] [ OK ] Memory Manager iniciado
+[2026-07-11 09:20:09] [ OK ] Plugin Manager iniciado
+[2026-07-11 09:20:09] [ OK ] Runtime iniciado
+[2026-07-11 09:20:09] [INFO] Listener registrado: system.ready
+[2026-07-11 09:20:09] [ OK ] System Monitor iniciado
+[2026-07-11 09:20:09] [ OK ] Diagnostics Core iniciado
+[2026-07-11 09:20:09] [INFO] Evento emitido: system.start
+[2026-07-11 09:20:09] [INFO] Evento emitido: memory.created
+[2026-07-11 09:20:09] [INFO] Evento emitido: memory.saved
+[2026-07-11 09:20:09] [ OK ] Kernel iniciado
+[2026-07-11 09:20:09] [ OK ] Todos os sistemas online
+[2026-07-11 09:20:09] [INFO] Evento emitido: system.ready
+[2026-07-11 09:20:10] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-11 09:20:10] [INFO] Saúde do sistema: 100%
+[2026-07-11 09:20:10] [INFO] Evento emitido: memory.created
+[2026-07-11 09:20:10] [INFO] Evento emitido: memory.saved
+[2026-07-11 09:20:10] [INFO] Bem-vindo, Caio.
+[2026-07-11 09:20:10] [INFO] Tempo de inicialização: 0.49s
+[2026-07-11 09:30:02] [INFO] Estado alterado: SHUTDOWN -> BOOTING
+[2026-07-11 09:30:02] [INFO] Evento emitido: system.state.changed
+[2026-07-11 09:30:02] [BOOT] Inicializando sistema de logs
+[2026-07-11 09:30:02] [ OK ] Logger iniciado
+[2026-07-11 09:30:02] [ OK ] Config Manager iniciado
+[2026-07-11 09:30:02] [ OK ] Event Bus iniciado
+[2026-07-11 09:30:02] [INFO] Memórias carregadas: 18
+[2026-07-11 09:30:02] [INFO] Evento emitido: memory.loaded
+[2026-07-11 09:30:02] [INFO] Listener registrado: memory.search
+[2026-07-11 09:30:02] [ OK ] Memory Manager iniciado
+[2026-07-11 09:30:03] [INFO] Estado alterado: BOOTING -> BOOTING
+[2026-07-11 09:30:03] [INFO] Evento emitido: system.state.changed
+[2026-07-11 09:30:03] [ OK ] State Manager iniciado
+[2026-07-11 09:30:03] [ OK ] Plugin Manager iniciado
+[2026-07-11 09:30:03] [ OK ] Runtime iniciado
+[2026-07-11 09:30:03] [INFO] Listener registrado: system.ready
+[2026-07-11 09:30:03] [ OK ] System Monitor iniciado
+[2026-07-11 09:30:03] [ OK ] Diagnostics Core iniciado
+[2026-07-11 09:30:03] [INFO] Estado alterado: BOOTING -> INITIALIZING
+[2026-07-11 09:30:03] [INFO] Evento emitido: system.state.changed
+[2026-07-11 09:30:03] [INFO] Evento emitido: system.start
+[2026-07-11 09:30:03] [INFO] Evento emitido: memory.created
+[2026-07-11 09:30:03] [INFO] Evento emitido: memory.saved
+[2026-07-11 09:30:03] [INFO] Estado alterado: INITIALIZING -> ONLINE
+[2026-07-11 09:30:03] [INFO] Evento emitido: system.state.changed
+[2026-07-11 09:30:03] [ OK ] Kernel iniciado
+[2026-07-11 09:30:03] [ OK ] Todos os sistemas online
+[2026-07-11 09:30:03] [INFO] Evento emitido: system.ready
+[2026-07-11 09:30:03] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-11 09:30:03] [INFO] Saúde do sistema: 100%
+[2026-07-11 09:30:03] [INFO] Evento emitido: memory.created
+[2026-07-11 09:30:03] [INFO] Evento emitido: memory.saved
+[2026-07-11 09:30:03] [INFO] Bem-vindo, Caio.
+[2026-07-11 09:30:03] [INFO] Tempo de inicialização: 0.32s
+[2026-07-11 09:30:13] [INFO] Heartbeat ativo
+[2026-07-11 09:30:13] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:30:23] [INFO] Heartbeat ativo
+[2026-07-11 09:30:23] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:30:33] [INFO] Heartbeat ativo
+[2026-07-11 09:30:33] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:30:43] [INFO] Heartbeat ativo
+[2026-07-11 09:30:43] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:30:53] [INFO] Heartbeat ativo
+[2026-07-11 09:30:53] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:31:03] [INFO] Heartbeat ativo
+[2026-07-11 09:31:03] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:31:13] [INFO] Heartbeat ativo
+[2026-07-11 09:31:13] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:31:23] [INFO] Heartbeat ativo
+[2026-07-11 09:31:23] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:31:33] [INFO] Heartbeat ativo
+[2026-07-11 09:31:33] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:31:43] [INFO] Heartbeat ativo
+[2026-07-11 09:31:43] [INFO] Evento emitido: system.heartbeat
+[2026-07-11 09:31:51] [INFO] Evento emitido: system.shutdown
+[2026-07-11 09:31:51] [WARN] Encerrando JARVIS...
+[2026-07-11 09:31:51] [INFO] Estado alterado: ONLINE -> SHUTDOWN
+[2026-07-11 09:31:51] [INFO] Evento emitido: system.state.changed
+[2026-07-11 09:31:51] [INFO] Diagnostics Core encerrado
+[2026-07-11 09:31:51] [INFO] Listener removido: system.ready
+[2026-07-11 09:31:51] [INFO] System Monitor encerrado
+[2026-07-11 09:31:51] [INFO] Runtime encerrado
+[2026-07-11 09:31:51] [INFO] Plugin Manager encerrado
+[2026-07-11 09:31:51] [INFO] Estado alterado: SHUTDOWN -> SHUTDOWN
+[2026-07-11 09:31:51] [INFO] Evento emitido: system.state.changed
+[2026-07-11 09:31:51] [INFO] State Manager encerrado
+[2026-07-11 09:31:51] [INFO] Evento emitido: memory.saved
+[2026-07-11 09:31:51] [INFO] Memory Manager encerrado
+[2026-07-11 09:31:51] [INFO] Event Bus encerrado
+[2026-07-11 09:31:51] [INFO] Config Manager encerrado
+[2026-07-11 09:31:51] [INFO] Logger encerrado
+[2026-07-11 12:02:35] [INFO] Estado alterado: SHUTDOWN -> BOOTING
+[2026-07-11 12:02:35] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:02:35] [BOOT] Inicializando sistema de logs
+[2026-07-11 12:02:35] [ OK ] Logger iniciado
+[2026-07-11 12:02:35] [ OK ] Config Manager iniciado
+[2026-07-11 12:02:35] [ OK ] Event Bus iniciado
+[2026-07-11 12:02:35] [INFO] Memórias carregadas: 20
+[2026-07-11 12:02:35] [INFO] Evento emitido: memory.loaded
+[2026-07-11 12:02:35] [INFO] Listener registrado: memory.search
+[2026-07-11 12:02:35] [ OK ] Memory Manager iniciado
+[2026-07-11 12:02:35] [ OK ] State Manager iniciado
+[2026-07-11 12:02:35] [ OK ] Task Manager iniciado
+[2026-07-11 12:02:35] [ OK ] Plugin Manager iniciado
+[2026-07-11 12:02:35] [ OK ] Runtime iniciado
+[2026-07-11 12:02:35] [INFO] Listener registrado: system.ready
+[2026-07-11 12:02:35] [ OK ] System Monitor iniciado
+[2026-07-11 12:02:35] [ OK ] Diagnostics Core iniciado
+[2026-07-11 12:02:35] [INFO] Estado alterado: BOOTING -> INITIALIZING
+[2026-07-11 12:02:35] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:02:35] [INFO] Evento emitido: system.start
+[2026-07-11 12:02:35] [INFO] Evento emitido: memory.created
+[2026-07-11 12:02:35] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:02:35] [INFO] Estado alterado: INITIALIZING -> ONLINE
+[2026-07-11 12:02:35] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:02:35] [ OK ] Kernel iniciado
+[2026-07-11 12:02:35] [ OK ] Todos os sistemas online
+[2026-07-11 12:02:35] [INFO] Evento emitido: system.ready
+[2026-07-11 12:02:35] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-11 12:02:35] [INFO] Saúde do sistema: 100%
+[2026-07-11 12:02:35] [INFO] Evento emitido: memory.created
+[2026-07-11 12:02:35] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:02:35] [INFO] Bem-vindo, Caio.
+[2026-07-11 12:02:35] [INFO] Tempo de inicialização: 0.26s
+[2026-07-11 12:10:34] [INFO] Evento emitido: system.shutdown
+[2026-07-11 12:10:34] [WARN] Encerrando JARVIS...
+[2026-07-11 12:10:34] [INFO] Estado alterado: ONLINE -> SHUTDOWN
+[2026-07-11 12:10:34] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:10:34] [INFO] Diagnostics Core encerrado
+[2026-07-11 12:10:34] [INFO] Listener removido: system.ready
+[2026-07-11 12:10:34] [INFO] System Monitor encerrado
+[2026-07-11 12:10:34] [INFO] Runtime encerrado
+[2026-07-11 12:10:34] [INFO] Plugin Manager encerrado
+[2026-07-11 12:10:34] [INFO] Task Manager encerrado
+[2026-07-11 12:10:34] [INFO] State Manager encerrado
+[2026-07-11 12:10:34] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:10:34] [INFO] Memory Manager encerrado
+[2026-07-11 12:10:34] [INFO] Event Bus encerrado
+[2026-07-11 12:10:34] [INFO] Config Manager encerrado
+[2026-07-11 12:10:34] [INFO] Logger encerrado
+[2026-07-11 12:19:35] [INFO] Estado alterado: SHUTDOWN -> BOOTING
+[2026-07-11 12:19:35] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:19:35] [BOOT] Inicializando sistema de logs
+[2026-07-11 12:19:35] [ OK ] Logger iniciado
+[2026-07-11 12:19:36] [ OK ] Config Manager iniciado
+[2026-07-11 12:19:36] [ OK ] Event Bus iniciado
+[2026-07-11 12:19:36] [INFO] Memórias carregadas: 22
+[2026-07-11 12:19:36] [INFO] Evento emitido: memory.loaded
+[2026-07-11 12:19:36] [INFO] Listener registrado: memory.search
+[2026-07-11 12:19:36] [ OK ] Memory Manager iniciado
+[2026-07-11 12:19:36] [WARN] Arquivo de identidade não encontrado
+[2026-07-11 12:19:36] [INFO] Evento emitido: memory.created
+[2026-07-11 12:19:36] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:19:36] [ OK ] Identity Manager iniciado
+[2026-07-11 12:19:36] [ OK ] State Manager iniciado
+[2026-07-11 12:19:36] [ OK ] Task Manager iniciado
+[2026-07-11 12:19:36] [ OK ] Plugin Manager iniciado
+[2026-07-11 12:19:36] [ OK ] Runtime iniciado
+[2026-07-11 12:19:36] [INFO] Listener registrado: system.ready
+[2026-07-11 12:19:36] [ OK ] System Monitor iniciado
+[2026-07-11 12:19:36] [ OK ] Diagnostics Core iniciado
+[2026-07-11 12:19:36] [INFO] Estado alterado: BOOTING -> INITIALIZING
+[2026-07-11 12:19:36] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:19:36] [INFO] Evento emitido: system.start
+[2026-07-11 12:19:36] [INFO] Evento emitido: memory.created
+[2026-07-11 12:19:36] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:19:36] [INFO] Estado alterado: INITIALIZING -> ONLINE
+[2026-07-11 12:19:36] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:19:36] [ OK ] Kernel iniciado
+[2026-07-11 12:19:36] [ OK ] Todos os sistemas online
+[2026-07-11 12:19:36] [INFO] Evento emitido: system.ready
+[2026-07-11 12:19:36] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-11 12:19:36] [INFO] Saúde do sistema: 100%
+[2026-07-11 12:19:36] [INFO] Evento emitido: memory.created
+[2026-07-11 12:19:36] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:19:36] [INFO] Bem-vindo, Caio.
+[2026-07-11 12:19:36] [INFO] Tempo de inicialização: 0.38s
+[2026-07-11 12:20:01] [INFO] Evento emitido: system.shutdown
+[2026-07-11 12:20:01] [WARN] Encerrando JARVIS...
+[2026-07-11 12:20:01] [INFO] Estado alterado: ONLINE -> SHUTDOWN
+[2026-07-11 12:20:01] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:20:01] [INFO] Diagnostics Core encerrado
+[2026-07-11 12:20:01] [INFO] Listener removido: system.ready
+[2026-07-11 12:20:01] [INFO] System Monitor encerrado
+[2026-07-11 12:20:01] [INFO] Runtime encerrado
+[2026-07-11 12:20:01] [INFO] Plugin Manager encerrado
+[2026-07-11 12:20:01] [INFO] Task Manager encerrado
+[2026-07-11 12:20:01] [INFO] State Manager encerrado
+[2026-07-11 12:20:01] [INFO] Identity Manager encerrado
+[2026-07-11 12:20:01] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:20:01] [INFO] Memory Manager encerrado
+[2026-07-11 12:20:01] [INFO] Event Bus encerrado
+[2026-07-11 12:20:01] [INFO] Config Manager encerrado
+[2026-07-11 12:20:01] [INFO] Logger encerrado
+[2026-07-11 12:41:16] [INFO] Estado alterado: SHUTDOWN -> BOOTING
+[2026-07-11 12:41:16] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:41:16] [BOOT] Inicializando sistema de logs
+[2026-07-11 12:41:16] [ OK ] Logger iniciado
+[2026-07-11 12:41:16] [ OK ] Config Manager iniciado
+[2026-07-11 12:41:16] [ OK ] Event Bus iniciado
+[2026-07-11 12:41:16] [INFO] Memórias carregadas: 25
+[2026-07-11 12:41:16] [INFO] Evento emitido: memory.loaded
+[2026-07-11 12:41:16] [INFO] Listener registrado: memory.search
+[2026-07-11 12:41:16] [ OK ] Memory Manager iniciado
+[2026-07-11 12:41:16] [INFO] Identidade carregada
+[2026-07-11 12:41:16] [INFO] Evento emitido: memory.created
+[2026-07-11 12:41:16] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:41:16] [ OK ] Identity Manager iniciado
+[2026-07-11 12:41:16] [ OK ] State Manager iniciado
+[2026-07-11 12:41:16] [ OK ] Task Manager iniciado
+[2026-07-11 12:41:16] [ OK ] Plugin Manager iniciado
+[2026-07-11 12:41:16] [ OK ] Runtime iniciado
+[2026-07-11 12:41:16] [INFO] Listener registrado: system.ready
+[2026-07-11 12:41:16] [ OK ] System Monitor iniciado
+[2026-07-11 12:41:16] [ OK ] Diagnostics Core iniciado
+[2026-07-11 12:41:16] [INFO] Estado alterado: BOOTING -> INITIALIZING
+[2026-07-11 12:41:16] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:41:16] [INFO] Evento emitido: system.start
+[2026-07-11 12:41:16] [INFO] Evento emitido: memory.created
+[2026-07-11 12:41:16] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:41:16] [INFO] Estado alterado: INITIALIZING -> ONLINE
+[2026-07-11 12:41:16] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:41:16] [ OK ] Kernel iniciado
+[2026-07-11 12:41:16] [ OK ] Todos os sistemas online
+[2026-07-11 12:41:16] [INFO] Evento emitido: system.ready
+[2026-07-11 12:41:16] [INFO] System Monitor recebeu SYSTEM READY
+[2026-07-11 12:41:16] [INFO] Saúde do sistema: 100%
+[2026-07-11 12:41:16] [INFO] Evento emitido: memory.created
+[2026-07-11 12:41:16] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:41:16] [INFO] Bem-vindo, Caio.
+[2026-07-11 12:41:17] [INFO] Tempo de inicialização: 0.36s
+[2026-07-11 12:41:32] [FAIL] IdentityManager.get() takes 2 positional arguments but 3 were given
+[2026-07-11 12:41:42] [FAIL] IdentityManager.get() takes 2 positional arguments but 3 were given
+[2026-07-11 12:41:52] [FAIL] IdentityManager.get() takes 2 positional arguments but 3 were given
+[2026-07-11 12:43:48] [FAIL] 'ModuleStatus' object is not callable
+[2026-07-11 12:43:54] [FAIL] 'ModuleStatus' object is not callable
+[2026-07-11 12:44:06] [FAIL] 'ModuleStatus' object is not callable
+[2026-07-11 12:54:49] [INFO] Evento emitido: system.shutdown
+[2026-07-11 12:54:49] [WARN] Encerrando JARVIS...
+[2026-07-11 12:54:49] [INFO] Estado alterado: ONLINE -> SHUTDOWN
+[2026-07-11 12:54:49] [INFO] Evento emitido: system.state.changed
+[2026-07-11 12:54:49] [INFO] Diagnostics Core encerrado
+[2026-07-11 12:54:49] [INFO] Listener removido: system.ready
+[2026-07-11 12:54:49] [INFO] System Monitor encerrado
+[2026-07-11 12:54:49] [INFO] Runtime encerrado
+[2026-07-11 12:54:49] [INFO] Plugin Manager encerrado
+[2026-07-11 12:54:49] [INFO] Task Manager encerrado
+[2026-07-11 12:54:49] [INFO] State Manager encerrado
+[2026-07-11 12:54:49] [INFO] Identity Manager encerrado
+[2026-07-11 12:54:49] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:54:49] [INFO] Memory Manager encerrado
+[2026-07-11 12:54:49] [INFO] Event Bus encerrado
+[2026-07-11 12:54:49] [INFO] Config Manager encerrado
+[2026-07-11 12:54:49] [INFO] Logger encerrado
+[2026-07-11 12:54:49] [INFO] Evento emitido: system.shutdown
+[2026-07-11 12:54:49] [WARN] Encerrando JARVIS...
+[2026-07-11 12:54:49] [INFO] Diagnostics Core encerrado
+[2026-07-11 12:54:50] [INFO] System Monitor encerrado
+[2026-07-11 12:54:50] [INFO] Runtime encerrado
+[2026-07-11 12:54:50] [INFO] Plugin Manager encerrado
+[2026-07-11 12:54:50] [INFO] Task Manager encerrado
+[2026-07-11 12:54:50] [INFO] State Manager encerrado
+[2026-07-11 12:54:50] [INFO] Identity Manager encerrado
+[2026-07-11 12:54:50] [INFO] Evento emitido: memory.saved
+[2026-07-11 12:54:50] [INFO] Memory Manager encerrado
+[2026-07-11 12:54:50] [INFO] Event Bus encerrado
+[2026-07-11 12:54:50] [INFO] Config Manager encerrado
+[2026-07-11 12:54:50] [INFO] Logger encerrado
+[2026-07-11 20:16:02] [BOOT] Sistema de logs inicializado
+[2026-07-11 20:16:02] [ OK ] Logger ONLINE
+[2026-07-11 20:16:03] [INFO] Evento emitido: LOGGER_STARTED
+[2026-07-11 20:16:03] [ OK ] Event Bus iniciado
+[2026-07-11 20:16:03] [INFO] Configuração migrada
+[2026-07-11 20:16:03] [ OK ] Config Manager iniciado
+[2026-07-11 20:16:03] [ OK ] Service Manager iniciado
+[2026-07-11 20:16:03] [ OK ] Plugin Manager iniciado
+[2026-07-11 20:22:25] [BOOT] Sistema de logs inicializado
+[2026-07-11 20:22:25] [ OK ] Logger ONLINE
+[2026-07-11 20:22:25] [INFO] Evento emitido: LOGGER_STARTED
+[2026-07-11 20:22:25] [ OK ] Event Bus iniciado
+[2026-07-11 20:22:25] [ OK ] Config Manager iniciado
+[2026-07-11 20:22:25] [ OK ] Service Manager iniciado
+[2026-07-11 20:22:25] [ OK ] Plugin Manager iniciado
+[2026-07-11 20:25:00] [BOOT] Sistema de logs inicializado
+[2026-07-11 20:25:00] [ OK ] Logger ONLINE
+[2026-07-11 20:25:00] [INFO] Evento emitido: LOGGER_STARTED
+[2026-07-11 20:25:00] [ OK ] Event Bus iniciado
+[2026-07-11 20:25:00] [ OK ] Config Manager iniciado
+[2026-07-11 20:25:00] [ OK ] Service Manager iniciado
+[2026-07-11 20:25:00] [ OK ] Plugin Manager iniciado
+[2026-07-11 20:27:05] [BOOT] Sistema de logs inicializado
+[2026-07-11 20:27:05] [ OK ] Logger ONLINE
+[2026-07-11 20:27:05] [INFO] Evento emitido: LOGGER_STARTED
+[2026-07-11 20:27:05] [ OK ] Event Bus iniciado
+[2026-07-11 20:27:06] [ OK ] Config Manager iniciado
+[2026-07-11 20:27:06] [ OK ] Service Manager iniciado
+[2026-07-11 20:27:06] [ OK ] Plugin Manager iniciado
+[2026-07-11 20:32:50] [BOOT] Sistema de logs inicializado
+[2026-07-11 20:32:50] [ OK ] Logger ONLINE
+[2026-07-11 20:32:50] [INFO] Evento emitido: LOGGER_STARTED
+[2026-07-11 20:32:50] [ OK ] Event Bus iniciado
+[2026-07-11 20:32:50] [ OK ] Config Manager iniciado
+[2026-07-11 20:32:50] [ OK ] Service Manager iniciado
+[2026-07-11 20:32:50] [ OK ] Plugin Manager iniciado
+[2026-07-11 20:38:26] [BOOT] Sistema de logs inicializado
+[2026-07-11 20:38:26] [ OK ] Logger ONLINE
+[2026-07-11 20:38:26] [INFO] Evento emitido: LOGGER_STARTED
+[2026-07-11 20:38:26] [ OK ] Event Bus iniciado
+[2026-07-11 20:38:26] [ OK ] Config Manager iniciado
+[2026-07-11 20:38:26] [ OK ] Service Manager iniciado
+[2026-07-11 20:38:26] [ OK ] Plugin Manager iniciado
+[2026-07-11 20:44:13] [BOOT] Sistema de logs inicializado
+[2026-07-11 20:44:13] [ OK ] Logger ONLINE
+[2026-07-11 20:44:13] [INFO] Evento emitido: LOGGER_STARTED
+[2026-07-11 20:44:13] [ OK ] Event Bus iniciado
+[2026-07-11 20:44:13] [ OK ] Config Manager iniciado
+[2026-07-11 20:44:13] [ OK ] Service Manager iniciado
+[2026-07-11 20:44:13] [ OK ] Plugin Manager iniciado

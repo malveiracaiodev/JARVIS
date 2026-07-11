@@ -5,28 +5,88 @@ JARVIS CORE
 Arquivo:
 main.py
 
-Descrição:
-Ponto de entrada do JARVIS.
-
-Mark:
-I - Heartbeat
+Genesis Core
+Mark II
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
-from core.kernel import Kernel
+
+import time
+
+
+from core.kernel.kernel import Kernel
+
+
+
 
 
 def main():
-    """
-    Ponto de entrada da aplicação.
-    """
 
-    jarvis = Kernel()
-    jarvis.boot()
+
+    kernel = Kernel()
+
+
+    kernel.boot()
+
+
+
+    print()
+
+
+    print(
+        "JARVIS ONLINE"
+    )
+
+
+    print()
+
+
+
+    print(
+        "SYSTEM HEALTH:"
+    )
+
+
+    print(
+        kernel.health()
+    )
+
+
+
+    print()
+
+
+
+    print(
+        "REGISTRY:"
+    )
+
+
+    print(
+        kernel.registry.diagnostics()
+    )
+
+
+
+    print()
+
+
+
+    while True:
+
+
+        time.sleep(1)
+
+
+
+
+
 
 
 if __name__ == "__main__":
+
+
     main()

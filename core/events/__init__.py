@@ -27,6 +27,8 @@ from .character_events import CharacterEvents
 
 from .memory_events import MemoryEvents
 
+from .user_events import UserEvents
+
 
 __all__ = [
 

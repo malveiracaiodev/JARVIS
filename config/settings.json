@@ -1,18 +1,55 @@
 {
     "system": {
         "name": "JARVIS",
-        "version": "Mark I - Heartbeat",
+        "version": "Mark II - Genesis",
         "language": "pt-BR",
         "debug": true
     },
     "user": {
-        "name": "Caio"
+        "name": "Caio",
+        "assistant_name": "JARVIS"
     },
-    "voice": {
-        "enabled": false
+    "identity": {
+        "enabled": true,
+        "file": "personas/identity.json"
+    },
+    "mind": {
+        "enabled": true,
+        "memory": {
+            "enabled": true,
+            "path": "data/memory/"
+        },
+        "knowledge": {
+            "enabled": true,
+            "path": "data/knowledge/"
+        },
+        "reasoning": {
+            "enabled": true
+        }
     },
     "ai": {
         "enabled": false,
-        "provider": "none"
-    }
+        "provider": "none",
+        "model": "none",
+        "local": false
+    },
+    "voice": {
+        "enabled": false,
+        "input": "none",
+        "output": "none",
+        "language": "pt-BR"
+    },
+    "plugins": {
+        "enabled": true,
+        "directory": "plugins/",
+        "auto_load": true
+    },
+    "runtime": {
+        "workers": 1,
+        "queue_enabled": true
+    },
+    "security": {
+        "sandbox": true
+    },
+    "config_version": 1
 }

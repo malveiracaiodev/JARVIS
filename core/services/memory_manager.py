@@ -6,14 +6,19 @@ Arquivo:
 memory_manager.py
 
 Descrição:
-Sistema de memória operacional
-do JARVIS.
+Gerenciador de armazenamento da memória.
 
-Responsável por armazenar eventos,
-informações e histórico do sistema.
+Responsável por:
+- Persistência de dados
+- Carregamento
+- Histórico
+- Eventos de memória
+
+Arquitetura:
+Genesis Core
 
 Mark:
-I - Heartbeat
+II - Evolution
 
 Autor:
 Caio Vitor Malveira
@@ -23,15 +28,17 @@ Caio Vitor Malveira
 
 import json
 
-from datetime import datetime
 
 from pathlib import Path
+from datetime import datetime
+
 
 
 from core.base.module import (
     Module,
     ModuleStatus
 )
+
 
 
 from core.events import MemoryEvents
@@ -41,20 +48,23 @@ from core.events import MemoryEvents
 
 
 class MemoryManager(Module):
+
+
     """
-    Gerenciador da memória do JARVIS.
+    Serviço responsável pela persistência
+    da memória do JARVIS.
     """
 
 
 
     MEMORY_FOLDER = Path(
-        "data"
+        "data/memory"
     )
 
 
     MEMORY_FILE = (
         MEMORY_FOLDER /
-        "memory.json"
+        "long_term.json"
     )
 
 
@@ -63,16 +73,21 @@ class MemoryManager(Module):
 
     def __init__(
         self,
-        logger,
-        event_bus
+        logger=None,
+        event_bus=None
     ):
 
+
         super().__init__(
-            "Memory Manager"
+            "core.memory_manager"
         )
 
 
+        self.version = "2.0"
+
+
         self.logger = logger
+
 
         self.event_bus = event_bus
 
@@ -83,8 +98,9 @@ class MemoryManager(Module):
 
 
 
+
     # ==========================================================
-    # Inicialização
+    # Ciclo de vida
     # ==========================================================
 
 
@@ -96,39 +112,55 @@ class MemoryManager(Module):
         )
 
 
-        self.MEMORY_FOLDER.mkdir(
-            exist_ok=True
-        )
+        try:
 
 
-        self.load()
+            self.MEMORY_FOLDER.mkdir(
+                parents=True,
+                exist_ok=True
+            )
 
 
-
-        self.event_bus.subscribe(
-            MemoryEvents.SEARCH,
-            self.search
-        )
+            self.load()
 
 
 
-        self.set_status(
-            ModuleStatus.ONLINE
-        )
+            if self.event_bus:
+
+
+                self.event_bus.subscribe(
+
+                    MemoryEvents.SEARCH,
+
+                    self.search
+
+                )
 
 
 
-        self.logger.success(
-            "Memory Manager iniciado"
-        )
+            self.set_status(
+                ModuleStatus.ONLINE
+            )
+
+
+            self.log_success(
+                "Memory Manager iniciado"
+            )
+
+
+
+        except Exception as error:
+
+
+            self.set_error(
+                str(error)
+            )
 
 
 
 
 
-    # ==========================================================
-    # Encerramento
-    # ==========================================================
+
 
 
     def shutdown(self):
@@ -137,15 +169,17 @@ class MemoryManager(Module):
         self.save()
 
 
-
         self.set_status(
             ModuleStatus.OFFLINE
         )
 
 
-        self.logger.info(
+        self.log_info(
             "Memory Manager encerrado"
         )
+
+
+
 
 
 
@@ -158,24 +192,38 @@ class MemoryManager(Module):
 
     def remember(
         self,
-        event,
-        message
+        content,
+        memory_type="experience",
+        importance=1
     ):
+
 
         memory = {
 
 
-            "event": event,
+            "id":
+
+            len(self.memories)+1,
 
 
-            "message": message,
+            "type":
+
+            memory_type,
 
 
-            "timestamp":
-                datetime.now()
-                .strftime(
-                    "%Y-%m-%d %H:%M:%S"
-                )
+            "content":
+
+            content,
+
+
+            "importance":
+
+            importance,
+
+
+            "created":
+
+            datetime.now().isoformat()
 
         }
 
@@ -186,7 +234,7 @@ class MemoryManager(Module):
         )
 
 
-        self.event_bus.emit(
+        self.emit(
             MemoryEvents.CREATED,
             memory
         )
@@ -194,15 +242,24 @@ class MemoryManager(Module):
 
         self.save()
 
+
+
+        return memory
+
+
+
+
+
+
     def last_events(
         self,
         limit=10
     ):
 
 
-        return (
-            self.memories[-limit:]
-        )
+        return self.memories[-limit:]
+
+
 
 
 
@@ -217,13 +274,25 @@ class MemoryManager(Module):
         result = []
 
 
+
+        text = text.lower()
+
+
+
         for memory in self.memories:
 
 
-            if text.lower() in (
-                memory["message"]
-                .lower()
-            ):
+            content = str(
+                memory.get(
+                    "content",
+                    ""
+                )
+            ).lower()
+
+
+
+            if text in content:
+
 
                 result.append(
                     memory
@@ -237,26 +306,29 @@ class MemoryManager(Module):
 
 
 
+
+
     # ==========================================================
-    # Arquivo
+    # Persistência
     # ==========================================================
 
 
     def load(self):
-        """
-        Carrega as memórias salvas.
-        """
 
 
         if not self.MEMORY_FILE.exists():
 
+
             self.memories = []
 
-            self.logger.info(
-                "Nenhuma memória encontrada. Criando memória inicial."
+
+            self.log_info(
+                "Memória inicial criada"
             )
 
+
             return
+
 
 
 
@@ -273,14 +345,17 @@ class MemoryManager(Module):
 
 
 
-        self.logger.info(
+        self.log_info(
             f"Memórias carregadas: {len(self.memories)}"
         )
 
 
-        self.event_bus.emit(
+
+        self.emit(
             MemoryEvents.LOADED
         )
+
+
 
 
 
@@ -308,6 +383,61 @@ class MemoryManager(Module):
             )
 
 
-        self.event_bus.emit(
+
+        self.emit(
             MemoryEvents.SAVED
         )
+
+
+
+
+
+
+
+    # ==========================================================
+    # Auxiliares
+    # ==========================================================
+
+
+    def emit(
+        self,
+        event,
+        *args
+    ):
+
+
+        if self.event_bus:
+
+
+            self.event_bus.emit(
+                event,
+                *args
+            )
+
+
+
+    def log_info(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.info(
+                message
+            )
+
+
+
+    def log_success(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.success(
+                message
+            )
