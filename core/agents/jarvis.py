@@ -6,12 +6,7 @@ Arquivo:
 jarvis.py
 
 Descrição:
-Agente principal do sistema.
-
-Responsável por:
-- Assistência técnica
-- Operações
-- Controle do sistema
+Agente principal de suporte técnico e operações.
 
 Arquitetura:
 Genesis Core
@@ -24,77 +19,27 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from core.agents.agent import Agent
 
 
-
 class JarvisAgent(Agent):
-
-
     """
-    Agente operacional do JARVIS.
+    Agente operacional técnico central do ecossistema.
     """
-
-
 
     def __init__(self):
-
-
         super().__init__(
-
             name="JARVIS",
-
             personality="technical"
-
         )
 
+    def think(self, message):
+        cmd = message.lower().strip()
 
+        if "status" in cmd:
+            return "Todos os módulos centrais estão estabilizados e aguardando telemetria operacional."
 
-    # ---------------------------------
-    # Processamento de comandos
-    # ---------------------------------
+        if "ajuda" in cmd:
+            return "Estou à disposição para coordenar diagnósticos, gerenciar tarefas concorrentes e inspecionar o core."
 
-    def think(
-
-            self,
-
-            message
-
-    ):
-
-
-        message = message.lower()
-
-
-
-        if "status" in message:
-
-
-            return (
-
-                "Todos os sistemas estão "
-                "aguardando diagnóstico."
-
-            )
-
-
-
-        if "ajuda" in message:
-
-
-            return (
-
-                "Estou pronto para auxiliar "
-                "nas operações."
-
-            )
-
-
-
-        return (
-
-            "Comando recebido. "
-            "Processando informação."
-
-        )
+        return "Comando operacional aceito. Integrando dados e preparando execução."

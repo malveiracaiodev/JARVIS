@@ -6,13 +6,7 @@ Arquivo:
 rafiki.py
 
 Descrição:
-Agente conselheiro do sistema.
-
-Responsável por:
-- Reflexão
-- Conselhos
-- Análise de decisões
-- Apoio ao usuário
+Agente de aconselhamento, reflexão estratégica e apoio analítico.
 
 Arquitetura:
 Genesis Core
@@ -25,91 +19,30 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from core.agents.agent import Agent
 
 
-
 class RafikiAgent(Agent):
-
-
     """
-    Agente de aconselhamento
-    e reflexão.
+    Agente analítico focado em tomadas de decisão e mentoria de processos.
     """
-
-
 
     def __init__(self):
-
-
         super().__init__(
-
             name="RAFIKI",
-
             personality="advisor"
-
         )
 
+    def think(self, message):
+        cmd = message.lower().strip()
 
+        if "decisão" in cmd or "decidir" in cmd:
+            return "Uma escolha estratégica exige peso. Antes de avançarmos, listaremos as variáveis limitantes, os riscos de execução e o impacto colateral no Core."
 
-    # ---------------------------------
-    # Processamento de pensamento
-    # ---------------------------------
+        if "problema" in cmd:
+            return "O ruído na execução geralmente é um sintoma, não a causa. Vamos mapear o ponto exato onde o fluxo divergiu do esperado."
 
-    def think(
+        if "conselho" in cmd:
+            return "Para obtermos clareza analítica, afaste as urgências imediatas. Qual é o objetivo de longo prazo deste módulo?"
 
-            self,
-
-            message
-
-    ):
-
-
-        message = message.lower()
-
-
-
-        if "decisão" in message or "decidir" in message:
-
-
-            return (
-
-                "Antes de decidir, "
-                "vamos analisar as consequências, "
-                "os riscos e os seus objetivos."
-
-            )
-
-
-
-        if "problema" in message:
-
-
-            return (
-
-                "Vamos entender o problema "
-                "antes de buscar uma solução."
-
-            )
-
-
-
-        if "conselho" in message:
-
-
-            return (
-
-                "Um bom conselho começa "
-                "com uma visão clara da situação."
-
-            )
-
-
-
-        return (
-
-            "Estou ouvindo. "
-            "Vamos analisar isso juntos."
-
-        )
+        return "Reflexão capturada. Processando alternativas sob a perspectiva de arquitetura e consistência."

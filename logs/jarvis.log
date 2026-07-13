@@ -557,3 +557,321 @@
 [2026-07-11 20:44:13] [ OK ] Config Manager iniciado
 [2026-07-11 20:44:13] [ OK ] Service Manager iniciado
 [2026-07-11 20:44:13] [ OK ] Plugin Manager iniciado
+[2026-07-13 07:47:56] [BOOT] Sistema de logs inicializado
+[2026-07-13 07:47:56] [ OK ] Logger ONLINE
+[2026-07-13 07:47:56] [INFO] Evento emitido: LOGGER_STARTED
+[2026-07-13 07:47:56] [ OK ] Event Bus iniciado
+[2026-07-13 07:47:56] [ OK ] Config Manager iniciado
+[2026-07-13 07:47:56] [ OK ] Service Manager iniciado
+[2026-07-13 07:47:56] [ OK ] Plugin Manager iniciado
+[2026-07-13 16:19:49] [INFO] Componente mapeado e acoplado: logger
+[2026-07-13 16:19:49] [INFO] Componente mapeado e acoplado: event_bus
+[2026-07-13 16:19:49] [INFO] Componente mapeado e acoplado: config
+[2026-07-13 16:19:49] [INFO] Componente mapeado e acoplado: service_manager
+[2026-07-13 16:19:49] [INFO] Componente mapeado e acoplado: runtime
+[2026-07-13 16:19:50] [INFO] Componente mapeado e acoplado: plugin_manager
+[2026-07-13 16:19:50] [INFO] Carregando subsistemas da Matriz...
+[2026-07-13 16:19:50] [ OK ] Service Manager ativado com barramento concorrente seguro
+[2026-07-13 16:19:50] [INFO] Subsistema [service_manager] alocado com sucesso: ONLINE
+[2026-07-13 16:19:50] [FAIL] Falha crítica no boot de [runtime]: 'NoneType' object cannot be interpreted as an integer
+[2026-07-13 16:19:50] [ OK ] Plugin Manager estabilizado
+[2026-07-13 16:19:50] [INFO] Subsistema [plugin_manager] alocado com sucesso: ONLINE
+[2026-07-13 16:19:50] [INFO] Evento emitido: system.ready
+[2026-07-13 16:19:50] [ OK ] Kernel da Matriz 100% ONLINE e em escuta ativa.
+[2026-07-13 16:20:22] [INFO] Desativando Kernel de forma segura...
+[2026-07-13 16:20:22] [INFO] Todos os plugins foram desacoplados e liberados da memória
+[2026-07-13 16:20:22] [INFO] Subsistema [plugin_manager] desconectado com segurança.
+[2026-07-13 16:20:22] [INFO] Motor de execução assíncrona e workers finalizados.
+[2026-07-13 16:20:22] [INFO] Subsistema [runtime] desconectado com segurança.
+[2026-07-13 16:20:22] [INFO] Service Manager encerrado.
+[2026-07-13 16:20:22] [INFO] Subsistema [service_manager] desconectado com segurança.
+[2026-07-13 16:20:22] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-13 16:20:22] [INFO] Subsistema [config] desconectado com segurança.
+[2026-07-13 16:20:22] [INFO] Event Bus encerrado
+[2026-07-13 16:20:22] [INFO] Subsistema [event_bus] desconectado com segurança.
+[2026-07-13 16:20:22] [INFO] Logger encerrando
+[2026-07-13 16:20:22] [INFO] Evento emitido: LOGGER_STOPPED
+[2026-07-13 16:20:22] [INFO] Subsistema [logger] desconectado com segurança.
+[2026-07-13 16:20:22] [INFO] Subsistema [registry] desconectado com segurança.
+[2026-07-13 16:20:22] [INFO] Kernel totalmente OFFLINE. Processos encerrados.
+[2026-07-13 16:24:44] [INFO] Componente mapeado e acoplado: logger
+[2026-07-13 16:24:44] [INFO] Componente mapeado e acoplado: event_bus
+[2026-07-13 16:24:44] [INFO] Componente mapeado e acoplado: config
+[2026-07-13 16:24:44] [INFO] Componente mapeado e acoplado: service_manager
+[2026-07-13 16:24:44] [INFO] Componente mapeado e acoplado: runtime
+[2026-07-13 16:24:45] [INFO] Componente mapeado e acoplado: plugin_manager
+[2026-07-13 16:24:45] [INFO] Carregando subsistemas da Matriz...
+[2026-07-13 16:24:45] [ OK ] Service Manager ativado com barramento concorrente seguro
+[2026-07-13 16:24:45] [INFO] Subsistema [service_manager] alocado com sucesso: ONLINE
+[2026-07-13 16:24:45] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 16:24:45] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 16:24:45] [ OK ] Motor de execução assíncrona ONLINE com Pool de 2 Workers.
+[2026-07-13 16:24:45] [INFO] Subsistema [runtime] alocado com sucesso: ONLINE
+[2026-07-13 16:24:45] [ OK ] Plugin Manager estabilizado
+[2026-07-13 16:24:45] [INFO] Subsistema [plugin_manager] alocado com sucesso: ONLINE
+[2026-07-13 16:24:45] [INFO] Evento emitido: system.ready
+[2026-07-13 16:24:45] [ OK ] Kernel da Matriz 100% ONLINE e em escuta ativa.
+[2026-07-13 16:25:02] [INFO] Desativando Kernel de forma segura...
+[2026-07-13 16:25:02] [INFO] Todos os plugins foram desacoplados e liberados da memória
+[2026-07-13 16:25:02] [INFO] Subsistema [plugin_manager] desconectado com segurança.
+[2026-07-13 16:25:02] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 16:25:02] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 16:25:02] [INFO] Motor de execução assíncrona e workers finalizados.
+[2026-07-13 16:25:02] [INFO] Subsistema [runtime] desconectado com segurança.
+[2026-07-13 16:25:02] [INFO] Service Manager encerrado.
+[2026-07-13 16:25:02] [INFO] Subsistema [service_manager] desconectado com segurança.
+[2026-07-13 16:25:02] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-13 16:25:02] [INFO] Subsistema [config] desconectado com segurança.
+[2026-07-13 16:25:02] [INFO] Event Bus encerrado
+[2026-07-13 16:25:02] [INFO] Subsistema [event_bus] desconectado com segurança.
+[2026-07-13 16:25:02] [INFO] Logger encerrando
+[2026-07-13 16:25:02] [INFO] Evento emitido: LOGGER_STOPPED
+[2026-07-13 16:25:02] [INFO] Subsistema [logger] desconectado com segurança.
+[2026-07-13 16:25:02] [INFO] Subsistema [registry] desconectado com segurança.
+[2026-07-13 16:25:02] [INFO] Kernel totalmente OFFLINE. Processos encerrados.
+[2026-07-13 17:41:07] [INFO] Componente mapeado e acoplado: logger
+[2026-07-13 17:41:07] [INFO] Componente mapeado e acoplado: event_bus
+[2026-07-13 17:41:07] [INFO] Componente mapeado e acoplado: config
+[2026-07-13 17:41:07] [INFO] Componente mapeado e acoplado: service_manager
+[2026-07-13 17:41:07] [INFO] Componente mapeado e acoplado: runtime
+[2026-07-13 17:41:07] [INFO] Componente mapeado e acoplado: mind
+[2026-07-13 17:41:07] [INFO] Componente mapeado e acoplado: plugin_manager
+[2026-07-13 17:41:07] [INFO] Carregando subsistemas da Matriz...
+[2026-07-13 17:41:07] [ OK ] Service Manager ativado com barramento concorrente seguro
+[2026-07-13 17:41:07] [INFO] Subsistema [service_manager] alocado com sucesso: ONLINE
+[2026-07-13 17:41:07] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 17:41:07] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 17:41:07] [ OK ] Motor de execução assíncrona ONLINE com Pool de 2 Workers.
+[2026-07-13 17:41:07] [INFO] Subsistema [runtime] alocado com sucesso: ONLINE
+[2026-07-13 17:41:07] [FAIL] Falha crítica no boot de [mind]: 'Memory' object has no attribute 'success'
+[2026-07-13 17:41:07] [ OK ] Plugin Manager estabilizado
+[2026-07-13 17:41:07] [INFO] Subsistema [plugin_manager] alocado com sucesso: ONLINE
+[2026-07-13 17:41:07] [INFO] Evento emitido: system.ready
+[2026-07-13 17:41:07] [ OK ] Kernel da Matriz 100% ONLINE e em escuta ativa.
+[2026-07-13 17:42:23] [INFO] Desativando Kernel de forma segura...
+[2026-07-13 17:42:23] [INFO] Todos os plugins foram desacoplados e liberados da memória
+[2026-07-13 17:42:23] [INFO] Subsistema [plugin_manager] desconectado com segurança.
+[2026-07-13 17:42:23] [INFO] Erro ao encerrar subsistema [mind]: 'Brain' object has no attribute 'log_info'
+[2026-07-13 17:42:23] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 17:42:23] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 17:42:23] [INFO] Motor de execução assíncrona e workers finalizados.
+[2026-07-13 17:42:24] [INFO] Subsistema [runtime] desconectado com segurança.
+[2026-07-13 17:42:24] [INFO] Service Manager encerrado.
+[2026-07-13 17:42:24] [INFO] Subsistema [service_manager] desconectado com segurança.
+[2026-07-13 17:42:24] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-13 17:42:24] [INFO] Subsistema [config] desconectado com segurança.
+[2026-07-13 17:42:24] [INFO] Event Bus encerrado
+[2026-07-13 17:42:24] [INFO] Subsistema [event_bus] desconectado com segurança.
+[2026-07-13 17:42:24] [INFO] Logger encerrando
+[2026-07-13 17:42:24] [INFO] Evento emitido: LOGGER_STOPPED
+[2026-07-13 17:42:24] [INFO] Subsistema [logger] desconectado com segurança.
+[2026-07-13 17:42:24] [INFO] Subsistema [registry] desconectado com segurança.
+[2026-07-13 17:42:24] [INFO] Kernel totalmente OFFLINE. Processos encerrados.
+[2026-07-13 17:47:09] [INFO] Componente mapeado e acoplado: logger
+[2026-07-13 17:47:09] [INFO] Componente mapeado e acoplado: event_bus
+[2026-07-13 17:47:09] [INFO] Componente mapeado e acoplado: config
+[2026-07-13 17:47:09] [INFO] Componente mapeado e acoplado: service_manager
+[2026-07-13 17:47:09] [INFO] Componente mapeado e acoplado: runtime
+[2026-07-13 17:47:09] [INFO] Componente mapeado e acoplado: mind
+[2026-07-13 17:47:09] [INFO] Componente mapeado e acoplado: plugin_manager
+[2026-07-13 17:47:09] [INFO] Carregando subsistemas da Matriz...
+[2026-07-13 17:47:09] [ OK ] Service Manager ativado com barramento concorrente seguro
+[2026-07-13 17:47:09] [INFO] Subsistema [service_manager] alocado com sucesso: ONLINE
+[2026-07-13 17:47:09] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 17:47:09] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 17:47:09] [ OK ] Motor de execução assíncrona ONLINE com Pool de 2 Workers.
+[2026-07-13 17:47:09] [INFO] Subsistema [runtime] alocado com sucesso: ONLINE
+[2026-07-13 17:47:09] [FAIL] Falha crítica no boot de [mind]: 'Memory' object has no attribute 'success'
+[2026-07-13 17:47:09] [ OK ] Plugin Manager estabilizado
+[2026-07-13 17:47:09] [INFO] Subsistema [plugin_manager] alocado com sucesso: ONLINE
+[2026-07-13 17:47:09] [INFO] Evento emitido: system.ready
+[2026-07-13 17:47:09] [ OK ] Kernel da Matriz 100% ONLINE e em escuta ativa.
+[2026-07-13 17:47:50] [INFO] Desativando Kernel de forma segura...
+[2026-07-13 17:47:50] [INFO] Todos os plugins foram desacoplados e liberados da memória
+[2026-07-13 17:47:50] [INFO] Subsistema [plugin_manager] desconectado com segurança.
+[2026-07-13 17:47:50] [INFO] Erro ao encerrar subsistema [mind]: Brain.info() takes 1 positional argument but 2 were given
+[2026-07-13 17:47:50] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 17:47:50] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 17:47:50] [INFO] Motor de execução assíncrona e workers finalizados.
+[2026-07-13 17:47:50] [INFO] Subsistema [runtime] desconectado com segurança.
+[2026-07-13 17:47:50] [INFO] Service Manager encerrado.
+[2026-07-13 17:47:50] [INFO] Subsistema [service_manager] desconectado com segurança.
+[2026-07-13 17:47:50] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-13 17:47:50] [INFO] Subsistema [config] desconectado com segurança.
+[2026-07-13 17:47:50] [INFO] Event Bus encerrado
+[2026-07-13 17:47:50] [INFO] Subsistema [event_bus] desconectado com segurança.
+[2026-07-13 17:47:50] [INFO] Logger encerrando
+[2026-07-13 17:47:50] [INFO] Evento emitido: LOGGER_STOPPED
+[2026-07-13 17:47:50] [INFO] Subsistema [logger] desconectado com segurança.
+[2026-07-13 17:47:50] [INFO] Subsistema [registry] desconectado com segurança.
+[2026-07-13 17:47:50] [INFO] Kernel totalmente OFFLINE. Processos encerrados.
+[2026-07-13 17:52:10] [INFO] Componente mapeado e acoplado: logger
+[2026-07-13 17:52:10] [INFO] Componente mapeado e acoplado: event_bus
+[2026-07-13 17:52:10] [INFO] Componente mapeado e acoplado: config
+[2026-07-13 17:52:10] [INFO] Componente mapeado e acoplado: service_manager
+[2026-07-13 17:52:10] [INFO] Componente mapeado e acoplado: runtime
+[2026-07-13 17:52:10] [INFO] Componente mapeado e acoplado: mind
+[2026-07-13 17:52:10] [INFO] Componente mapeado e acoplado: plugin_manager
+[2026-07-13 17:52:10] [INFO] Carregando subsistemas da Matriz...
+[2026-07-13 17:52:11] [ OK ] Service Manager ativado com barramento concorrente seguro
+[2026-07-13 17:52:11] [INFO] Subsistema [service_manager] alocado com sucesso: ONLINE
+[2026-07-13 17:52:11] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 17:52:12] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 17:52:12] [ OK ] Motor de execução assíncrona ONLINE com Pool de 2 Workers.
+[2026-07-13 17:52:12] [INFO] Subsistema [runtime] alocado com sucesso: ONLINE
+[2026-07-13 17:52:12] [WARN] [Mind] Aviso ao iniciar Memory: 'Memory' object has no attribute 'success'
+[2026-07-13 17:52:12] [WARN] [Mind] Aviso ao iniciar Knowledge: 'Knowledge' object has no attribute 'success'
+[2026-07-13 17:52:12] [WARN] [Mind] Aviso ao iniciar Reasoning: 'Reasoning' object has no attribute 'success'
+[2026-07-13 17:52:12] [WARN] [Mind] Aviso ao iniciar Tools: Module.info() takes 1 positional argument but 2 were given
+[2026-07-13 17:52:12] [FAIL] Falha crítica no boot de [mind]: Module.info() takes 1 positional argument but 2 were given
+[2026-07-13 17:52:12] [ OK ] Plugin Manager estabilizado
+[2026-07-13 17:52:12] [INFO] Subsistema [plugin_manager] alocado com sucesso: ONLINE
+[2026-07-13 17:52:12] [INFO] Evento emitido: system.ready
+[2026-07-13 17:52:12] [ OK ] Kernel da Matriz 100% ONLINE e em escuta ativa.
+[2026-07-13 17:52:27] [INFO] Desativando Kernel de forma segura...
+[2026-07-13 17:52:27] [INFO] Todos os plugins foram desacoplados e liberados da memória
+[2026-07-13 17:52:27] [INFO] Subsistema [plugin_manager] desconectado com segurança.
+[2026-07-13 17:52:27] [INFO] Erro ao encerrar subsistema [mind]: Module.info() takes 1 positional argument but 2 were given
+[2026-07-13 17:52:27] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 17:52:27] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 17:52:27] [INFO] Motor de execução assíncrona e workers finalizados.
+[2026-07-13 17:52:27] [INFO] Subsistema [runtime] desconectado com segurança.
+[2026-07-13 17:52:27] [INFO] Service Manager encerrado.
+[2026-07-13 17:52:27] [INFO] Subsistema [service_manager] desconectado com segurança.
+[2026-07-13 17:52:27] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-13 17:52:27] [INFO] Subsistema [config] desconectado com segurança.
+[2026-07-13 17:52:27] [INFO] Event Bus encerrado
+[2026-07-13 17:52:27] [INFO] Subsistema [event_bus] desconectado com segurança.
+[2026-07-13 17:52:27] [INFO] Logger encerrando
+[2026-07-13 17:52:27] [INFO] Evento emitido: LOGGER_STOPPED
+[2026-07-13 17:52:27] [INFO] Subsistema [logger] desconectado com segurança.
+[2026-07-13 17:52:27] [INFO] Subsistema [registry] desconectado com segurança.
+[2026-07-13 17:52:27] [INFO] Kernel totalmente OFFLINE. Processos encerrados.
+[2026-07-13 17:58:42] [INFO] Componente mapeado e acoplado: logger
+[2026-07-13 17:58:42] [INFO] Componente mapeado e acoplado: event_bus
+[2026-07-13 17:58:42] [INFO] Componente mapeado e acoplado: config
+[2026-07-13 17:58:42] [INFO] Componente mapeado e acoplado: service_manager
+[2026-07-13 17:58:42] [INFO] Componente mapeado e acoplado: runtime
+[2026-07-13 17:58:42] [INFO] Componente mapeado e acoplado: mind
+[2026-07-13 17:58:42] [INFO] Componente mapeado e acoplado: plugin_manager
+[2026-07-13 17:58:42] [INFO] Carregando subsistemas da Matriz...
+[2026-07-13 17:58:42] [ OK ] Service Manager ativado com barramento concorrente seguro
+[2026-07-13 17:58:42] [INFO] Subsistema [service_manager] alocado com sucesso: ONLINE
+[2026-07-13 17:58:42] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 17:58:42] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 17:58:42] [ OK ] Motor de execução assíncrona ONLINE com Pool de 2 Workers.
+[2026-07-13 17:58:42] [INFO] Subsistema [runtime] alocado com sucesso: ONLINE
+[2026-07-13 17:58:42] [WARN] [Mind] Memory iniciada com desvio de log: 'Memory' object has no attribute 'success'
+[2026-07-13 17:58:42] [WARN] [Mind] Knowledge iniciada com desvio de log: 'Knowledge' object has no attribute 'success'
+[2026-07-13 17:58:42] [WARN] [Mind] Reasoning iniciada com desvio de log: 'Reasoning' object has no attribute 'success'
+[2026-07-13 17:58:42] [WARN] [Mind] Tools iniciada com desvio de log: Module.info() takes 1 positional argument but 2 were given
+[2026-07-13 17:58:42] [INFO] Memory acoplado.
+[2026-07-13 17:58:42] [INFO] Knowledge acoplado.
+[2026-07-13 17:58:42] [INFO] Reasoning acoplado.
+[2026-07-13 17:58:42] [INFO] Tools acoplado.
+[2026-07-13 17:58:42] [INFO] Engine de tarefas assíncronas vinculado.
+[2026-07-13 17:58:42] [ OK ] Núcleo de Inteligência totalmente operacional.
+[2026-07-13 17:58:43] [ OK ] Sistema cognitivo integrado e ONLINE.
+[2026-07-13 17:58:43] [INFO] Subsistema [mind] alocado com sucesso: ONLINE
+[2026-07-13 17:58:43] [ OK ] Plugin Manager estabilizado
+[2026-07-13 17:58:43] [INFO] Subsistema [plugin_manager] alocado com sucesso: ONLINE
+[2026-07-13 17:58:43] [INFO] Evento emitido: system.ready
+[2026-07-13 17:58:43] [ OK ] Kernel da Matriz 100% ONLINE e em escuta ativa.
+[2026-07-13 17:58:55] [INFO] Carga assíncrona acoplada à fila: 'function'
+[2026-07-13 17:58:55] [INFO] Executando tarefa mapeada: function
+[2026-07-13 17:58:55] [INFO] Evento emitido: task.lifecycle.started
+[2026-07-13 17:58:55] [INFO] Evento emitido: task.lifecycle.completed
+[2026-07-13 17:58:55] [ OK ] Tarefa concluída com sucesso: function
+[2026-07-13 17:59:10] [INFO] Desativando Kernel de forma segura...
+[2026-07-13 17:59:10] [INFO] Todos os plugins foram desacoplados e liberados da memória
+[2026-07-13 17:59:10] [INFO] Subsistema [plugin_manager] desconectado com segurança.
+[2026-07-13 17:59:10] [INFO] Inteligência encerrada com segurança.
+[2026-07-13 17:59:10] [WARN] [Mind] Aviso ao desligar memory: Module.info() takes 1 positional argument but 2 were given
+[2026-07-13 17:59:10] [WARN] [Mind] Aviso ao desligar knowledge: Module.info() takes 1 positional argument but 2 were given
+[2026-07-13 17:59:10] [WARN] [Mind] Aviso ao desligar reasoning: Module.info() takes 1 positional argument but 2 were given
+[2026-07-13 17:59:10] [WARN] [Mind] Aviso ao desligar tools: Module.info() takes 1 positional argument but 2 were given
+[2026-07-13 17:59:10] [INFO] Sistema cognitivo desativado com segurança.
+[2026-07-13 17:59:10] [INFO] Subsistema [mind] desconectado com segurança.
+[2026-07-13 17:59:10] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 17:59:10] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 17:59:10] [INFO] Motor de execução assíncrona e workers finalizados.
+[2026-07-13 17:59:10] [INFO] Subsistema [runtime] desconectado com segurança.
+[2026-07-13 17:59:10] [INFO] Service Manager encerrado.
+[2026-07-13 17:59:10] [INFO] Subsistema [service_manager] desconectado com segurança.
+[2026-07-13 17:59:11] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-13 17:59:11] [INFO] Subsistema [config] desconectado com segurança.
+[2026-07-13 17:59:11] [INFO] Event Bus encerrado
+[2026-07-13 17:59:11] [INFO] Subsistema [event_bus] desconectado com segurança.
+[2026-07-13 17:59:11] [INFO] Logger encerrando
+[2026-07-13 17:59:11] [INFO] Evento emitido: LOGGER_STOPPED
+[2026-07-13 17:59:11] [INFO] Subsistema [logger] desconectado com segurança.
+[2026-07-13 17:59:11] [INFO] Subsistema [registry] desconectado com segurança.
+[2026-07-13 17:59:11] [INFO] Kernel totalmente OFFLINE. Processos encerrados.
+[2026-07-13 18:13:41] [INFO] Componente mapeado e acoplado: logger
+[2026-07-13 18:13:41] [INFO] Componente mapeado e acoplado: event_bus
+[2026-07-13 18:13:41] [INFO] Componente mapeado e acoplado: config
+[2026-07-13 18:13:41] [INFO] Componente mapeado e acoplado: service_manager
+[2026-07-13 18:13:41] [INFO] Componente mapeado e acoplado: runtime
+[2026-07-13 18:13:41] [INFO] Componente mapeado e acoplado: mind
+[2026-07-13 18:13:41] [INFO] Componente mapeado e acoplado: plugin_manager
+[2026-07-13 18:13:41] [INFO] Carregando subsistemas da Matriz...
+[2026-07-13 18:13:41] [ OK ] Service Manager ativado com barramento concorrente seguro
+[2026-07-13 18:13:41] [INFO] Subsistema [service_manager] alocado com sucesso: ONLINE
+[2026-07-13 18:13:41] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 18:13:41] [ OK ] Trabalhador assíncrono acoplado e em escuta ativa.
+[2026-07-13 18:13:41] [ OK ] Motor de execução assíncrona ONLINE com Pool de 2 Workers.
+[2026-07-13 18:13:41] [INFO] Subsistema [runtime] alocado com sucesso: ONLINE
+[2026-07-13 18:13:41] [ OK ] [core.mind.memory] Subsistema de memória episódica ONLINE.
+[2026-07-13 18:13:41] [ OK ] [core.mind.knowledge] Base de conhecimento semântica sincronizada.
+[2026-07-13 18:13:41] [ OK ] [core.mind.reasoning] Motor de decomposição de problemas e raciocínio ativo.
+[2026-07-13 18:13:41] [INFO] [core.mind.tools] Capacidade do sistema mapeada: 'web_search'
+[2026-07-13 18:13:41] [INFO] [core.mind.tools] Capacidade do sistema mapeada: 'create_persona'
+[2026-07-13 18:13:41] [INFO] [core.mind.tools] Capacidade do sistema mapeada: 'create_plugin'
+[2026-07-13 18:13:41] [ OK ] [core.mind.tools] Gerenciador de ferramentas e automodificação ativo.
+[2026-07-13 18:13:41] [INFO] Memory acoplado.
+[2026-07-13 18:13:41] [INFO] Knowledge acoplado.
+[2026-07-13 18:13:41] [INFO] Reasoning acoplado.
+[2026-07-13 18:13:41] [INFO] Tools acoplado.
+[2026-07-13 18:13:41] [INFO] Engine de tarefas assíncronas vinculado.
+[2026-07-13 18:13:41] [ OK ] Núcleo de Inteligência do JARVIS totalmente operacional.
+[2026-07-13 18:13:41] [ OK ] Sistema cognitivo integrado e ONLINE.
+[2026-07-13 18:13:41] [INFO] Subsistema [mind] alocado com sucesso: ONLINE
+[2026-07-13 18:13:41] [ OK ] Plugin Manager estabilizado
+[2026-07-13 18:13:41] [INFO] Subsistema [plugin_manager] alocado com sucesso: ONLINE
+[2026-07-13 18:13:41] [INFO] Evento emitido: system.ready
+[2026-07-13 18:13:41] [ OK ] Kernel da Matriz 100% ONLINE e em escuta ativa.
+[2026-07-13 18:13:58] [INFO] Carga assíncrona acoplada à fila: 'function'
+[2026-07-13 18:13:59] [INFO] Executando tarefa mapeada: function
+[2026-07-13 18:13:59] [INFO] Evento emitido: task.lifecycle.started
+[2026-07-13 18:13:59] [INFO] Evento emitido: task.lifecycle.completed
+[2026-07-13 18:13:59] [ OK ] Tarefa concluída com sucesso: function
+[2026-07-13 18:14:15] [INFO] Carga assíncrona acoplada à fila: 'function'
+[2026-07-13 18:14:15] [INFO] Executando tarefa mapeada: function
+[2026-07-13 18:14:15] [INFO] Evento emitido: task.lifecycle.started
+[2026-07-13 18:14:15] [INFO] Evento emitido: task.lifecycle.completed
+[2026-07-13 18:14:15] [ OK ] Tarefa concluída com sucesso: function
+[2026-07-13 18:14:21] [INFO] Desativando Kernel de forma segura...
+[2026-07-13 18:14:21] [INFO] Todos os plugins foram desacoplados e liberados da memória
+[2026-07-13 18:14:21] [INFO] Subsistema [plugin_manager] desconectado com segurança.
+[2026-07-13 18:14:21] [INFO] Inteligência do JARVIS encerrada com segurança.
+[2026-07-13 18:14:21] [INFO] [core.mind.memory] Subsistema de memória descarregado.
+[2026-07-13 18:14:21] [INFO] [core.mind.knowledge] Base de conhecimento descarregada com sucesso.
+[2026-07-13 18:14:21] [INFO] [core.mind.reasoning] Motor de raciocínio suspenso temporariamente.
+[2026-07-13 18:14:21] [INFO] [core.mind.tools] Registro de capacidades descarregado.
+[2026-07-13 18:14:21] [INFO] Sistema cognitivo desativado com segurança.
+[2026-07-13 18:14:21] [INFO] Subsistema [mind] desconectado com segurança.
+[2026-07-13 18:14:21] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 18:14:21] [INFO] Trabalhador assíncrono desacoplado.
+[2026-07-13 18:14:21] [INFO] Motor de execução assíncrona e workers finalizados.
+[2026-07-13 18:14:21] [INFO] Subsistema [runtime] desconectado com segurança.
+[2026-07-13 18:14:21] [INFO] Service Manager encerrado.
+[2026-07-13 18:14:21] [INFO] Subsistema [service_manager] desconectado com segurança.
+[2026-07-13 18:14:21] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-13 18:14:21] [INFO] Subsistema [config] desconectado com segurança.
+[2026-07-13 18:14:21] [INFO] Event Bus encerrado
+[2026-07-13 18:14:21] [INFO] Subsistema [event_bus] desconectado com segurança.
+[2026-07-13 18:14:21] [INFO] Logger encerrando
+[2026-07-13 18:14:21] [INFO] Evento emitido: LOGGER_STOPPED
+[2026-07-13 18:14:21] [INFO] Subsistema [logger] desconectado com segurança.
+[2026-07-13 18:14:21] [INFO] Subsistema [registry] desconectado com segurança.
+[2026-07-13 18:14:21] [INFO] Kernel totalmente OFFLINE. Processos encerrados.

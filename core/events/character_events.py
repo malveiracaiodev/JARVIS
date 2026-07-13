@@ -6,35 +6,25 @@ Arquivo:
 character_events.py
 
 Descrição:
-Eventos de personalidade.
+Tópicos de eventos para gerenciamento de persona, humor e tom.
+
+Arquitetura:
+Genesis Core
 
 Mark:
-I - Heartbeat
+III - Intelligence
 =========================================
 """
 
+from dataclasses import dataclass
 
+
+@dataclass(frozen=True)
 class CharacterEvents:
     """
-    Eventos da personalidade do JARVIS.
+    Eventos de modulação de comportamento e aconselhamento.
     """
-
-
-    GREETING = (
-        "character.greeting"
-    )
-
-
-    MOOD_CHANGED = (
-        "character.mood.changed"
-    )
-
-
-    MEMORY_CREATED = (
-        "character.memory.created"
-    )
-
-
-    ADVICE_REQUESTED = (
-        "character.advice.requested"
-    )
+    GREETING: str = "character.greeting"
+    MOOD_CHANGED: str = "character.mood.changed"
+    MEMORY_CREATED: str = "character.memory.created"
+    ADVICE_REQUESTED: str = "character.advice.requested"

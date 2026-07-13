@@ -6,229 +6,116 @@ Arquivo:
 reasoning.py
 
 Descrição:
-Sistema de raciocínio e análise.
-
-Responsável por:
-- Interpretar informações
-- Avaliar situações
-- Criar planos
-- Tomar decisões
-- Coordenar estratégias
+Motor analítico e gerador de planos lógicos sequenciais estruturados.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-II - Evolution
+III - Matrix
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
+import threading
 from datetime import datetime
+from core.base.module import Module, ModuleStatus
 
 
-class Reasoning:
+class Reasoning(Module):
     """
-    Motor de raciocínio do JARVIS.
-
-    Recebe informações do Brain e
-    produz uma resposta lógica.
+    Mecanismo determinístico estruturado para resolução e decomposição de problemas.
+    Atua nativamente sob a persona de JARVIS.
     """
 
     def __init__(self):
-
-        self.name = "Reasoning Engine"
-
-        self.version = "Mark II"
-
-        self.status = "offline"
-
+        super().__init__("core.mind.reasoning")
+        self.version = "3.0"
         self.history = []
-
-    # ==========================================================
-    # Ciclo de vida
-    # ==========================================================
+        self._lock = threading.RLock()
 
     def initialize(self):
-
-        self.status = "online"
-
-        print("[REASONING] Motor iniciado")
+        self.set_status(ModuleStatus.INITIALIZING)
+        self.set_status(ModuleStatus.ONLINE)
+        self._log_safe("success", "Motor de decomposição de problemas e raciocínio ativo.")
 
     def shutdown(self):
+        self.set_status(ModuleStatus.OFFLINE)
+        self._log_safe("info", "Motor de raciocínio suspenso temporariamente.")
 
-        self.status = "offline"
+    def _log_safe(self, level, message):
+        """Prevenção contra erros de herança de loggers no shutdown."""
+        if hasattr(self, "logger") and self.logger:
+            log_method = getattr(self.logger, level, None)
+            if log_method and callable(log_method):
+                log_method(f"[{self.name}] {message}")
+                return
+        
+        log_fallback = getattr(super(), level, None)
+        if log_fallback and callable(log_fallback):
+            try:
+                log_fallback(message)
+            except TypeError:
+                print(f"[{datetime.now():%Y-%m-%d %H:%M:%S}] [{level.upper()}] [{self.name}] {message}")
 
-        print("[REASONING] Motor encerrado")
-
-    # ==========================================================
-    # Processamento
-    # ==========================================================
-
-    def analyze(
-        self,
-        input_text,
-        context=None
-    ):
-
+    def analyze(self, input_text, context=None):
         analysis = {
-
             "timestamp": datetime.now().isoformat(),
-
             "input": input_text,
-
             "context": context
-
         }
+        with self._lock:
+            self.history.append(analysis)
+        return self.generate_response(input_text, context)
 
-        self.history.append(analysis)
-
-        return self.generate_response(
-            input_text,
-            context
-        )
-
-    # ==========================================================
-    # Geração de resposta
-    # ==========================================================
-
-    def generate_response(
-        self,
-        input_text,
-        context
-    ):
-
+    def generate_response(self, input_text, context):
         text = input_text.lower()
 
-        # -------------------------
-        # Organização
-        # -------------------------
-
         if "como" in text:
+            return "[JARVIS] Analisando a questão estruturalmente... Irei considerar os vetores de contexto disponíveis e traçar as rotas de execução ideais."
 
-            return (
-                "Vou analisar o problema considerando o contexto, "
-                "os objetivos disponíveis e possíveis estratégias."
-            )
+        if any(keyword in text for keyword in ["devo", "vale a pena", "compensa"]):
+            return "[JARVIS] Deixe-me executar uma análise ponderada de risco, Senhor. Irei comparar custos, escopo e benefícios da ação projetada."
 
-        # -------------------------
-        # Decisão
-        # -------------------------
-
-        if (
-            "devo" in text
-            or "vale a pena" in text
-            or "compensa" in text
-        ):
-
-            return (
-                "Vou comparar vantagens, riscos e consequências "
-                "antes de recomendar uma decisão."
-            )
-
-        # -------------------------
-        # Planejamento
-        # -------------------------
-
-        if (
-            "planejar" in text
-            or "plano" in text
-            or "organizar" in text
-        ):
-
+        if any(keyword in text for keyword in ["planejar", "plano", "organizar"]):
             plan = self.create_plan(input_text)
-
-            return (
-                "Plano inicial:\n\n- "
-                + "\n- ".join(plan["steps"])
-            )
-
-        # -------------------------
-        # Conhecimento
-        # -------------------------
+            return "[JARVIS] Planejamento sequencial estruturado:\n\n- " + "\n- ".join(plan["steps"])
 
         if context:
+            knowledge_list = context.get("knowledge")
+            if knowledge_list and len(knowledge_list) > 0:
+                first = knowledge_list[0]
+                return f"[JARVIS] Encontrei este registro relevante em meus arquivos locais:\n\n{first.get('information')}"
 
-            knowledge = context.get("knowledge")
+        return "[JARVIS] Entendi seu comando, Senhor. Estou de prontidão para processar requisições ou gerenciar novas integrações físicas no Kernel."
 
-            if knowledge:
-
-                first = knowledge[0]
-
-                return str(
-                    first.get(
-                        "information",
-                        "Conhecimento encontrado."
-                    )
-                )
-
-        # -------------------------
-        # Padrão
-        # -------------------------
-
-        return (
-            "Analisei sua solicitação. "
-            "Ainda preciso de mais informações "
-            "para produzir uma resposta mais completa."
-        )
-
-    # ==========================================================
-    # Planejamento
-    # ==========================================================
-
-    def create_plan(
-        self,
-        objective
-    ):
-
+    def create_plan(self, objective):
         return {
-
             "objective": objective,
-
             "steps": [
-
-                "Entender o objetivo",
-
-                "Levantar informações",
-
-                "Definir estratégia",
-
-                "Executar ações",
-
-                "Avaliar resultados"
-
+                "Isolar variáveis, restrições e objetivos descritos pelo Criador",
+                "Mapear dependências externas na árvore lógica do sistema",
+                "Executar varredura em bancos de conhecimento históricos",
+                "Sintetizar rotas analíticas em chamadas assíncronas",
+                "Consolidar a resposta e registrar novos aprendizados no Knowledge Core"
             ]
-
         }
-
-    # ==========================================================
-    # Diagnóstico
-    # ==========================================================
 
     def last_analysis(self):
-
-        if not self.history:
-
-            return None
-
-        return self.history[-1]
+        with self._lock:
+            return self.history[-1] if self.history else None
 
     def clear_history(self):
-
-        self.history.clear()
+        with self._lock:
+            self.history.clear()
 
     def status_report(self):
-
-        return {
-
-            "name": self.name,
-
-            "version": self.version,
-
-            "status": self.status,
-
-            "analyses": len(self.history)
-
-        }
+        with self._lock:
+            return {
+                "name": self.name,
+                "version": self.version,
+                "status": self.get_status().value,
+                "analyses": len(self.history)
+            }

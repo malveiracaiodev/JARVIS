@@ -6,201 +6,73 @@ Arquivo:
 agent.py
 
 Descrição:
-Classe base para agentes inteligentes.
+Classe base thread-safe para agentes inteligentes do ecossistema.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-II - Evolution
+II - Evolution (Patch 2.6)
 =========================================
 """
 
-
+import threading
+from collections import deque
 from datetime import datetime
 
 
-
 class Agent:
+    """
+    Classe base para representação de agentes autônomos e integrados.
+    """
 
-
-
-    def __init__(
-
-            self,
-
-            name,
-
-            personality="default"
-
-    ):
-
-
+    def __init__(self, name, personality="default"):
         self.name = name
-
-
         self.personality = personality
-
-
         self.status = "created"
-
-
-        self.memory = []
-
-
+        
+        # Histórico de memória interna circular para evitar vazamento de RAM
+        self.memory = deque(maxlen=500)
         self.mind = None
-
-
         self.created = datetime.now()
+        
+        # Lock de sincronização interno do agente
+        self._lock = threading.RLock()
 
-
-
-    # ---------------------------------
-    # Conectar mente
-    # ---------------------------------
-
-    def connect_mind(
-
-            self,
-
-            mind
-
-    ):
-
-
-        self.mind = mind
-
-
-
-        print(
-
-            f"[AGENT] {self.name} conectado ao Mind"
-
-        )
-
-
-
-    # ---------------------------------
-    # Inicializar
-    # ---------------------------------
+    def connect_mind(self, mind):
+        with self._lock:
+            self.mind = mind
+            self.speak(f"Conexão estabelecida com a matriz analítica (Mind).")
 
     def start(self):
+        with self._lock:
+            self.status = "online"
+            self.speak("Subsistema de IA ativado. Online.")
 
+    def receive(self, message):
+        with self._lock:
+            self.memory.append({
+                "message": message,
+                "time": datetime.now().isoformat()
+            })
+            
+            if self.mind:
+                try:
+                    return self.mind.think(message)
+                except Exception as e:
+                    return f"Erro de processamento neural: {str(e)}"
 
-        self.status = "online"
+            return self.think(message)
 
+    def think(self, message):
+        """Método padrão a ser sobrescrito por especializações."""
+        return f"{self.name}: Núcleo cognitivo padrão ativo. Nenhuma diretiva customizada."
 
-
-        print(
-
-            f"[AGENT] {self.name} ONLINE"
-
-        )
-
-
-
-    # ---------------------------------
-    # Receber mensagem
-    # ---------------------------------
-
-    def receive(
-
-            self,
-
-            message
-
-    ):
-
-
-        self.memory.append({
-
-            "message":
-
-            message,
-
-
-            "time":
-
-            str(datetime.now())
-
-        })
-
-
-        if self.mind:
-
-
-            return self.mind.think(
-
-                message
-
-            )
-
-
-
-        return self.think(
-
-            message
-
-        )
-
-
-
-    # ---------------------------------
-    # Pensamento padrão
-    # ---------------------------------
-
-    def think(
-
-            self,
-
-            message
-
-    ):
-
-
-        return (
-
-            f"{self.name}: "
-
-            "Ainda estou aprendendo."
-
-        )
-
-
-
-    # ---------------------------------
-    # Fala
-    # ---------------------------------
-
-    def speak(
-
-            self,
-
-            text
-
-    ):
-
-
-        print(
-
-            f"{self.name}: {text}"
-
-        )
-
-
-
-    # ---------------------------------
-    # Encerrar
-    # ---------------------------------
+    def speak(self, text):
+        # Desacoplamento para o terminal padrão usando formatação uniforme
+        print(f"[{self.name.upper()}] -> {text}")
 
     def stop(self):
-
-
-        self.status = "offline"
-
-
-        print(
-
-            f"[AGENT] {self.name} OFFLINE"
-
-        )
+        with self._lock:
+            self.status = "offline"
+            self.speak("Sequência de encerramento concluída. Offline.")

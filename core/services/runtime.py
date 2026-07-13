@@ -17,7 +17,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-II - Evolution
+II - Evolution (Patch 2.1 - Execution Guard)
 
 Autor:
 Caio Vitor Malveira
@@ -61,7 +61,7 @@ class Runtime(Module):
         )
 
 
-        self.version = "2.0"
+        self.version = "2.1"
 
 
         self.logger = logger
@@ -173,6 +173,16 @@ class Runtime(Module):
         self,
         task
     ):
+
+
+        if not self.running:
+
+            self.log_error(
+                f"Tentativa de envio rejeitada. Runtime offline: {task.name}"
+            )
+
+            return False
+
 
 
         if not self.queue:

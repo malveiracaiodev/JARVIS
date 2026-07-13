@@ -6,239 +6,78 @@ Arquivo:
 queue.py
 
 Descrição:
-Fila central de execução do JARVIS.
-
-Responsável por:
-- Armazenar tarefas
-- Controlar prioridade
-- Entregar tarefas aos workers
-- Registrar histórico
+Fila de execução concorrente e thread-safe com priorização dinâmica de tarefas.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-II - Evolution
+III - Matrix (Runtime Engine)
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
-
 import threading
-
-
 from datetime import datetime
 
 
-
-
-
 class TaskQueue:
-
-
     """
-    Fila inteligente de tarefas.
+    Fila inteligente thread-safe para priorização e despacho de cargas cognitivas e operacionais.
     """
-
-
 
     def __init__(self):
-
-
         self.tasks = []
-
-
         self.history = []
+        self._lock = threading.RLock()
 
-
-        self.lock = threading.Lock()
-
-
-
-
-
-
-
-    # ======================================================
-    # Entrada
-    # ======================================================
-
-
-    def push(
-        self,
-        task
-    ):
-
-
-        with self.lock:
-
-
-            task.status = (
-
-                task.status.__class__
-                .QUEUED
-
-            )
-
-
-            self.tasks.append(
-                task
-            )
-
-
-
+    def push(self, task):
+        with self._lock:
+            if hasattr(task, "status") and hasattr(task.status, "__class__"):
+                if hasattr(task.status.__class__, "QUEUED"):
+                    task.status = task.status.__class__.QUEUED
+            
+            self.tasks.append(task)
             self.sort()
 
-
-
-    # ======================================================
-    # Prioridade
-    # ======================================================
-
-
     def sort(self):
-
-
-        self.tasks.sort(
-
-            key=lambda task:
-
-            task.priority,
-
-            reverse=True
-
-        )
-
-
-
-
-
-
-
-    # ======================================================
-    # Próxima tarefa
-    # ======================================================
-
+        with self._lock:
+            # Ordenação estável priorizando maiores valores numéricos de prioridade
+            self.tasks.sort(
+                key=lambda t: getattr(t, "priority", 0),
+                reverse=True
+            )
 
     def next(self):
+        with self._lock:
+            return self.tasks.pop(0) if self.tasks else None
 
+    def complete(self, task, result=None):
+        with self._lock:
+            if hasattr(task, "result"):
+                task.result = result
+            if hasattr(task, "finished"):
+                task.finished = datetime.now()
+            self.history.append(task)
 
-        with self.lock:
-
-
-            if not self.tasks:
-
-
-                return None
-
-
-
-
-            task = self.tasks.pop(
-                0
-            )
-
-
-
-            return task
-
-
-
-
-
-
-
-    # ======================================================
-    # Finalização
-    # ======================================================
-
-
-    def complete(
-        self,
-        task,
-        result=None
-    ):
-
-
-        task.result = result
-
-
-        task.finished = datetime.now()
-
-
-        self.history.append(
-            task
-        )
-
-
-
-
-
-
-
-    def fail(
-        self,
-        task,
-        error
-    ):
-
-
-        task.last_error = str(
-            error
-        )
-
-
-        task.finished = datetime.now()
-
-
-
-        self.history.append(
-            task
-        )
-
-
-
-
-
-
-
-    # ======================================================
-    # Consultas
-    # ======================================================
-
+    def fail(self, task, error):
+        with self._lock:
+            if hasattr(task, "last_error"):
+                task.last_error = str(error)
+            if hasattr(task, "finished"):
+                task.finished = datetime.now()
+            self.history.append(task)
 
     def pending(self):
-
-
-        with self.lock:
-
-
-            return list(
-                self.tasks
-            )
-
-
-
-
-
-
+        with self._lock:
+            return list(self.tasks)
 
     def logs(self):
-
-
-        return self.history
-
-
-
-
-
-
+        with self._lock:
+            return list(self.history)
 
     def size(self):
-
-
-        return len(
-            self.tasks
-        )
+        with self._lock:
+            return len(self.tasks)

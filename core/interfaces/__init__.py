@@ -6,13 +6,13 @@ Pacote:
 interfaces
 
 Descrição:
-Interfaces de comunicação do JARVIS.
+Exposição unificada de pontos de entrada e interfaces do sistema.
 
-Responsável por disponibilizar os módulos
-que permitem interação com o sistema.
+Arquitetura:
+Genesis Core
 
 Mark:
-I - Heartbeat
+III - Intelligence
 
 Autor:
 Caio Vitor Malveira

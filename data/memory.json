@@ -1,0 +1,54 @@
+[
+    {
+        "id": 1,
+        "data": {
+            "input": "preciso de informações sobre cursos gratuitos",
+            "response": "Analisei sua solicitação. Ainda preciso de mais informações ou conexões externas para produzir um relatório preditivo completo.",
+            "context": {
+                "memory": [],
+                "knowledge": [],
+                "tools": [
+                    "web_search"
+                ]
+            },
+            "timestamp": "2026-07-13T17:58:55.935887"
+        },
+        "created_at": "2026-07-13T17:58:55.961224"
+    },
+    {
+        "id": 2,
+        "data": {
+            "input": "Preciso de uma informação sobre criação de IA",
+            "response": "[JARVIS] Entendi seu comando, Senhor. Estou de prontidão para processar requisições ou gerenciar novas integrações físicas no Kernel.",
+            "context": {
+                "memory": [],
+                "knowledge": [],
+                "tools": [
+                    "web_search",
+                    "create_persona",
+                    "create_plugin"
+                ]
+            },
+            "timestamp": "2026-07-13T18:13:58.969085"
+        },
+        "created_at": "2026-07-13T18:13:59.022932"
+    },
+    {
+        "id": 3,
+        "data": {
+            "input": "criar ia",
+            "response": "[JARVIS] Entendi seu comando, Senhor. Estou de prontidão para processar requisições ou gerenciar novas integrações físicas no Kernel.",
+            "context": {
+                "memory": [],
+                "knowledge": [],
+                "tools": [
+                    "web_search",
+                    "create_persona",
+                    "create_plugin"
+                ]
+            },
+            "timestamp": "2026-07-13T18:14:15.320608"
+        },
+        "created_at": "2026-07-13T18:14:15.407494"
+    }
+]

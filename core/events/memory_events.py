@@ -6,44 +6,29 @@ Arquivo:
 memory_events.py
 
 Descrição:
-Eventos relacionados ao sistema
-de memória do JARVIS.
+Tópicos de eventos vinculados ao armazenamento semântico e memórias episódicas.
+
+Arquitetura:
+Genesis Core
 
 Mark:
-I - Heartbeat
+III - Intelligence
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
+from dataclasses import dataclass
 
+
+@dataclass(frozen=True)
 class MemoryEvents:
     """
-    Eventos do sistema de memória.
+    Eventos de indexação, busca e limpeza nas trilhas de memória.
     """
-
-
-    CREATED = (
-        "memory.created"
-    )
-
-
-    LOADED = (
-        "memory.loaded"
-    )
-
-
-    SAVED = (
-        "memory.saved"
-    )
-
-
-    SEARCH = (
-        "memory.search"
-    )
-
-
-    DELETED = (
-        "memory.deleted"
-    )
+    CREATED: str = "memory.created"
+    LOADED: str = "memory.loaded"
+    SAVED: str = "memory.saved"
+    SEARCH: str = "memory.search"
+    DELETED: str = "memory.deleted"

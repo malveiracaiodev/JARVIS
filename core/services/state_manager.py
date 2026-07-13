@@ -17,7 +17,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-II - Evolution
+II - Evolution (Patch 2.1 - Thread-Safe)
 
 Autor:
 Caio Vitor Malveira
@@ -27,6 +27,8 @@ Caio Vitor Malveira
 
 from enum import Enum
 from datetime import datetime
+from collections import deque
+import threading
 
 
 
@@ -77,7 +79,8 @@ class StateManager(Module):
     def __init__(
         self,
         logger=None,
-        event_bus=None
+        event_bus=None,
+        max_history=100
     ):
 
 
@@ -86,7 +89,7 @@ class StateManager(Module):
         )
 
 
-        self.version = "2.0"
+        self.version = "2.1"
 
 
         self.logger = logger
@@ -102,7 +105,12 @@ class StateManager(Module):
         self.last_change = datetime.now()
 
 
-        self.history = []
+        # Otimização: deque evita estouro de memória no histórico de estados
+        self.history = deque(maxlen=max_history)
+
+
+        # Segurança: Lock garante que modificações de estado paralelas não se corrompam
+        self._lock = threading.Lock()
 
 
 
@@ -151,6 +159,9 @@ class StateManager(Module):
         )
 
 
+        self.history.clear()
+
+
         self.set_status(
             ModuleStatus.OFFLINE
         )
@@ -189,61 +200,60 @@ class StateManager(Module):
 
 
 
-        if self.state == new_state:
+        with self._lock:
 
-            return
+            if self.state == new_state:
 
-
-
-        old_state = self.state
+                return
 
 
 
-        self.state = new_state
-
-
-        now = datetime.now()
+            old_state = self.state
 
 
 
-        self.last_change = now
+            self.state = new_state
+
+
+            now = datetime.now()
 
 
 
-        record = {
-
-
-            "from":
-            old_state.value,
-
-
-            "to":
-            new_state.value,
-
-
-            "time":
-            now.isoformat()
-
-        }
+            self.last_change = now
 
 
 
-        self.history.append(
-            record
-        )
+            record = {
+
+                "from":
+                old_state.value,
+
+                "to":
+                new_state.value,
+
+                "time":
+                now.isoformat()
+
+            }
 
 
 
-        self.log_info(
-            f"Estado: {old_state.value} -> {new_state.value}"
-        )
+            self.history.append(
+                record
+            )
 
 
 
-        self.emit(
-            "SYSTEM_STATE_CHANGED",
-            record
-        )
+            self.log_info(
+                f"Estado: {old_state.value} -> {new_state.value}"
+            )
+
+
+
+            self.emit(
+                "SYSTEM_STATE_CHANGED",
+                record
+            )
 
 
 
@@ -283,7 +293,8 @@ class StateManager(Module):
     def get_history(self):
 
 
-        return self.history
+        # Mantém compatibilidade convertendo o deque interno para lista
+        return list(self.history)
 
 
 
@@ -296,17 +307,14 @@ class StateManager(Module):
 
         return {
 
-
             "system_state":
             self.state.value,
-
 
             "last_change":
 
             self.last_change.isoformat()
             if self.last_change
             else None,
-
 
             "changes":
             len(self.history)

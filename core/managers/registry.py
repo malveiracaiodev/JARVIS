@@ -6,534 +6,126 @@ Arquivo:
 registry.py
 
 Descrição:
-Registro central de componentes.
-
-Responsável por:
-- Registrar serviços
-- Registrar agentes
-- Registrar plugins
-- Localizar componentes
-- Diagnóstico do sistema
+Registro centralizado e thread-safe de todos os componentes, 
+serviços, drivers e agentes do ecossistema.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-II.1 - Evolution
+III - Intelligence (Patch 3.4)
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
-
+import threading
 from datetime import datetime
-
-
-from core.base.module import (
-    Module,
-    ModuleStatus
-)
-
-
-
+from core.base.module import Module, ModuleStatus
 
 
 class Registry(Module):
-
-
     """
-    Registro central do JARVIS.
+    Catálogo unificado do JARVIS para indexação e busca de componentes em runtime.
     """
 
-
-
-    def __init__(
-        self,
-        logger=None
-    ):
-
-
-        super().__init__(
-            "Registry"
-        )
-
-
+    def __init__(self, logger=None):
+        super().__init__("core.registry")
+        self.version = "3.0"
         self.logger = logger
-
-
         self.components = {}
-
-
         self.categories = {
-
-
             "service": {},
-
             "agent": {},
-
             "plugin": {},
-
             "capability": {},
-
             "driver": {},
-
             "module": {}
-
         }
-
-
         self.created = datetime.now()
-
-
-
-
-
-
-
-    # ======================================================
-    # CICLO DE VIDA
-    # ======================================================
-
+        self._lock = threading.RLock()
 
     def initialize(self):
-
-
-        self.set_status(
-            ModuleStatus.INITIALIZING
-        )
-
-
-        self.set_status(
-            ModuleStatus.ONLINE
-        )
-
-
-        self.log(
-            "Registry ONLINE"
-        )
-
-
-
-
+        with self._lock:
+            self.set_status(ModuleStatus.INITIALIZING)
+            self.set_status(ModuleStatus.ONLINE)
+            self.success("Registro central unificado ONLINE")
 
     def shutdown(self):
-
-
-        self.components.clear()
-
-
-        self.set_status(
-            ModuleStatus.OFFLINE
-        )
-
-
-        self.log(
-            "Registry OFFLINE"
-        )
-
-
-
-
-
-
-
-    # ======================================================
-    # REGISTRO
-    # ======================================================
-
-
-    def register(
-        self,
-        name,
-        component,
-        category="module",
-        version="1.0"
-    ):
-
-
-        data = {
-
-
-            "name":
-            name,
-
-
-            "object":
-            component,
-
-
-            "category":
-            category,
-
-
-            "version":
-            version,
-
-
-            "status":
-            "registered",
-
-
-            "created":
-            datetime.now()
-
-        }
-
-
-
-
-        self.components[name] = data
-
-
-
-        if category in self.categories:
-
-
-            self.categories[category][name] = data
-
-
-
-
-        self.log(
-            f"Registrado: {name}"
-        )
-
-
-
-
-
-
-
-    # ======================================================
-    # BUSCA
-    # ======================================================
-
-
-    def get(
-        self,
-        name
-    ):
-
-
-        component = self.components.get(
-            name
-        )
-
-
-        if component:
-
-
-            return component["object"]
-
-
-
-        return None
-
-
-
-
-
-
-
-    def get_info(
-        self,
-        name
-    ):
-
-
-        return self.components.get(
-            name
-        )
-
-
-
-
-
-
-
-    def exists(
-        self,
-        name
-    ):
-
-
-        return name in self.components
-
-
-
-
-
-
-
-    # ======================================================
-    # LISTAGEM
-    # ======================================================
-
+        with self._lock:
+            self.components.clear()
+            for cat in self.categories:
+                self.categories[cat].clear()
+            self.set_status(ModuleStatus.OFFLINE)
+            self.info("Registro central esvaziado e OFFLINE")
+
+    def register(self, name, component, category="module", version="1.0"):
+        name_key = name.lower().strip()
+        with self._lock:
+            data = {
+                "name": name,
+                "object": component,
+                "category": category,
+                "version": version,
+                "status": "registered",
+                "created": datetime.now()
+            }
+            self.components[name_key] = data
+            if category in self.categories:
+                self.categories[category][name_key] = data
+            
+            self.info(f"Componente catalogado [{category.upper()}]: {name}")
+
+    def get(self, name):
+        with self._lock:
+            component = self.components.get(name.lower().strip())
+            return component["object"] if component else None
+
+    def get_info(self, name):
+        with self._lock:
+            return self.components.get(name.lower().strip())
+
+    def exists(self, name):
+        with self._lock:
+            return name.lower().strip() in self.components
 
     def list_all(self):
+        with self._lock:
+            return list(self.components.keys())
 
+    def list_category(self, category):
+        with self._lock:
+            if category not in self.categories:
+                return []
+            return list(self.categories[category].keys())
 
-        return list(
-            self.components.keys()
-        )
+    # Helper Wrappers explicitados no Manifest/Core
+    def register_service(self, name, service): self.register(name, service, "service")
+    def register_agent(self, name, agent): self.register(name, agent, "agent")
+    def register_plugin(self, name, plugin): self.register(name, plugin, "plugin")
+    def register_capability(self, name, capability): self.register(name, capability, "capability")
 
-
-
-
-
-
-    def list_category(
-        self,
-        category
-    ):
-
-
-        if category not in self.categories:
-
-
-            return []
-
-
-
-        return list(
-            self.categories[category].keys()
-        )
-
-
-
-
-
-
-    # ======================================================
-    # REGISTROS ESPECÍFICOS
-    # ======================================================
-
-
-    def register_service(
-        self,
-        name,
-        service
-    ):
-
-
-        self.register(
-            name,
-            service,
-            "service"
-        )
-
-
-
-
-
-    def register_agent(
-        self,
-        name,
-        agent
-    ):
-
-
-        self.register(
-            name,
-            agent,
-            "agent"
-        )
-
-
-
-
-
-    def register_plugin(
-        self,
-        name,
-        plugin
-    ):
-
-
-        self.register(
-            name,
-            plugin,
-            "plugin"
-        )
-
-
-
-
-
-    def register_capability(
-        self,
-        name,
-        capability
-    ):
-
-
-        self.register(
-            name,
-            capability,
-            "capability"
-        )
-
-
-
-
-
-
-
-
-    # ======================================================
-    # DIAGNÓSTICO
-    # ======================================================
-
+    def unregister(self, name):
+        name_key = name.lower().strip()
+        with self._lock:
+            component = self.components.get(name_key)
+            if not component:
+                return False
+            category = component["category"]
+            del self.components[name_key]
+            if category in self.categories:
+                self.categories[category].pop(name_key, None)
+            
+            self.info(f"Componente removido do registro: {name}")
+            return True
 
     def diagnostics(self):
-
-
-        return {
-
-
-            "total":
-
-            len(
-                self.components
-            ),
-
-
-
-            "services":
-
-            len(
-                self.categories["service"]
-            ),
-
-
-
-            "agents":
-
-            len(
-                self.categories["agent"]
-            ),
-
-
-
-            "plugins":
-
-            len(
-                self.categories["plugin"]
-            ),
-
-
-
-            "capabilities":
-
-            len(
-                self.categories["capability"]
-            ),
-
-
-
-            "drivers":
-
-            len(
-                self.categories["driver"]
-            ),
-
-
-
-            "modules":
-
-            len(
-                self.categories["module"]
-            )
-
-        }
-
-
-
-
-
-
-
-
-    # ======================================================
-    # REMOVER
-    # ======================================================
-
-
-    def unregister(
-        self,
-        name
-    ):
-
-
-        component = self.components.get(
-            name
-        )
-
-
-
-        if not component:
-
-
-            return False
-
-
-
-
-        category = component["category"]
-
-
-
-        del self.components[name]
-
-
-
-        if category in self.categories:
-
-
-            self.categories[category].pop(
-                name,
-                None
-            )
-
-
-
-        self.log(
-            f"Removido: {name}"
-        )
-
-
-        return True
-
-
-
-
-
-
-
-    # ======================================================
-    # LOG
-    # ======================================================
-
-
-    def log(
-        self,
-        message
-    ):
-
-
-        if self.logger:
-
-
-            self.logger.info(
-                message
-            )
-
-
-        else:
-
-
-            print(
-                "[REGISTRY]",
-                message
-            )
+        with self._lock:
+            return {cat: len(items) for cat, items in self.categories.items()}
+
+    # Redirecionamento da interface de log unificada
+    def info(self, msg):
+        if self.logger: self.logger.info(msg)
+    def success(self, msg):
+        if self.logger: self.logger.success(msg)

@@ -6,35 +6,25 @@ Arquivo:
 ai_events.py
 
 Descrição:
-Eventos da inteligência artificial.
+Tópicos de eventos do ciclo de processamento dos modelos de linguagem.
+
+Arquitetura:
+Genesis Core
 
 Mark:
-I - Heartbeat
+III - Intelligence
 =========================================
 """
 
+from dataclasses import dataclass
 
+
+@dataclass(frozen=True)
 class AIEvents:
     """
-    Eventos da IA.
+    Eventos do barramento de requisições e processamento cognitivo.
     """
-
-
-    REQUEST = (
-        "ai.request"
-    )
-
-
-    RESPONSE = (
-        "ai.response"
-    )
-
-
-    MODEL_LOADED = (
-        "ai.model.loaded"
-    )
-
-
-    MEMORY_REQUIRED = (
-        "ai.memory.required"
-    )
+    REQUEST: str = "ai.request"
+    RESPONSE: str = "ai.response"
+    MODEL_LOADED: str = "ai.model.loaded"
+    MEMORY_REQUIRED: str = "ai.memory.required"

@@ -6,1003 +6,230 @@ Arquivo:
 plugin_manager.py
 
 Descrição:
-Gerenciador central de Plugins.
-
-Responsável por:
-
-- Descobrir plugins
-- Carregar módulos
-- Registrar plugins
-- Inicializar extensões
-- Controlar ciclo de vida
-- Emitir eventos
-- Diagnóstico de plugins
+Injetor dinâmico e supervisor do ecossistema isolado de Plugins.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-II.1 - Evolution
+III - Intelligence
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
-
-from pathlib import Path
 import importlib.util
-
-
-from core.base.module import (
-    Module,
-    ModuleStatus
-)
-
-
-
+import threading
+from pathlib import Path
+from core.base.module import Module, ModuleStatus
+from core.events.plugin_events import PluginEvents
 
 
 class PluginManager(Module):
-
-
     """
-    Gerenciador central de plugins
-    do JARVIS.
+    Responsável por varrer diretórios e plugar extensões runtime em fios isolados.
     """
 
-
-
-    def __init__(
-        self,
-        logger=None,
-        event_bus=None,
-        registry=None,
-        config=None,
-        plugin_directory="plugins"
-    ):
-
-
-        super().__init__(
-            "core.plugin_manager"
-        )
-
-
-        self.version = "2.1"
-
-
+    def __init__(self, logger=None, event_bus=None, registry=None, config=None, plugin_directory="plugins"):
+        super().__init__("core.plugin_manager")
+        self.version = "3.0"
         self.logger = logger
-
-
         self.event_bus = event_bus
-
-
         self.registry = registry
-
-
         self.config = config
-
-
-
-        self.directory = Path(
-            plugin_directory
-        )
-
-
-
+        self.directory = Path(plugin_directory)
         self.plugins = {}
-
-
         self.failed_plugins = {}
-
-
-
-
-
-
-
-
-    # =====================================================
-    # CICLO DE VIDA
-    # =====================================================
-
+        self._lock = threading.RLock()
 
     def initialize(self):
-
-
-        self.set_status(
-            ModuleStatus.INITIALIZING
-        )
-
-
-
+        self.set_status(ModuleStatus.INITIALIZING)
         try:
-
-
-            self.directory.mkdir(
-                parents=True,
-                exist_ok=True
-            )
-
-
-
+            with self._lock:
+                self.directory.mkdir(parents=True, exist_ok=True)
             self.load_all()
-
-
-
-            self.set_status(
-                ModuleStatus.ONLINE
-            )
-
-
-            self.log_success(
-                "Plugin Manager iniciado"
-            )
-
-
-
+            self.set_status(ModuleStatus.ONLINE)
+            self.success("Plugin Manager estabilizado")
         except Exception as error:
-
-
-            self.set_error(
-                str(error)
-            )
-
-
-            self.log_error(
-                str(error)
-            )
-
-
-
-
-
-
-
+            self.set_error(str(error))
+            self.error(f"Colapso no boot do gerenciador de plugins: {str(error)}")
 
     def shutdown(self):
-
-
-        for name in list(
-            self.plugins.keys()
-        ):
-
-
-            self.unload(
-                name
-            )
-
-
-
-        self.plugins.clear()
-
-
-
-        self.set_status(
-            ModuleStatus.OFFLINE
-        )
-
-
-
-        self.log_info(
-            "Plugin Manager encerrado"
-        )
-
-
-
-
-
-
-
-
-    # =====================================================
-    # DESCOBERTA
-    # =====================================================
-
+        with self._lock:
+            names = list(self.plugins.keys())
+        for name in names:
+            self.unload(name)
+        self.set_status(ModuleStatus.OFFLINE)
+        self.info("Todos os plugins foram desacoplados e liberados da memória")
 
     def discover(self):
-
-
         plugins = []
+        with self._lock:
+            if not self.directory.exists():
+                return plugins
+            
+            # Varrer arquivos isolados .py
+            for file in self.directory.glob("*.py"):
+                if file.name.startswith("_"):
+                    continue
+                plugins.append(file)
 
-
-
-        for file in self.directory.glob(
-            "*.py"
-        ):
-
-
-            if file.name.startswith(
-                "_"
-            ):
-
-                continue
-
-
-
-            plugins.append(
-                file
-            )
-
-
-
-
-
-        for folder in self.directory.iterdir():
-
-
-            if (
-
-                folder.is_dir()
-
-                and
-
-                (folder / "__init__.py").exists()
-
-            ):
-
-
-                plugins.append(
-                    folder / "__init__.py"
-                )
-
-
-
+            # Varrer subdiretórios que empacotam pacotes (__init__.py)
+            for folder in self.directory.iterdir():
+                if folder.is_dir() and (folder / "__init__.py").exists():
+                    plugins.append(folder / "__init__.py")
         return plugins
 
-
-
-
-
-
-
-
-    # =====================================================
-    # CARREGAMENTO
-    # =====================================================
-
-
     def load_all(self):
+        for plugin_path in self.discover():
+            self.load(plugin_path)
 
-
-        for plugin in self.discover():
-
-
-            self.load(
-                plugin
-            )
-
-
-
-
-
-
-
-
-    def load(
-        self,
-        path
-    ):
-
-
+    def load(self, path):
         try:
-
-
-            module_name = (
-
-                path.parent.name
-
-                if path.name == "__init__.py"
-
-                else path.stem
-
-            )
-
-
-
-            spec = importlib.util.spec_from_file_location(
-
-                module_name,
-
-                path
-
-            )
-
-
-
+            module_name = path.parent.name if path.name == "__init__.py" else path.stem
+            
+            spec = importlib.util.spec_from_file_location(module_name, path)
             if spec is None or spec.loader is None:
+                raise RuntimeError(f"Falta de assinatura/especificação válida em {module_name}")
 
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
 
-                raise RuntimeError(
-
-                    f"Não foi possível carregar {module_name}"
-
-                )
-
-
-
-
-
-            module = importlib.util.module_from_spec(
-                spec
-            )
-
-
-
-            spec.loader.exec_module(
-                module
-            )
-
-
-
-
-
-            if not hasattr(
-                module,
-                "Plugin"
-            ):
-
-
-                self.log_warning(
-
-                    f"{module_name} não possui classe Plugin"
-
-                )
-
-
+            if not hasattr(module, "Plugin"):
+                if self.logger:
+                    self.logger.warning(f"Módulo '{module_name}' descartado: Não expõe classe 'Plugin'.")
                 return False
 
+            plugin_instance = module.Plugin()
+            plugin_instance.__file__ = str(path)
 
-
-
-
-
-            plugin = module.Plugin()
-
-
-
-            plugin.__file__ = str(
-                path
-            )
-
-
-
-            return self.register(
-                plugin
-            )
-
-
-
-
+            return self.register(plugin_instance)
 
         except Exception as error:
-
-
-            self.failed_plugins[str(path)] = str(
-                error
-            )
-
-
-            self.log_error(
-
-                f"Erro carregando plugin {path}: {error}"
-
-            )
-
-
-            self.emit(
-
-                "PLUGIN_ERROR",
-
-                str(error)
-
-            )
-
-
+            with self._lock:
+                self.failed_plugins[str(path)] = str(error)
+            self.error(f"Erro mecânico carregando plugin {path}: {str(error)}")
+            self.emit(PluginEvents.ERROR, {"path": str(path), "error": str(error)})
             return False
 
+    def register(self, plugin):
+        name = getattr(plugin, "name", plugin.__class__.__name__)
+        
+        with self._lock:
+            if name in self.plugins:
+                if self.logger:
+                    self.logger.warning(f"Plugin '{name}' rejeitado: Já existe uma instância viva registrada.")
+                return False
 
-
-
-
-
-
-
-
-    # =====================================================
-    # REGISTRO
-    # =====================================================
-
-
-    def register(
-        self,
-        plugin
-    ):
-
-
-        name = getattr(
-
-            plugin,
-
-            "name",
-
-            plugin.__class__.__name__
-
-        )
-
-
-
-        if name in self.plugins:
-
-
-            self.log_warning(
-
-                f"Plugin '{name}' já registrado"
-
-            )
-
-
-            return False
-
-
-
-
-
-
-        metadata = {
-
-
-            "object":
-
-            plugin,
-
-
-            "version":
-
-            getattr(
-                plugin,
-                "version",
-                "1.0"
-            ),
-
-
-
-            "status":
-
-            "loading"
-
-
-        }
-
-
-
-        self.plugins[name] = metadata
-
-
-
-
-
+            metadata = {
+                "object": plugin,
+                "version": getattr(plugin, "version", "1.0"),
+                "status": "loading"
+            }
+            self.plugins[name] = metadata
 
         try:
-
-
-
-            if hasattr(
-                plugin,
-                "initialize"
-            ):
-
-
+            if hasattr(plugin, "initialize"):
                 plugin.initialize()
-
-
-
-            elif hasattr(
-                plugin,
-                "start"
-            ):
-
-
+            elif hasattr(plugin, "start"):
                 plugin.start()
 
-
-
-            metadata["status"] = "online"
-
-
-
+            with self._lock:
+                metadata["status"] = "online"
 
             if self.registry:
+                self.registry.register_plugin(name, plugin)
 
-
-                self.registry.register_plugin(
-
-                    name,
-
-                    plugin
-
-                )
-
-
-
-
-
-            self.emit(
-
-                "PLUGIN_REGISTERED",
-
-                name
-
-            )
-
-
-
-            self.log_success(
-
-                f"Plugin iniciado: {name}"
-
-            )
-
-
-
+            self.emit(PluginEvents.LOADED, {"name": name})
+            self.success(f"Plugin ativado e injetado: '{name}'")
             return True
 
-
-
-
-
         except Exception as error:
-
-
-            metadata["status"] = "error"
-
-
-            self.failed_plugins[name] = str(
-                error
-            )
-
-
-
-            self.log_error(
-
-                f"Erro iniciando plugin {name}: {error}"
-
-            )
-
-
+            with self._lock:
+                metadata["status"] = "error"
+                self.failed_plugins[name] = str(error)
+            self.error(f"Falha na rotina de boot do plugin '{name}': {str(error)}")
             return False
 
-
-
-
-
-
-
-
-
-    # =====================================================
-    # CONTROLE
-    # =====================================================
-
-
-    def unload(
-        self,
-        name
-    ):
-
-
-        data = self.plugins.get(
-            name
-        )
-
-
+    def unload(self, name):
+        with self._lock:
+            data = self.plugins.get(name)
         if not data:
-
-
             return False
-
-
 
         plugin = data["object"]
-
-
-
         try:
-
-
-            if hasattr(
-                plugin,
-                "shutdown"
-            ):
-
-
+            if hasattr(plugin, "shutdown"):
                 plugin.shutdown()
-
-
-
-            elif hasattr(
-                plugin,
-                "stop"
-            ):
-
-
+            elif hasattr(plugin, "stop"):
                 plugin.stop()
 
+            with self._lock:
+                data["status"] = "offline"
 
-
-
-
-            data["status"] = "offline"
-
-
-
-
-            self.emit(
-
-                "PLUGIN_UNLOADED",
-
-                name
-
-            )
-
-
-
-            self.log_info(
-
-                f"Plugin desligado: {name}"
-
-            )
-
-
-
+            self.emit(PluginEvents.UNLOADED, {"name": name})
+            self.info(f"Plugin desvinculado com sucesso: '{name}'")
             return True
-
-
-
-
         except Exception as error:
-
-
-            self.log_error(
-
-                f"Erro desligando plugin {name}: {error}"
-
-            )
-
-
+            self.error(f"Erro ao forçar shutdown em '{name}': {str(error)}")
             return False
 
-
-
-
-
-
-
-
-    def unregister(
-        self,
-        name
-    ):
-
-
-        if name not in self.plugins:
-
-
-            return False
-
-
-
-        self.unload(
-            name
-        )
-
-
-        del self.plugins[name]
-
-
-
+    def unregister(self, name):
+        with self._lock:
+            if name not in self.plugins:
+                return False
+        self.unload(name)
+        
+        with self._lock:
+            del self.plugins[name]
+        
         if self.registry:
-
-
-            self.registry.unregister(
-                name
-            )
-
-
-
-        self.emit(
-
-            "PLUGIN_UNREGISTERED",
-
-            name
-
-        )
-
-
+            self.registry.unregister(name)
         return True
 
-
-
-
-
-
-
-
-    def reload(
-        self,
-        name
-    ):
-
-
-        data = self.plugins.get(
-            name
-        )
-
-
+    def reload(self, name):
+        with self._lock:
+            data = self.plugins.get(name)
         if not data:
-
-
             return False
+        path = getattr(data["object"], "__file__", None)
+        self.unregister(name)
+        return self.load(Path(path)) if path else False
 
+    def get(self, name):
+        with self._lock:
+            data = self.plugins.get(name)
+            return data["object"] if data else None
 
-
-        path = getattr(
-
-            data["object"],
-
-            "__file__",
-
-            None
-
-        )
-
-
-
-        self.unregister(
-            name
-        )
-
-
-
-        if path:
-
-
-            return self.load(
-                Path(path)
-            )
-
-
-        return False
-
-
-
-
-
-
-
-
-    # =====================================================
-    # CONSULTAS
-    # =====================================================
-
-
-    def get(
-        self,
-        name
-    ):
-
-
-        data = self.plugins.get(
-            name
-        )
-
-
-        if data:
-
-
-            return data["object"]
-
-
-
-        return None
-
-
-
-
-
-
-
-    def exists(
-        self,
-        name
-    ):
-
-
-        return name in self.plugins
-
-
-
-
-
-
+    def exists(self, name):
+        with self._lock:
+            return name in self.plugins
 
     def list_plugins(self):
-
-
-        return list(
-            self.plugins.keys()
-        )
-
-
-
-
-
-
+        with self._lock:
+            return list(self.plugins.keys())
 
     def count(self):
-
-
-        return len(
-            self.plugins
-        )
-
-
-
-
-
-
+        with self._lock:
+            return len(self.plugins)
 
     def status(self):
+        with self._lock:
+            online = sum(1 for p in self.plugins.values() if p["status"] == "online")
+            return {
+                "total": len(self.plugins),
+                "online": online,
+                "errors": len(self.failed_plugins)
+            }
 
-
-        online = 0
-
-
-        errors = len(
-            self.failed_plugins
-        )
-
-
-
-        for plugin in self.plugins.values():
-
-
-            if plugin["status"] == "online":
-
-
-                online += 1
-
-
-
-
-        return {
-
-
-            "total":
-
-            len(
-                self.plugins
-            ),
-
-
-
-            "online":
-
-            online,
-
-
-
-            "errors":
-
-            errors
-
-
-        }
-
-
-
-
-
-
-
-
-
-    # =====================================================
-    # EVENTOS
-    # =====================================================
-
-
-    def emit(
-        self,
-        event,
-        data
-    ):
-
-
+    def emit(self, event, data):
         if self.event_bus:
+            self.event_bus.emit(event, data)
 
-
-            self.event_bus.emit(
-
-                event,
-
-                data
-
-            )
-
-
-
-
-
-
-
-
-
-    # =====================================================
-    # LOGS
-    # =====================================================
-
-
-    def log_info(
-        self,
-        message
-    ):
-
-
-        if self.logger:
-
-
-            self.logger.info(
-                message
-            )
-
-
-
-
-
-    def log_warning(
-        self,
-        message
-    ):
-
-
-        if self.logger:
-
-
-            self.logger.warning(
-                message
-            )
-
-
-
-
-
-    def log_success(
-        self,
-        message
-    ):
-
-
-        if self.logger:
-
-
-            self.logger.success(
-                message
-            )
-
-
-
-
-
-    def log_error(
-        self,
-        message
-    ):
-
-
-        if self.logger:
-
-
-            self.logger.error(
-                message
-            )
+    def info(self, msg):
+        if self.logger: self.logger.info(msg)
+    def success(self, msg):
+        if self.logger: self.logger.success(msg)
+    def error(self, msg):
+        if self.logger: self.logger.error(msg)
