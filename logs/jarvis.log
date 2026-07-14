@@ -875,3 +875,8 @@
 [2026-07-13 18:14:21] [INFO] Subsistema [logger] desconectado com segurança.
 [2026-07-13 18:14:21] [INFO] Subsistema [registry] desconectado com segurança.
 [2026-07-13 18:14:21] [INFO] Kernel totalmente OFFLINE. Processos encerrados.
+[2026-07-14 18:44:41] [INFO] Componente mapeado e acoplado: logger
+[2026-07-14 18:44:41] [INFO] Componente mapeado e acoplado: event_bus
+[2026-07-14 18:44:41] [INFO] Componente mapeado e acoplado: config
+[2026-07-14 18:44:41] [INFO] Componente mapeado e acoplado: service_manager
+[2026-07-14 18:44:41] [INFO] Componente mapeado e acoplado: runtime
