@@ -9,9 +9,18 @@ Descrição:
 Contrato base para sistemas de memória
 do Genesis Core.
 
-Define o comportamento esperado de qualquer
-componente responsável por armazenar,
-recuperar e gerenciar informações.
+Define o comportamento esperado dos módulos
+responsáveis por armazenar, recuperar,
+organizar e gerenciar experiências cognitivas.
+
+Arquitetura:
+
+Brain
+ |
+Memory System
+ |
+Cognitive Pipeline
+
 
 Arquitetura:
 Genesis Core
@@ -25,7 +34,10 @@ Caio Vitor Malveira
 """
 
 
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod
+)
 
 
 
@@ -33,30 +45,54 @@ class MemoryInterface(ABC):
     """
     Interface base para sistemas de memória.
 
-    A memória é responsável por manter
-    informações persistentes ou temporárias
-    utilizadas pelos módulos cognitivos.
+    A memória mantém informações utilizadas
+    pelo processo cognitivo.
+
+    Responsabilidades:
+
+    - armazenar experiências;
+    - recuperar contexto;
+    - fornecer histórico;
+    - persistir informações.
+
+    Não realiza raciocínio.
+    Não toma decisões.
     """
 
 
 
+    # ==================================================
+    # ARMAZENAMENTO
+    # ==================================================
+
     @abstractmethod
     def store(
         self,
-        data
+        data,
+        memory_type="short_term"
     ):
         """
-        Armazena uma informação na memória.
+        Armazena uma memória.
 
         Parameters
         ----------
         data:
-            Informação a ser armazenada.
+            Informação registrada.
+
+        memory_type:
+            Tipo da memória.
+
+            Exemplos:
+
+            short_term
+            working
+            episodic
+            long_term
 
         Returns
         -------
         result:
-            Resultado do armazenamento.
+            Resultado da operação.
         """
 
         raise NotImplementedError()
@@ -64,20 +100,25 @@ class MemoryInterface(ABC):
 
 
     # ==================================================
-
+    # RECUPERAÇÃO
+    # ==================================================
 
     @abstractmethod
     def retrieve(
         self,
-        query
+        query,
+        context=None
     ):
         """
-        Recupera informações da memória.
+        Recupera memórias relacionadas.
 
         Parameters
         ----------
         query:
             Critério de busca.
+
+        context:
+            Contexto cognitivo atual.
 
         Returns
         -------
@@ -90,7 +131,8 @@ class MemoryInterface(ABC):
 
 
     # ==================================================
-
+    # BUSCA SEMÂNTICA
+    # ==================================================
 
     @abstractmethod
     def search(
@@ -99,22 +141,14 @@ class MemoryInterface(ABC):
         limit=10
     ):
         """
-        Pesquisa memórias relevantes.
+        Busca memórias relevantes.
 
         Pode utilizar:
 
-        - busca textual
-        - similaridade semântica
-        - embeddings
-        - índices
-
-        Parameters
-        ----------
-        query:
-            Termo ou contexto da busca.
-
-        limit:
-            Quantidade máxima de resultados.
+        - texto;
+        - similaridade;
+        - embeddings;
+        - índices.
 
         Returns
         -------
@@ -127,19 +161,133 @@ class MemoryInterface(ABC):
 
 
     # ==================================================
-
+    # REMOÇÃO TOTAL
+    # ==================================================
 
     @abstractmethod
     def clear(
         self
     ):
         """
-        Remove ou limpa memórias.
+        Limpa memória temporária
+        ou todo o armazenamento.
 
         Returns
         -------
         result:
             Estado da operação.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # REMOÇÃO ESPECÍFICA
+    # ==================================================
+
+    @abstractmethod
+    def forget(
+        self,
+        memory_id
+    ):
+        """
+        Remove uma memória específica.
+
+        Usado para:
+
+        - esquecimento;
+        - correção;
+        - manutenção.
+
+        Parameters
+        ----------
+        memory_id:
+            Identificador da memória.
+
+        Returns
+        -------
+        result:
+            Resultado da operação.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # PERSISTÊNCIA
+    # ==================================================
+
+    @abstractmethod
+    def save(
+        self
+    ):
+        """
+        Persiste memórias.
+
+        Exemplos:
+
+        - arquivo local;
+        - banco;
+        - vetor;
+        - cloud.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # CARREGAMENTO
+    # ==================================================
+
+    @abstractmethod
+    def load(
+        self
+    ):
+        """
+        Recupera memórias persistidas.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # STATUS
+    # ==================================================
+
+    @abstractmethod
+    def status(
+        self
+    ):
+        """
+        Retorna estado operacional
+        do sistema de memória.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # IDENTIDADE
+    # ==================================================
+
+    @abstractmethod
+    def name(
+        self
+    ):
+        """
+        Retorna nome lógico
+        do sistema.
+
+        Exemplos:
+
+        memory.local
+        memory.vector
+        memory.episodic
         """
 
         raise NotImplementedError()

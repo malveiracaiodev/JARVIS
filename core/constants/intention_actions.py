@@ -1,17 +1,17 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
-core/mind/constants/intention_actions.py
+core/constants/intention_actions.py
 
 Descrição:
-Enumeração das ações cognitivas suportadas
-pelo sistema de intenções do JARVIS.
+Taxonomia de intenções cognitivas
+suportadas pelo Genesis Core.
 
-Representa ações de alto nível que podem
-ser geradas pelos parsers de linguagem,
-LLMs ou comandos de voz.
+Representa ações abstratas que podem
+ser produzidas por voz, texto, agentes
+ou modelos de IA.
 
 Arquitetura:
 Genesis Core
@@ -24,23 +24,34 @@ Caio Vitor Malveira
 =========================================
 """
 
+
 from enum import Enum
 
 
-class IntentionAction(str, Enum):
+
+class IntentionAction(
+    str,
+    Enum
+):
+
+
     """
-    Ações cognitivas conhecidas pelo JARVIS.
+    Vocabulário cognitivo do Genesis.
     """
 
-    # =====================================================
-    # Genéricas
-    # =====================================================
+
+
+    # ==================================================
+    # BASE
+    # ==================================================
 
     UNKNOWN = "unknown"
 
-    # =====================================================
-    # Conversação
-    # =====================================================
+
+
+    # ==================================================
+    # CONVERSAÇÃO
+    # ==================================================
 
     CHAT = "chat"
 
@@ -56,33 +67,57 @@ class IntentionAction(str, Enum):
 
     THANK = "thank"
 
-    # =====================================================
-    # Cognição
-    # =====================================================
+
+
+    # ==================================================
+    # COGNIÇÃO
+    # ==================================================
 
     THINK = "think"
-
-    LEARN = "learn"
-
-    REMEMBER = "remember"
-
-    FORGET = "forget"
-
-    SEARCH_MEMORY = "search_memory"
-
-    SEARCH_KNOWLEDGE = "search_knowledge"
-
-    REFLECT = "reflect"
-
-    SUMMARIZE = "summarize"
 
     ANALYZE = "analyze"
 
     COMPARE = "compare"
 
-    # =====================================================
-    # Planejamento
-    # =====================================================
+    SUMMARIZE = "summarize"
+
+    REFLECT = "reflect"
+
+    LEARN = "learn"
+
+
+
+    # ==================================================
+    # MEMÓRIA
+    # ==================================================
+
+    REMEMBER = "remember"
+
+    FORGET = "forget"
+
+    SAVE_MEMORY = "save_memory"
+
+    LOAD_MEMORY = "load_memory"
+
+    SEARCH_MEMORY = "search_memory"
+
+
+
+    # ==================================================
+    # CONHECIMENTO
+    # ==================================================
+
+    SEARCH_KNOWLEDGE = "search_knowledge"
+
+    SEARCH_WEB = "search_web"
+
+    GET_INFORMATION = "get_information"
+
+
+
+    # ==================================================
+    # PLANEJAMENTO
+    # ==================================================
 
     CREATE_PLAN = "create_plan"
 
@@ -92,6 +127,14 @@ class IntentionAction(str, Enum):
 
     EXECUTE_PLAN = "execute_plan"
 
+
+
+    # ==================================================
+    # TAREFAS
+    # ==================================================
+
+    CREATE_TASK = "create_task"
+
     EXECUTE_TASK = "execute_task"
 
     PAUSE_TASK = "pause_task"
@@ -100,23 +143,37 @@ class IntentionAction(str, Enum):
 
     CANCEL_TASK = "cancel_task"
 
-    # =====================================================
-    # Aplicações
-    # =====================================================
+
+
+    # ==================================================
+    # SISTEMA
+    # ==================================================
+
+    GET_STATUS = "get_status"
+
+    DIAGNOSTIC = "diagnostic"
+
+    RESTART_SYSTEM = "restart_system"
+
+    SHUTDOWN_SYSTEM = "shutdown_system"
+
+
+
+    # ==================================================
+    # APLICAÇÕES
+    # ==================================================
 
     OPEN_APPLICATION = "open_application"
 
     CLOSE_APPLICATION = "close_application"
 
-    MINIMIZE_APPLICATION = "minimize_application"
-
-    MAXIMIZE_APPLICATION = "maximize_application"
-
     RESTART_APPLICATION = "restart_application"
 
-    # =====================================================
-    # Arquivos
-    # =====================================================
+
+
+    # ==================================================
+    # ARQUIVOS
+    # ==================================================
 
     OPEN_FILE = "open_file"
 
@@ -130,23 +187,11 @@ class IntentionAction(str, Enum):
 
     MOVE_FILE = "move_file"
 
-    RENAME_FILE = "rename_file"
 
-    # =====================================================
-    # Diretórios
-    # =====================================================
 
-    CREATE_FOLDER = "create_folder"
-
-    DELETE_FOLDER = "delete_folder"
-
-    OPEN_FOLDER = "open_folder"
-
-    # =====================================================
-    # Internet
-    # =====================================================
-
-    SEARCH_WEB = "search_web"
+    # ==================================================
+    # INTERNET
+    # ==================================================
 
     OPEN_WEBSITE = "open_website"
 
@@ -154,79 +199,39 @@ class IntentionAction(str, Enum):
 
     SEND_REQUEST = "send_request"
 
-    # =====================================================
-    # Sistema Operacional
-    # =====================================================
 
-    SHUTDOWN_SYSTEM = "shutdown_system"
 
-    RESTART_SYSTEM = "restart_system"
-
-    LOCK_SYSTEM = "lock_system"
-
-    LOGOUT = "logout"
-
-    OPEN_SETTINGS = "open_settings"
-
-    # =====================================================
-    # Serviços
-    # =====================================================
-
-    START_SERVICE = "start_service"
-
-    STOP_SERVICE = "stop_service"
-
-    RESTART_SERVICE = "restart_service"
-
-    # =====================================================
-    # Dispositivos
-    # =====================================================
-
-    CONNECT_DEVICE = "connect_device"
-
-    DISCONNECT_DEVICE = "disconnect_device"
-
-    SCAN_DEVICES = "scan_devices"
-
-    # =====================================================
-    # Comunicação
-    # =====================================================
-
-    SEND_MESSAGE = "send_message"
-
-    SEND_EMAIL = "send_email"
-
-    MAKE_CALL = "make_call"
-
-    # =====================================================
-    # Automação
-    # =====================================================
-
-    RUN_WORKFLOW = "run_workflow"
-
-    RUN_SCRIPT = "run_script"
+    # ==================================================
+    # AUTOMAÇÃO
+    # ==================================================
 
     RUN_COMMAND = "run_command"
 
-    # =====================================================
-    # Desenvolvimento
-    # =====================================================
+    RUN_SCRIPT = "run_script"
+
+    RUN_WORKFLOW = "run_workflow"
+
+
+
+    # ==================================================
+    # DESENVOLVIMENTO
+    # ==================================================
 
     WRITE_CODE = "write_code"
 
     READ_CODE = "read_code"
 
-    REFACTOR_CODE = "refactor_code"
-
     DEBUG_CODE = "debug_code"
 
     TEST_CODE = "test_code"
 
-    BUILD_PROJECT = "build_project"
+    REFACTOR_CODE = "refactor_code"
 
-    # =====================================================
-    # Mídia
-    # =====================================================
+
+
+    # ==================================================
+    # MULTIMÍDIA
+    # ==================================================
 
     PLAY_MEDIA = "play_media"
 
@@ -234,15 +239,13 @@ class IntentionAction(str, Enum):
 
     STOP_MEDIA = "stop_media"
 
-    NEXT_MEDIA = "next_media"
-
-    PREVIOUS_MEDIA = "previous_media"
-
     SET_VOLUME = "set_volume"
 
-    # =====================================================
-    # Inteligência Artificial
-    # =====================================================
+
+
+    # ==================================================
+    # IA
+    # ==================================================
 
     GENERATE_TEXT = "generate_text"
 
@@ -254,18 +257,54 @@ class IntentionAction(str, Enum):
 
     SYNTHESIZE_SPEECH = "synthesize_speech"
 
-    # =====================================================
-    # Administração
-    # =====================================================
+
+
+    # ==================================================
+    # VOZ
+    # ==================================================
+
+    LISTEN = "listen"
+
+    SPEAK = "speak"
+
+    WAKE_WORD = "wake_word"
+
+
+
+    # ==================================================
+    # AGENTES
+    # ==================================================
+
+    CREATE_AGENT = "create_agent"
+
+    START_AGENT = "start_agent"
+
+    STOP_AGENT = "stop_agent"
+
+    SWITCH_PERSONALITY = "switch_personality"
+
+
+
+    # ==================================================
+    # AUTONOMIA
+    # ==================================================
+
+    OBSERVE = "observe"
+
+    MONITOR = "monitor"
+
+    OPTIMIZE = "optimize"
+
+    SELF_DIAGNOSTIC = "self_diagnostic"
+
+
+
+    # ==================================================
+    # BOOT
+    # ==================================================
 
     LOAD_MODULE = "load_module"
 
     UNLOAD_MODULE = "unload_module"
 
     RELOAD_MODULE = "reload_module"
-
-    GET_STATUS = "get_status"
-
-    GET_INFORMATION = "get_information"
-
-    DIAGNOSTIC = "diagnostic"

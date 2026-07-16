@@ -9,10 +9,20 @@ Descrição:
 Contrato base para interpretadores
 de entrada do Genesis Core.
 
-Define o comportamento esperado de
-qualquer Parser responsável por
-transformar dados brutos em estruturas
-compreensíveis pelo sistema.
+Responsável por transformar dados
+brutos recebidos do ambiente em
+estruturas cognitivamente utilizáveis.
+
+Fluxo:
+
+Entrada bruta
+      |
+      v
+    Parser
+      |
+      v
+PipelineContext
+
 
 Arquitetura:
 Genesis Core
@@ -26,7 +36,10 @@ Caio Vitor Malveira
 """
 
 
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod
+)
 
 
 
@@ -34,30 +47,50 @@ class ParserInterface(ABC):
     """
     Interface base para Parsers.
 
-    Um Parser converte informações
-    recebidas pelo sistema em dados
-    estruturados.
+    O Parser não decide.
+
+    Ele apenas:
+
+    - interpreta;
+    - organiza;
+    - classifica;
+    - prepara dados.
+
+    A inteligência fica nos módulos:
+
+    Planner
+    Reasoner
+    Brain
     """
 
 
 
+    # ==================================================
+    # INTERPRETAÇÃO
+    # ==================================================
+
     @abstractmethod
     def parse(
         self,
-        input_data
+        input_data,
+        context=None
     ):
         """
-        Processa e interpreta uma entrada.
+        Converte entrada bruta
+        em estrutura cognitiva.
 
         Parameters
         ----------
         input_data:
-            Informação bruta recebida.
+            Informação recebida.
+
+        context:
+            Contexto atual do sistema.
 
         Returns
         -------
         parsed_data:
-            Informação estruturada.
+            Dados estruturados.
         """
 
         raise NotImplementedError()
@@ -65,7 +98,8 @@ class ParserInterface(ABC):
 
 
     # ==================================================
-
+    # COMPATIBILIDADE
+    # ==================================================
 
     @abstractmethod
     def supports(
@@ -73,8 +107,8 @@ class ParserInterface(ABC):
         input_type
     ):
         """
-        Verifica se o parser suporta
-        determinado tipo de entrada.
+        Verifica suporte ao tipo
+        de entrada.
 
         Exemplos:
 
@@ -83,6 +117,76 @@ class ParserInterface(ABC):
         command
         json
         image
+        sensor
+        api
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # CONFIANÇA
+    # ==================================================
+
+    @abstractmethod
+    def confidence(
+        self,
+        input_data
+    ):
+        """
+        Retorna nível de confiança
+        da interpretação.
+
+        Exemplo:
+
+        0.95
+        0.70
+        0.40
+
+        Usado pelo Reasoner para
+        decidir se deve perguntar
+        confirmação.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # IDENTIDADE
+    # ==================================================
+
+    @abstractmethod
+    def name(
+        self
+    ):
+        """
+        Retorna nome lógico
+        do parser.
+
+        Exemplos:
+
+        parser.text
+        parser.voice
+        parser.image
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # STATUS
+    # ==================================================
+
+    @abstractmethod
+    def status(
+        self
+    ):
+        """
+        Retorna estado operacional
+        do parser.
         """
 
         raise NotImplementedError()

@@ -49,6 +49,10 @@ def main():
             # Chama o cérebro integrado
             if kernel.mind:
                 response = kernel.mind.think(prompt)
+
+                if hasattr(response, "summary"):
+                    response = response.summary()
+
                 print(f"\n[Resposta] {response}\n")
             else:
                 print("\n[Erro] Sistema cognitivo inacessível.\n")

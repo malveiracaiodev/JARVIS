@@ -28,6 +28,7 @@ from core.interfaces.tool_interface import ToolInterface
 class SystemTestTool(
     ToolInterface
 ):
+
     """
     Ferramenta inicial de diagnóstico.
 
@@ -41,13 +42,63 @@ class SystemTestTool(
 
 
 
+    def __init__(
+        self
+    ):
+
+        self._name = "system_test"
+
+
+
+    # ==============================================
+    # METADADOS DA TOOL
+    # ==============================================
+
+
     def name(
         self
     ):
-        return "system_test"
+
+        return self._name
 
 
 
+    @property
+    def description(
+        self
+    ):
+
+        return (
+            "Ferramenta interna para "
+            "diagnóstico do Genesis Core."
+        )
+
+
+
+    @property
+    def permissions(
+        self
+    ):
+
+        return [
+
+            "system.test"
+
+        ]
+
+
+
+    @property
+    def status(
+        self
+    ):
+
+        return "online"
+
+
+
+    # ==============================================
+    # VALIDAÇÃO
     # ==============================================
 
 
@@ -55,10 +106,6 @@ class SystemTestTool(
         self,
         action
     ):
-        """
-        Verifica se é uma ação
-        de teste do sistema.
-        """
 
 
         if not action:
@@ -103,41 +150,43 @@ class SystemTestTool(
 
 
 
-        for word in keywords:
+        return any(
 
-            if word in text:
+            word in text
 
-                return True
+            for word in keywords
 
-
-
-        return False
+        )
 
 
 
+    # ==============================================
+    # EXECUÇÃO
     # ==============================================
 
 
     def execute(
         self,
-        action
+        action,
+        context=None
     ):
-        """
-        Executa diagnóstico.
-        """
 
 
         return {
 
             "message":
-            "Sistema cognitivo operacional.",
+                "Sistema cognitivo operacional.",
+
+
+            "tool":
+                self.name(),
 
 
             "action":
-            action,
+                action,
 
 
             "status":
-            "online"
+                "success"
 
         }

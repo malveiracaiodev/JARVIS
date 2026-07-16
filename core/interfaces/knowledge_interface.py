@@ -9,9 +9,17 @@ Descrição:
 Contrato base para sistemas de conhecimento
 do Genesis Core.
 
-Define o comportamento esperado de qualquer
-componente responsável por armazenar,
-consultar e fornecer conhecimento ao sistema.
+Define o comportamento esperado de módulos
+responsáveis por armazenar, consultar,
+atualizar e fornecer conhecimento.
+
+Arquitetura:
+
+Cognitive Pipeline
+        |
+        v
+   Knowledge System
+
 
 Arquitetura:
 Genesis Core
@@ -25,20 +33,31 @@ Caio Vitor Malveira
 """
 
 
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod
+)
 
 
 
 class KnowledgeInterface(ABC):
     """
-    Interface base para sistemas de conhecimento.
+    Interface base para sistemas
+    de conhecimento.
 
-    O Knowledge é responsável por fornecer
-    informações estruturadas utilizadas pelos
-    módulos cognitivos.
+    O Knowledge fornece informações
+    estruturadas para os módulos cognitivos.
+
+    Não decide.
+    Não raciocina.
+    Apenas disponibiliza conhecimento.
     """
 
 
+
+    # ==================================================
+    # INSERÇÃO
+    # ==================================================
 
     @abstractmethod
     def add_knowledge(
@@ -46,12 +65,12 @@ class KnowledgeInterface(ABC):
         knowledge
     ):
         """
-        Adiciona conhecimento ao sistema.
+        Adiciona conhecimento.
 
         Parameters
         ----------
         knowledge:
-            Informação ou conceito a ser registrado.
+            Conceito ou informação.
 
         Returns
         -------
@@ -64,26 +83,30 @@ class KnowledgeInterface(ABC):
 
 
     # ==================================================
-
+    # CONSULTA
+    # ==================================================
 
     @abstractmethod
     def get_knowledge(
         self,
-        query
+        query,
+        context=None
     ):
         """
-        Recupera conhecimento baseado
-        em uma consulta.
+        Busca conhecimento.
 
         Parameters
         ----------
         query:
-            Termo ou contexto pesquisado.
+            Termo pesquisado.
+
+        context:
+            Contexto cognitivo atual.
 
         Returns
         -------
         knowledge:
-            Informação encontrada.
+            Dados encontrados.
         """
 
         raise NotImplementedError()
@@ -91,7 +114,38 @@ class KnowledgeInterface(ABC):
 
 
     # ==================================================
+    # PESQUISA SEMÂNTICA
+    # ==================================================
 
+    @abstractmethod
+    def search(
+        self,
+        query
+    ):
+        """
+        Realiza pesquisa inteligente.
+
+        Pode utilizar:
+
+        - indexação
+        - embeddings
+        - vetores
+        - banco local
+        - APIs externas
+
+        Returns
+        -------
+        results:
+            Lista de conhecimentos relacionados.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # ATUALIZAÇÃO
+    # ==================================================
 
     @abstractmethod
     def update_knowledge(
@@ -100,20 +154,7 @@ class KnowledgeInterface(ABC):
         data
     ):
         """
-        Atualiza uma informação existente.
-
-        Parameters
-        ----------
-        knowledge_id:
-            Identificador do conhecimento.
-
-        data:
-            Novos dados.
-
-        Returns
-        -------
-        result:
-            Resultado da atualização.
+        Atualiza conhecimento existente.
         """
 
         raise NotImplementedError()
@@ -121,7 +162,8 @@ class KnowledgeInterface(ABC):
 
 
     # ==================================================
-
+    # REMOÇÃO
+    # ==================================================
 
     @abstractmethod
     def remove_knowledge(
@@ -129,18 +171,7 @@ class KnowledgeInterface(ABC):
         knowledge_id
     ):
         """
-        Remove uma informação da base
-        de conhecimento.
-
-        Parameters
-        ----------
-        knowledge_id:
-            Identificador do conhecimento.
-
-        Returns
-        -------
-        result:
-            Resultado da remoção.
+        Remove conhecimento.
         """
 
         raise NotImplementedError()
@@ -148,7 +179,8 @@ class KnowledgeInterface(ABC):
 
 
     # ==================================================
-
+    # EXISTÊNCIA
+    # ==================================================
 
     @abstractmethod
     def exists(
@@ -156,18 +188,91 @@ class KnowledgeInterface(ABC):
         query
     ):
         """
-        Verifica se determinado conhecimento
-        existe na base.
-
-        Parameters
-        ----------
-        query:
-            Informação procurada.
+        Verifica existência
+        de conhecimento.
 
         Returns
         -------
         bool
-            True caso exista.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # PERSISTÊNCIA
+    # ==================================================
+
+    @abstractmethod
+    def save(
+        self
+    ):
+        """
+        Salva conhecimento persistente.
+
+        Exemplos:
+
+        - banco local
+        - arquivo
+        - vetor
+        - cloud
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # CARREGAMENTO
+    # ==================================================
+
+    @abstractmethod
+    def load(
+        self
+    ):
+        """
+        Carrega conhecimento
+        persistido.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # STATUS
+    # ==================================================
+
+    @abstractmethod
+    def status(
+        self
+    ):
+        """
+        Retorna estado
+        do sistema de conhecimento.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # IDENTIDADE
+    # ==================================================
+
+    @abstractmethod
+    def name(
+        self
+    ):
+        """
+        Nome lógico do provedor.
+
+        Exemplos:
+
+        local.knowledge
+        vector.knowledge
+        web.knowledge
         """
 
         raise NotImplementedError()

@@ -9,9 +9,22 @@ Descrição:
 Contrato base para sistemas de raciocínio
 cognitivo do Genesis Core.
 
-Define o comportamento esperado de qualquer
-componente responsável por analisar contexto,
+Responsável por analisar contexto,
 avaliar possibilidades e gerar decisões.
+
+Fluxo:
+
+Contexto
+   |
+   v
+Reasoner
+   |
+   v
+Decisão Cognitiva
+   |
+   v
+Executor
+
 
 Arquitetura:
 Genesis Core
@@ -25,7 +38,10 @@ Caio Vitor Malveira
 """
 
 
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod
+)
 
 
 
@@ -33,12 +49,23 @@ class ReasonerInterface(ABC):
     """
     Interface base para Reasoners.
 
-    Um Reasoner é responsável por avaliar
-    informações, contexto e possibilidades
-    para auxiliar tomadas de decisão.
+    O Reasoner é responsável por:
+
+    - analisar informações;
+    - avaliar alternativas;
+    - considerar riscos;
+    - gerar decisões.
+
+    Ele não executa ações.
+
+    Ele apenas decide.
     """
 
 
+
+    # ==================================================
+    # RACIOCÍNIO PRINCIPAL
+    # ==================================================
 
     @abstractmethod
     def reason(
@@ -46,12 +73,20 @@ class ReasonerInterface(ABC):
         context
     ):
         """
-        Executa um processo de raciocínio.
+        Executa ciclo de raciocínio.
 
         Parameters
         ----------
         context:
-            Contexto atual da execução cognitiva.
+            Contexto cognitivo atual.
+
+        Pode conter:
+
+        - entrada;
+        - memória;
+        - conhecimento;
+        - objetivo;
+        - plano.
 
         Returns
         -------
@@ -64,7 +99,8 @@ class ReasonerInterface(ABC):
 
 
     # ==================================================
-
+    # AVALIAÇÃO DE OPÇÕES
+    # ==================================================
 
     @abstractmethod
     def evaluate(
@@ -73,28 +109,21 @@ class ReasonerInterface(ABC):
         context
     ):
         """
-        Avalia uma possibilidade ou opção.
+        Avalia uma possibilidade.
 
-        Pode considerar:
+        Considera:
 
-        - contexto atual
-        - objetivos
-        - regras
-        - conhecimento disponível
-        - riscos
-
-        Parameters
-        ----------
-        option:
-            Opção a ser avaliada.
-
-        context:
-            Contexto cognitivo.
+        - objetivo;
+        - contexto;
+        - regras;
+        - conhecimento;
+        - segurança;
+        - custo.
 
         Returns
         -------
         evaluation:
-            Avaliação da opção.
+            Resultado da avaliação.
         """
 
         raise NotImplementedError()
@@ -102,7 +131,8 @@ class ReasonerInterface(ABC):
 
 
     # ==================================================
-
+    # DECISÃO
+    # ==================================================
 
     @abstractmethod
     def decide(
@@ -110,18 +140,115 @@ class ReasonerInterface(ABC):
         possibilities
     ):
         """
-        Escolhe uma decisão baseada
-        nas possibilidades disponíveis.
+        Seleciona uma decisão.
 
         Parameters
         ----------
         possibilities:
-            Lista de alternativas.
+            Alternativas disponíveis.
 
         Returns
         -------
         decision:
-            Melhor decisão encontrada.
+            Decisão escolhida.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # EXPLICAÇÃO
+    # ==================================================
+
+    @abstractmethod
+    def explain(
+        self,
+        decision
+    ):
+        """
+        Explica o motivo de uma decisão.
+
+        Usado para:
+
+        - transparência;
+        - debugging;
+        - aprendizado;
+        - interação humana.
+
+        Returns
+        -------
+        explanation:
+            Justificativa.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # CONFIANÇA
+    # ==================================================
+
+    @abstractmethod
+    def confidence(
+        self,
+        decision
+    ):
+        """
+        Retorna confiança
+        da decisão tomada.
+
+        Exemplo:
+
+        0.95
+        0.60
+        0.30
+
+        Usado para decidir:
+
+        - executar;
+        - pedir confirmação;
+        - pesquisar mais.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # STATUS
+    # ==================================================
+
+    @abstractmethod
+    def status(
+        self
+    ):
+        """
+        Retorna estado operacional
+        do Reasoner.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # IDENTIDADE
+    # ==================================================
+
+    @abstractmethod
+    def name(
+        self
+    ):
+        """
+        Nome lógico do Reasoner.
+
+        Exemplos:
+
+        reasoner.rule_based
+        reasoner.ai
+        reasoner.hybrid
         """
 
         raise NotImplementedError()

@@ -14,6 +14,7 @@ Responsável por:
 - Executar PipelineSteps
 - Transportar PipelineContext
 - Controlar fluxo cognitivo
+- Registrar histórico de processamento
 
 Arquitetura:
 Genesis Core
@@ -30,13 +31,25 @@ Caio Vitor Malveira
 from datetime import datetime
 
 
-from core.base.module import Module
+from core.base.module import (
+    Module,
+    ModuleStatus
+)
 
-from core.interfaces.pipeline_interface import PipelineInterface
 
-from core.pipeline.pipeline_context import PipelineContext
+from core.interfaces.pipeline_interface import (
+    PipelineInterface
+)
 
-from core.pipeline.pipeline_step import PipelineStep
+
+from core.pipeline.pipeline_context import (
+    PipelineContext
+)
+
+
+from core.pipeline.pipeline_step import (
+    PipelineStep
+)
 
 
 
@@ -44,20 +57,30 @@ class CognitivePipeline(
     Module,
     PipelineInterface
 ):
+
     """
     Orquestrador da Pipeline Cognitiva.
 
-    A pipeline não pensa.
+    Não possui inteligência própria.
 
-    Ela apenas transporta o contexto
-    entre etapas cognitivas.
+    Apenas coordena:
+
+    Parser
+      |
+    Planner
+      |
+    Reasoner
+      |
+    Executor
+      |
+    Reflection
     """
 
 
 
     def __init__(
         self,
-        name: str = "core.cognitive_pipeline"
+        name="core.cognitive_pipeline"
     ):
 
         super().__init__(
@@ -65,39 +88,59 @@ class CognitivePipeline(
         )
 
 
-        self.steps = []
+        self._name = name
+
+
+        self.steps_list = []
+
+
+        self.history = []
+
+
+        self.errors = []
 
 
 
     # ==================================================
-    # Ciclo de vida do Module
+    # IDENTIDADE
+    # ==================================================
+
+
+    def name(
+        self
+    ):
+
+        return self._name
+
+
+
+    # ==================================================
+    # CICLO DE VIDA
     # ==================================================
 
 
     def initialize(
         self
     ):
-        """
-        Inicializa a Pipeline Cognitiva.
-        """
 
+        self.set_status(
+            ModuleStatus.ONLINE
+        )
 
         return True
 
-
-
-    # ==================================================
 
 
     def shutdown(
         self
     ):
-        """
-        Finaliza a Pipeline Cognitiva.
-        """
+
+        self.steps_list.clear()
 
 
-        self.steps.clear()
+        self.set_status(
+            ModuleStatus.OFFLINE
+        )
 
 
         return True
@@ -105,7 +148,7 @@ class CognitivePipeline(
 
 
     # ==================================================
-    # Gerenciamento
+    # ETAPAS
     # ==================================================
 
 
@@ -113,10 +156,6 @@ class CognitivePipeline(
         self,
         step
     ):
-        """
-        Adiciona uma etapa cognitiva.
-        """
-
 
         if not isinstance(
             step,
@@ -128,29 +167,22 @@ class CognitivePipeline(
             )
 
 
-        self.steps.append(
+        self.steps_list.append(
             step
         )
 
 
 
-    # ==================================================
-
-
     def remove_step(
         self,
-        step_name: str
+        step_name
     ):
-        """
-        Remove uma etapa pelo nome.
-        """
 
-
-        self.steps = [
+        self.steps_list = [
 
             step
 
-            for step in self.steps
+            for step in self.steps_list
 
             if step.name != step_name
 
@@ -158,37 +190,60 @@ class CognitivePipeline(
 
 
 
+    def steps(
+        self
+    ):
+
+        return self.steps_list
+
+
+
+    def list_steps(
+        self
+    ):
+
+        return [
+
+            step.name
+
+            for step in self.steps_list
+
+        ]
+
+
+
     # ==================================================
-    # Execução Cognitiva
+    # EXECUÇÃO
     # ==================================================
 
 
     def process(
         self,
-        message
+        input_data,
+        context=None
     ):
-        """
-        Executa ciclo cognitivo completo.
-        """
 
 
-        context = PipelineContext(
-            message
-        )
+        if context is None:
+
+            context = PipelineContext(
+                input_data
+            )
 
 
 
-        if not self.steps:
+        if not self.steps_list:
 
             context.add_error(
-                "Nenhuma etapa cognitiva registrada."
+                "Pipeline sem etapas registradas."
             )
 
             return context
 
 
 
-        for step in self.steps:
+
+        for step in self.steps_list:
 
 
             started = datetime.now()
@@ -203,24 +258,29 @@ class CognitivePipeline(
                 )
 
 
+
                 context.add_history(
                     {
 
                         "step":
-                        step.name,
+                            step.name,
 
 
                         "status":
-                        "started",
+                            "started",
 
 
-                        "time":
-                        started.isoformat()
+                        "timestamp":
+                            started.isoformat()
 
                     }
                 )
 
 
+
+                # ==========================================
+                # EXECUTA ETAPA
+                # ==========================================
 
                 context = step.execute(
                     context
@@ -228,7 +288,42 @@ class CognitivePipeline(
 
 
 
+                # ==========================================
+                # VALIDA CONTRATO
+                # ==========================================
+
+                if not isinstance(
+                    context,
+                    PipelineContext
+                ):
+
+                    raise TypeError(
+                        f"A etapa '{step.name}' "
+                        f"retornou "
+                        f"{type(context).__name__}. "
+                        "Esperado PipelineContext."
+                    )
+
+
+
                 finished = datetime.now()
+
+
+
+                self.history.append(
+                    {
+
+                        "step":
+                            step.name,
+
+
+                        "duration":
+                            str(
+                                finished - started
+                            )
+
+                    }
+                )
 
 
 
@@ -236,17 +331,11 @@ class CognitivePipeline(
                     {
 
                         "step":
-                        step.name,
+                            step.name,
 
 
                         "status":
-                        "completed",
-
-
-                        "duration":
-                        str(
-                            finished - started
-                        )
+                            "completed"
 
                     }
                 )
@@ -256,32 +345,41 @@ class CognitivePipeline(
             except Exception as error:
 
 
-                context.add_error(
+
+                self.errors.append(
                     {
 
                         "step":
-                        step.name,
+                            step.name,
 
 
                         "error":
-                        str(error)
+                            str(error)
 
                     }
                 )
 
 
-                context.add_history(
-                    {
 
-                        "step":
-                        step.name,
+                # Proteção contra erro em cascata
+
+                if isinstance(
+                    context,
+                    PipelineContext
+                ):
+
+                    context.add_error(
+                        {
+
+                            "step":
+                                step.name,
 
 
-                        "status":
-                        "failed"
+                            "error":
+                                str(error)
 
-                    }
-                )
+                        }
+                    )
 
 
                 break
@@ -293,37 +391,53 @@ class CognitivePipeline(
 
 
     # ==================================================
-    # Controle
+    # CONTROLE
     # ==================================================
 
 
-    def clear_steps(
+    def reset(
         self
     ):
-        """
-        Remove todas as etapas.
-        """
+
+        self.history.clear()
 
 
-        self.steps.clear()
+        self.errors.clear()
+
+
+        return True
 
 
 
     # ==================================================
+    # STATUS
+    # ==================================================
 
 
-    def list_steps(
+    def status(
         self
     ):
-        """
-        Lista etapas carregadas.
-        """
 
 
-        return [
+        return {
 
-            step.name
+            "name":
+                self._name,
 
-            for step in self.steps
 
-        ]
+            "status":
+                self.get_status().value,
+
+
+            "steps":
+                len(
+                    self.steps_list
+                ),
+
+
+            "errors":
+                len(
+                    self.errors
+                )
+
+        }

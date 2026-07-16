@@ -50,5 +50,41 @@
             "timestamp": "2026-07-13T18:14:15.320608"
         },
         "created_at": "2026-07-13T18:14:15.407494"
+    },
+    {
+        "id": "147c7cd6-9ccf-4c57-b4b5-6279d3fde589",
+        "type": "general",
+        "data": {
+            "teste": "Genesis funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-16T18:15:27.707131"
+    },
+    {
+        "id": "7a0c1263-9b72-43b2-aaa7-73a6b8309c10",
+        "type": "general",
+        "data": {
+            "teste": "Genesis funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-16T18:20:20.448342"
+    },
+    {
+        "id": "a03157b5-fd2a-4c0b-a500-fef3099a295a",
+        "type": "general",
+        "data": {
+            "teste": "Genesis funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-16T18:24:53.214092"
+    },
+    {
+        "id": "a860b406-d7b5-455e-af12-9aefe0b51be3",
+        "type": "general",
+        "data": {
+            "teste": "Genesis funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-16T18:56:17.474110"
     }
 ]

@@ -44,6 +44,8 @@ from core.runtime.engine import Runtime
 
 from core.mind.mind import Mind
 
+from core.pipeline.pipeline_initializer import PipelineInitializer
+
 
 
 class Kernel:
@@ -86,6 +88,8 @@ class Kernel:
         self.mind = None
 
         self.tool_manager = None
+
+        self.pipeline = None
 
 
 
@@ -182,7 +186,22 @@ class Kernel:
 
 
 
-        # 6. Runtime Engine
+        # 6. Tool Manager
+
+        self.tool_manager = ToolManager(
+            self.logger
+        )
+
+
+        self.register(
+            "tool_manager",
+            self.tool_manager,
+            "manager"
+        )
+
+
+
+        # 7. Runtime Engine
 
         workers_count = 2
 
@@ -224,12 +243,22 @@ class Kernel:
 
 
 
-        # 7. Sistema Cognitivo
+        # 8. Pipeline Cognitiva
+
+        self.pipeline = PipelineInitializer(
+            logger=self.logger,
+            tool_manager=self.tool_manager
+        ).build()
+
+
+
+        # 9. Sistema Cognitivo
 
         self.mind = Mind(
             logger=self.logger,
             event_bus=self.event_bus,
-            engine=self.runtime
+            engine=self.runtime,
+            pipeline=self.pipeline
         )
 
 
@@ -241,7 +270,7 @@ class Kernel:
 
 
 
-        # 8. Plugin Manager
+        # 10. Plugin Manager
 
         plugin_manager = PluginManager(
             self.logger,
@@ -256,23 +285,6 @@ class Kernel:
             plugin_manager,
             "service"
         )
-
-
-
-        # 9. Tool Manager
-
-        self.tool_manager = ToolManager(
-            self.logger
-        )
-
-
-        self.register(
-            "tool_manager",
-            self.tool_manager,
-            "manager"
-        )
-
-
 
     # ==================================================
     # Registro

@@ -3,13 +3,29 @@
 JARVIS CORE
 
 Pacote:
-cognitive
+core.cognitive
 
 Descrição:
-Módulos cognitivos do Genesis Core.
+Exposição centralizada dos módulos
+cognitivos do Genesis Core.
 
-Responsável por expor os componentes
-de processamento inteligente do sistema.
+Esta camada reúne os componentes
+especializados responsáveis pelo
+processamento inteligente do sistema.
+
+Arquitetura:
+
+                Brain
+                  │
+         Cognitive Pipeline
+                  │
+    ┌─────────────┼─────────────┐
+    │             │             │
+ Parser       Planner      Reasoner
+                                   │
+                              Executor
+                                   │
+                              Reflection
 
 Arquitetura:
 Genesis Core
@@ -23,13 +39,44 @@ Caio Vitor Malveira
 """
 
 
+# =====================================================
+# INTERPRETAÇÃO
+# =====================================================
+
 from .parser import Parser
+
+
+# =====================================================
+# PLANEJAMENTO
+# =====================================================
+
 from .planner import Planner
+
+
+# =====================================================
+# RACIOCÍNIO
+# =====================================================
+
 from .reasoner import Reasoner
+
+
+# =====================================================
+# EXECUÇÃO
+# =====================================================
+
 from .executor import Executor
+
+
+# =====================================================
+# APRENDIZADO
+# =====================================================
+
 from .reflection import Reflection
 
 
+# =====================================================
+# EXPORTAÇÃO PÚBLICA
+# =====================================================
 
 __all__ = [
 
@@ -41,6 +88,6 @@ __all__ = [
 
     "Executor",
 
-    "Reflection"
+    "Reflection",
 
 ]

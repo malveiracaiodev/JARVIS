@@ -6,12 +6,12 @@ Arquivo:
 core/interfaces/brain_interface.py
 
 Descrição:
-Contrato base para módulos cognitivos
-do Genesis Core.
+Contrato base para o controlador cognitivo
+principal do Genesis Core.
 
-Define o comportamento esperado de
-qualquer sistema responsável por
-processamento inteligente.
+O Brain é o ponto de entrada da Matrix
+Cognitiva, responsável por coordenar o
+pipeline de pensamento.
 
 Arquitetura:
 Genesis Core
@@ -31,15 +31,31 @@ from abc import ABC, abstractmethod
 
 class BrainInterface(ABC):
     """
-    Interface base para cérebros
-    do Genesis Core.
+    Interface base do Brain.
 
-    O Brain é responsável por iniciar
-    processos cognitivos, mas não deve
-    conter regras de negócio.
+    O Brain não contém inteligência de negócio.
+
+    Sua responsabilidade é:
+
+    - receber estímulos;
+    - encaminhar para o Cognitive Pipeline;
+    - controlar memória cognitiva;
+    - gerenciar estado interno.
+
+    A inteligência está nos módulos:
+
+    Parser
+    Planner
+    Reasoner
+    Executor
+    Reflection
     """
 
 
+
+    # ==================================================
+    # PROCESSAMENTO COGNITIVO
+    # ==================================================
 
     @abstractmethod
     def process(
@@ -47,17 +63,29 @@ class BrainInterface(ABC):
         input_data
     ):
         """
-        Processa uma entrada cognitiva.
+        Inicia um ciclo cognitivo.
+
+        Fluxo:
+
+        input
+          ↓
+        PipelineContext
+          ↓
+        CognitivePipeline
+          ↓
+        resultado
+
 
         Parameters
         ----------
         input_data:
-            Informação recebida pelo cérebro.
+            Entrada recebida pelo sistema.
+
 
         Returns
         -------
-        resultado:
-            Resultado do processamento.
+        result:
+            Resultado final do processamento.
         """
 
         raise NotImplementedError()
@@ -65,7 +93,8 @@ class BrainInterface(ABC):
 
 
     # ==================================================
-
+    # APRENDIZADO
+    # ==================================================
 
     @abstractmethod
     def learn(
@@ -73,13 +102,20 @@ class BrainInterface(ABC):
         data
     ):
         """
-        Adiciona aprendizado ao sistema.
+        Registra aprendizado no sistema.
 
-        Pode representar:
-        - atualização de conhecimento
-        - adaptação
-        - incorporação de informação
+        O aprendizado pode representar:
 
+        - novas informações;
+        - experiências;
+        - ajustes cognitivos;
+        - atualização de memória.
+
+
+        O Brain apenas encaminha.
+
+        A implementação pertence ao sistema
+        de memória/conhecimento.
         """
 
         raise NotImplementedError()
@@ -87,15 +123,43 @@ class BrainInterface(ABC):
 
 
     # ==================================================
-
+    # RESET
+    # ==================================================
 
     @abstractmethod
     def reset(
         self
     ):
         """
-        Reinicia o estado cognitivo
-        temporário do cérebro.
+        Limpa estados temporários
+        do processo cognitivo.
+
+        Exemplos:
+
+        - contexto atual;
+        - pensamentos temporários;
+        - fila cognitiva;
+        - estados internos.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # STATUS
+    # ==================================================
+
+    @abstractmethod
+    def status(
+        self
+    ):
+        """
+        Retorna o estado atual
+        do cérebro.
+
+        Usado pelo Kernel,
+        Diagnostics e Dashboard.
         """
 
         raise NotImplementedError()

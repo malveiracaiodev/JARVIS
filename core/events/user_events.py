@@ -1,35 +1,205 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
-user_events.py
+core/events/user_events.py
 
 Descrição:
-Tópicos de eventos acionados por interações diretas e mutações do usuário.
+Eventos relacionados ao usuário,
+perfil, sessão, preferências e interação
+com o Genesis Core.
+
+Responsável por comunicação entre:
+
+- UserManager
+- MemoryManager
+- Character System
+- Authentication
+- Agents
+- Cognitive Pipeline
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+III - Matrix
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
+
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+
+@dataclass(
+    frozen=True
+)
 class UserEvents:
+
     """
-    Eventos de persistência, perfil e autenticação do usuário.
+    Barramento de eventos do usuário.
+
+    Representa mudanças e interações
+    da entidade humana dentro do sistema.
     """
-    CREATED: str = "user.created"
-    LOADED: str = "user.loaded"
-    UPDATED: str = "user.updated"
-    LOGIN: str = "user.login"
-    LOGOUT: str = "user.logout"
-    SAVED: str = "user.saved"
+
+
+
+    # ==================================================
+    # PERFIL
+    # ==================================================
+
+
+    CREATED: str = (
+        "user.created"
+    )
+
+
+    LOADED: str = (
+        "user.loaded"
+    )
+
+
+    UPDATED: str = (
+        "user.updated"
+    )
+
+
+    SAVED: str = (
+        "user.saved"
+    )
+
+
+    DELETED: str = (
+        "user.deleted"
+    )
+
+
+
+    # ==================================================
+    # SESSÃO
+    # ==================================================
+
+
+    SESSION_STARTED: str = (
+        "user.session.started"
+    )
+
+
+    SESSION_ENDED: str = (
+        "user.session.ended"
+    )
+
+
+    LOGIN: str = (
+        "user.login"
+    )
+
+
+    LOGOUT: str = (
+        "user.logout"
+    )
+
+
+
+    # ==================================================
+    # INTERAÇÃO
+    # ==================================================
+
+
+    INPUT_RECEIVED: str = (
+        "user.input.received"
+    )
+
+
+    COMMAND_SENT: str = (
+        "user.command.sent"
+    )
+
+
+    REQUEST_CREATED: str = (
+        "user.request.created"
+    )
+
+
+    RESPONSE_RECEIVED: str = (
+        "user.response.received"
+    )
+
+
+
+    # ==================================================
+    # PREFERÊNCIAS
+    # ==================================================
+
+
+    PREFERENCE_CREATED: str = (
+        "user.preference.created"
+    )
+
+
+    PREFERENCE_UPDATED: str = (
+        "user.preference.updated"
+    )
+
+
+    PREFERENCE_REMOVED: str = (
+        "user.preference.removed"
+    )
+
+
+
+    # ==================================================
+    # APRENDIZADO
+    # ==================================================
+
+
+    BEHAVIOR_LEARNED: str = (
+        "user.behavior.learned"
+    )
+
+
+    CONTEXT_UPDATED: str = (
+        "user.context.updated"
+    )
+
+
+    FEEDBACK_GIVEN: str = (
+        "user.feedback.given"
+    )
+
+
+
+    # ==================================================
+    # PERMISSÕES
+    # ==================================================
+
+
+    PERMISSION_GRANTED: str = (
+        "user.permission.granted"
+    )
+
+
+    PERMISSION_REVOKED: str = (
+        "user.permission.revoked"
+    )
+
+
+
+    # ==================================================
+    # SEGURANÇA
+    # ==================================================
+
+
+    AUTHENTICATION_FAILED: str = (
+        "user.authentication.failed"
+    )
+
+
+    SECURITY_ALERT: str = (
+        "user.security.alert"
+    )

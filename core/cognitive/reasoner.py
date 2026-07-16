@@ -1,23 +1,23 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/cognitive/reasoner.py
 
 Descrição:
-Implementação do Reasoner Cognitivo
-do Genesis Core.
+Motor de raciocínio cognitivo do Genesis.
 
 Responsável por analisar contexto,
-avaliar possibilidades e auxiliar
-tomadas de decisão dentro da Pipeline.
+avaliar alternativas e produzir decisões.
+
+Não executa ações.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+III - Matrix
 
 Autor:
 Caio Vitor Malveira
@@ -25,9 +25,19 @@ Caio Vitor Malveira
 """
 
 
-from core.interfaces.reasoner_interface import ReasonerInterface
+import uuid
 
-from core.pipeline.pipeline_step import PipelineStep
+from datetime import datetime
+
+
+from core.interfaces.reasoner_interface import (
+    ReasonerInterface
+)
+
+
+from core.pipeline.pipeline_step import (
+    PipelineStep
+)
 
 
 
@@ -35,33 +45,174 @@ class Reasoner(
     PipelineStep,
     ReasonerInterface
 ):
+
     """
-    Motor de raciocínio cognitivo.
+    Núcleo de decisão cognitiva.
 
-    Responsabilidades:
+    Recebe planos.
 
-    - Avaliar contexto
-    - Gerar análise
-    - Escolher decisões
+    Analisa possibilidades.
 
-    Não executa ações.
-    Não altera sistemas externos.
+    Produz decisões.
+
+    Não executa.
     """
 
 
 
     def __init__(
-        self
+        self,
+        logger=None,
+        memory=None
     ):
+
 
         super().__init__(
             "reasoner"
         )
 
 
+        self.logger = logger
+
+        self.memory = memory
+
+
+        self.decisions = 0
+
+        self.errors = 0
+
+
+        self.history = []
+
+
 
     # ==================================================
-    # ReasonerInterface
+    # IDENTIDADE
+    # ==================================================
+
+
+    def name(
+        self
+    ):
+
+        return "reasoner"
+
+
+
+    # ==================================================
+    # STATUS
+    # ==================================================
+
+
+    def status(
+        self
+    ):
+
+        return {
+
+            "name":
+            self.name(),
+
+            "decisions":
+            self.decisions,
+
+            "errors":
+            self.errors
+
+        }
+
+
+
+    # ==================================================
+    # PIPELINE
+    # ==================================================
+
+
+    def process(
+        self,
+        context
+    ):
+
+
+        try:
+
+
+            parsed = context.data.get(
+                "parsed",
+                {}
+            )
+
+
+            plan = context.data.get(
+                "plan",
+                {}
+            )
+
+
+
+            reasoning_context = {
+
+
+                "input":
+                parsed.get(
+                    "content"
+                ),
+
+
+                "plan":
+                plan
+
+            }
+
+
+
+            result = self.reason(
+                reasoning_context
+            )
+
+
+
+            context.data[
+                "reasoning"
+            ] = result
+
+
+
+        except Exception as error:
+
+
+            self.errors += 1
+
+
+            context.data[
+                "reasoning"
+            ] = {
+
+                "decision":
+                None,
+
+                "confidence":
+                0,
+
+                "error":
+                str(error)
+
+            }
+
+
+
+            self.log_error(
+                str(error)
+            )
+
+
+
+        return context
+
+
+
+    # ==================================================
+    # RACIOCÍNIO
     # ==================================================
 
 
@@ -69,25 +220,6 @@ class Reasoner(
         self,
         context
     ):
-        """
-        Executa análise cognitiva
-        sobre determinado contexto.
-        """
-
-
-        if not context:
-
-            return {
-
-                "decision": None,
-
-                "confidence": 0,
-
-                "analysis":
-                "Nenhum contexto disponível."
-
-            }
-
 
 
         plan = context.get(
@@ -97,60 +229,125 @@ class Reasoner(
 
         if not plan:
 
+
             return {
 
-                "decision": None,
+                "decision":
+                None,
 
-                "confidence": 0,
+                "confidence":
+                0,
 
                 "analysis":
-                "Nenhum plano encontrado."
+                "Nenhum plano disponível."
 
             }
 
 
 
-        return {
+        options = self.generate_options(
+            plan
+        )
 
-            "context":
-            context,
+
+        decision = self.decide(
+            options
+        )
 
 
-            "analysis":
-            "Plano analisado e considerado executável.",
+        result = {
+
+
+            "id":
+            str(uuid.uuid4()),
+
+
+            "timestamp":
+            datetime.now()
+            .isoformat(),
+
+
+            "alternatives":
+            options,
 
 
             "decision":
-            plan,
+            decision,
 
 
             "confidence":
-            1.0
+            self.confidence(
+                decision
+            )
+
 
         }
 
 
+        self.decisions += 1
 
+
+        self.history.append(
+            result
+        )
+
+
+        return result
+
+
+
+    # ==================================================
+    # OPÇÕES
+    # ==================================================
+
+
+    def generate_options(
+        self,
+        plan
+    ):
+
+
+        return [
+
+            {
+
+                "strategy":
+                "execute_plan",
+
+                "plan":
+                plan,
+
+                "score":
+                1.0
+
+            }
+
+        ]
+
+
+
+    # ==================================================
+    # AVALIAÇÃO
     # ==================================================
 
 
     def evaluate(
         self,
         option,
-        context
+        context=None
     ):
-        """
-        Avalia uma possibilidade.
-        """
 
 
         if not option:
 
+
             return {
 
-                "valid": False,
+                "valid":
+                False,
 
-                "score": 0
+                "score":
+                0
 
             }
 
@@ -161,22 +358,21 @@ class Reasoner(
             "option":
             option,
 
-
-            "context":
-            context,
-
-
             "score":
-            1.0,
+            option.get(
+                "score",
+                0
+            ),
 
-
-            "reason":
-            "Opção considerada válida."
+            "valid":
+            True
 
         }
 
 
 
+    # ==================================================
+    # DECISÃO
     # ==================================================
 
 
@@ -184,20 +380,6 @@ class Reasoner(
         self,
         possibilities
     ):
-        """
-        Escolhe melhor possibilidade.
-
-        Primeira versão:
-
-        seleciona primeira opção.
-
-        Futuramente:
-
-        - pesos cognitivos
-        - memória
-        - aprendizado
-        - LLM
-        """
 
 
         if not possibilities:
@@ -206,61 +388,105 @@ class Reasoner(
 
 
 
-        return possibilities[0]
+        return sorted(
 
+            possibilities,
 
-
-    # ==================================================
-    # PipelineStep
-    # ==================================================
-
-
-    def process(
-        self,
-        context
-    ):
-        """
-        Executa raciocínio dentro
-        da Pipeline Cognitiva.
-        """
-
-
-        parsed = context.data.get(
-            "parsed",
-            {}
-        )
-
-
-        plan = context.data.get(
-            "plan",
-            {}
-        )
-
-
-
-        analysis_context = {
-
-            "input":
-            parsed.get(
-                "content"
+            key=lambda x:
+            x.get(
+                "score",
+                0
             ),
 
+            reverse=True
 
-            "plan":
-            plan
-
-        }
+        )[0]
 
 
 
-        reasoning = self.reason(
-            analysis_context
+    # ==================================================
+    # CONFIANÇA
+    # ==================================================
+
+
+    def confidence(
+        self,
+        decision
+    ):
+
+
+        if not decision:
+
+            return 0
+
+
+        return decision.get(
+            "score",
+            0
         )
 
 
 
-        context.data["reasoning"] = reasoning
+    # ==================================================
+    # EXPLICAÇÃO
+    # ==================================================
+
+
+    def explain(
+        self,
+        decision
+    ):
+
+
+        if not decision:
+
+            return "Nenhuma decisão tomada."
+
+
+        return (
+            "Decisão selecionada baseada "
+            "na maior pontuação disponível."
+        )
 
 
 
-        return context
+    # ==================================================
+    # COMPATIBILIDADE
+    # ==================================================
+
+
+    def evaluate_options(
+        self,
+        options,
+        context=None
+    ):
+
+        return [
+
+            self.evaluate(
+                option,
+                context
+            )
+
+            for option in options
+
+        ]
+
+
+
+    # ==================================================
+    # LOG
+    # ==================================================
+
+
+    def log_error(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.error(
+                message
+            )

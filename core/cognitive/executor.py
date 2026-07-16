@@ -1,22 +1,22 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/cognitive/executor.py
 
 Descrição:
-Implementação do Executor Cognitivo
-do Genesis Core.
+Executor Cognitivo do Genesis Core.
 
-Responsável por transformar decisões
-em operações executáveis.
+Transforma decisões cognitivas em
+operações executáveis através do
+ToolManager.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+III - Matrix
 
 Autor:
 Caio Vitor Malveira
@@ -24,9 +24,17 @@ Caio Vitor Malveira
 """
 
 
-from core.interfaces.executor_interface import ExecutorInterface
+from datetime import datetime
 
-from core.pipeline.pipeline_step import PipelineStep
+
+from core.interfaces.executor_interface import (
+    ExecutorInterface
+)
+
+
+from core.pipeline.pipeline_step import (
+    PipelineStep
+)
 
 
 
@@ -34,68 +42,80 @@ class Executor(
     PipelineStep,
     ExecutorInterface
 ):
-    """
-    Executor cognitivo.
-
-    Responsabilidades:
-
-    - Receber decisões
-    - Encontrar ferramentas compatíveis
-    - Executar operações
-
-    Não possui ferramentas próprias.
-
-    Utiliza ferramentas externas.
-    """
-
 
 
     def __init__(
-        self
+        self,
+        tool_manager=None,
+        logger=None
     ):
+
 
         super().__init__(
             "executor"
         )
 
 
-        self.tools = []
+        self.tool_manager = tool_manager
+
+        self.logger = logger
+
+
+        self.executions = 0
+
+        self.failures = 0
 
 
 
-    # ==================================================
-    # Gerenciamento de ferramentas
-    # ==================================================
+    # ======================================================
+    # IDENTIDADE
+    # ======================================================
 
 
-    def register_tool(
-        self,
-        tool
+    def name(
+        self
     ):
-        """
-        Registra uma ferramenta externa.
-        """
 
-
-        self.tools.append(
-            tool
-        )
+        return "executor"
 
 
 
-    # ==================================================
-    # PipelineStep
-    # ==================================================
+    # ======================================================
+    # STATUS
+    # ======================================================
+
+
+    def status(
+        self
+    ):
+
+        return {
+
+            "name":
+                self.name(),
+
+            "executions":
+                self.executions,
+
+            "failures":
+                self.failures,
+
+            "tool_manager":
+                self.tool_manager is not None
+
+        }
+
+
+
+    # ======================================================
+    # PIPELINE
+    # ======================================================
 
 
     def process(
         self,
         context
     ):
-        """
-        Executa decisão cognitiva
-        dentro da Pipeline.
-        """
 
 
         reasoning = context.data.get(
@@ -104,125 +124,141 @@ class Executor(
         )
 
 
-        action = reasoning.get(
-            "decision"
-        )
+        action = (
 
+            reasoning.get(
+                "decision"
+            )
 
-        if not action:
+            or
 
-            action = context.data.get(
+            context.data.get(
                 "plan"
             )
 
-
-
-        result = self.execute_action(
-            action
         )
 
 
-        context.data["execution"] = result
+        result = self.execute_action(
+            action,
+            context
+        )
+
+
+        context.data[
+            "execution"
+        ] = result
 
 
         return context
 
 
 
-    # ==================================================
-    # Execução
-    # ==================================================
+    # ======================================================
+    # EXECUÇÃO DE AÇÃO
+    # ======================================================
 
 
     def execute_action(
         self,
-        action
+        action,
+        context=None
     ):
-        """
-        Executa uma ação usando
-        ferramentas registradas.
-        """
 
 
         if not action:
 
+
+            return self.failure(
+                "Nenhuma ação fornecida."
+            )
+
+
+
+        if self.tool_manager is None:
+
+
+            return self.failure(
+                "ToolManager indisponível."
+            )
+
+
+
+        try:
+
+
+            tool = self.tool_manager.find(
+                action
+            )
+
+
+            if tool is None:
+
+
+                return self.failure(
+                    "Nenhuma ferramenta compatível encontrada."
+                )
+
+
+
+            self.executions += 1
+
+
+
+            result = tool.execute(
+                action
+            )
+
+
+
             return {
 
-                "success": False,
+                "success":
+                    True,
 
-                "message":
-                "Nenhuma ação fornecida."
+
+                "tool":
+                    tool.name(),
+
+
+                "result":
+                    result,
+
+
+                "timestamp":
+                    datetime.now()
+                    .isoformat()
 
             }
 
 
 
-        for tool in self.tools:
+        except Exception as error:
 
 
-            try:
-
-                if tool.validate(
-                    action
-                ):
+            self.failures += 1
 
 
-                    result = tool.execute(
-                        action
-                    )
+            self.log_error(
+                str(error)
+            )
 
 
-                    return {
-
-                        "success": True,
-
-                        "tool":
-                        tool.name(),
-
-                        "result":
-                        result
-
-                    }
-
-
-            except Exception as error:
-
-
-                return {
-
-                    "success": False,
-
-                    "error":
-                    str(error)
-
-                }
+            return self.failure(
+                str(error)
+            )
 
 
 
-        return {
-
-            "success": False,
-
-            "message":
-            "Nenhuma ferramenta compatível encontrada."
-
-        }
-
-
-
-    # ==================================================
-    # ExecutorInterface
-    # ==================================================
+    # ======================================================
+    # VALIDAÇÃO
+    # ======================================================
 
 
     def validate(
         self,
         action
     ):
-        """
-        Verifica se existe capacidade
-        de execução.
-        """
 
 
         if not action:
@@ -230,52 +266,96 @@ class Executor(
             return False
 
 
+        if self.tool_manager is None:
 
-        for tool in self.tools:
-
-
-            try:
-
-                if tool.validate(
-                    action
-                ):
-
-                    return True
+            return False
 
 
-            except Exception:
-
-                continue
+        return (
+            self.tool_manager.find(action)
+            is not None
+        )
 
 
 
-        return False
-
-
-
-    # ==================================================
+    # ======================================================
+    # ROLLBACK
+    # ======================================================
 
 
     def rollback(
         self,
         action
     ):
-        """
-        Sistema inicial de reversão.
-
-        Futuramente:
-
-        - desfazer ações
-        - restaurar estados
-        - recuperar falhas
-        """
 
 
         return {
 
-            "success": False,
+            "success":
+                False,
+
 
             "message":
-            "Rollback não implementado."
+                "Rollback ainda não implementado.",
+
+
+            "action":
+                action
 
         }
+
+
+
+    # ======================================================
+    # ERRO
+    # ======================================================
+
+
+    def failure(
+        self,
+        message
+    ):
+
+
+        return {
+
+            "success":
+                False,
+
+
+            "message":
+                message,
+
+
+            "timestamp":
+                datetime.now()
+                .isoformat()
+
+        }
+
+
+
+    def log_error(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.error(
+                message
+            )
+
+
+
+    # ======================================================
+    # DIAGNÓSTICO
+    # ======================================================
+
+
+    def info(
+        self
+    ):
+
+        return self.status()

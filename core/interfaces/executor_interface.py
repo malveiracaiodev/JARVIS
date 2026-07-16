@@ -9,9 +9,17 @@ Descrição:
 Contrato base para executores de ações
 do Genesis Core.
 
-Define o comportamento esperado de qualquer
-componente responsável por transformar
-planos e decisões em ações executáveis.
+Responsável por transformar decisões
+cognitivas em operações reais.
+
+Fluxo:
+
+Reasoner
+   ↓
+Executor
+   ↓
+Ambiente
+
 
 Arquitetura:
 Genesis Core
@@ -25,37 +33,51 @@ Caio Vitor Malveira
 """
 
 
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod
+)
 
 
 
 class ExecutorInterface(ABC):
     """
-    Interface base para Executores.
+    Interface base dos Executores.
 
-    Um Executor transforma uma ação planejada
-    em uma operação real dentro do ambiente.
+    O Executor não possui inteligência
+    decisória.
+
+    Ele apenas recebe uma ação validada
+    e tenta realizá-la no ambiente.
     """
 
 
 
+    # ==================================================
+    # EXECUÇÃO
+    # ==================================================
+
     @abstractmethod
     def execute(
         self,
-        action
+        action,
+        context=None
     ):
         """
-        Executa uma ação.
+        Executa uma ação planejada.
 
         Parameters
         ----------
         action:
-            Ação definida pelo sistema.
+            Ação produzida pelo Reasoner.
+
+        context:
+            Contexto cognitivo atual.
 
         Returns
         -------
         result:
-            Resultado da execução.
+            Resultado da operação.
         """
 
         raise NotImplementedError()
@@ -63,7 +85,8 @@ class ExecutorInterface(ABC):
 
 
     # ==================================================
-
+    # VALIDAÇÃO
+    # ==================================================
 
     @abstractmethod
     def validate(
@@ -71,24 +94,20 @@ class ExecutorInterface(ABC):
         action
     ):
         """
-        Verifica se uma ação pode ser executada.
+        Valida se a ação pode ocorrer.
 
-        Pode considerar:
+        Deve verificar:
 
-        - permissões
-        - recursos disponíveis
         - segurança
+        - permissões
+        - recursos
+        - dependências
         - compatibilidade
-
-        Parameters
-        ----------
-        action:
-            Ação a ser validada.
 
         Returns
         -------
         bool
-            True caso seja executável.
+            True quando permitido.
         """
 
         raise NotImplementedError()
@@ -96,7 +115,8 @@ class ExecutorInterface(ABC):
 
 
     # ==================================================
-
+    # REVERSÃO
+    # ==================================================
 
     @abstractmethod
     def rollback(
@@ -104,23 +124,65 @@ class ExecutorInterface(ABC):
         action
     ):
         """
-        Reverte uma ação quando possível.
+        Tenta desfazer uma operação.
 
-        Usado para:
+        Utilizado em:
 
-        - recuperação de falhas
-        - segurança
-        - consistência do sistema
-
-        Parameters
-        ----------
-        action:
-            Ação que precisa ser revertida.
+        - falhas
+        - recuperação
+        - manutenção da consistência
 
         Returns
         -------
         result:
-            Resultado da reversão.
+            Resultado do rollback.
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # STATUS
+    # ==================================================
+
+    @abstractmethod
+    def status(
+        self
+    ):
+        """
+        Retorna estado operacional
+        do executor.
+
+        Usado por:
+
+        - Kernel
+        - Diagnostics
+        - Dashboard
+        - Plugin Manager
+        """
+
+        raise NotImplementedError()
+
+
+
+    # ==================================================
+    # IDENTIDADE
+    # ==================================================
+
+    @abstractmethod
+    def name(
+        self
+    ):
+        """
+        Retorna nome lógico
+        do executor.
+
+        Exemplo:
+
+        browser.executor
+        system.executor
+        device.executor
         """
 
         raise NotImplementedError()

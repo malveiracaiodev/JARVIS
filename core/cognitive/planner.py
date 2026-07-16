@@ -1,22 +1,25 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/cognitive/planner.py
 
 Descrição:
-Implementação do Planner Cognitivo
-do Genesis Core.
+Planejador Cognitivo do Genesis Core.
 
-Responsável por transformar entradas
-estruturadas em planos cognitivos.
+Responsável por transformar intenções
+em estruturas planejáveis.
+
+Não decide.
+Não executa.
+Não controla ferramentas.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+III - Matrix
 
 Autor:
 Caio Vitor Malveira
@@ -24,9 +27,19 @@ Caio Vitor Malveira
 """
 
 
-from core.interfaces.planner_interface import PlannerInterface
+import uuid
 
-from core.pipeline.pipeline_step import PipelineStep
+from datetime import datetime
+
+
+from core.interfaces.planner_interface import (
+    PlannerInterface
+)
+
+
+from core.pipeline.pipeline_step import (
+    PipelineStep
+)
 
 
 
@@ -34,19 +47,20 @@ class Planner(
     PipelineStep,
     PlannerInterface
 ):
+
     """
-    Planejador cognitivo.
+    Criador de planos cognitivos.
 
-    Responsável por transformar uma
-    intenção em um plano estruturado.
+    O Planner prepara caminhos.
 
-    Não executa ações.
+    O Reasoner escolhe o melhor.
     """
 
 
 
     def __init__(
-        self
+        self,
+        logger=None
     ):
 
         super().__init__(
@@ -54,9 +68,56 @@ class Planner(
         )
 
 
+        self.logger = logger
+
+
+        self.plans_created = 0
+
+        self.errors = 0
+
+
 
     # ==================================================
-    # PipelineStep
+    # IDENTIDADE
+    # ==================================================
+
+
+    def name(
+        self
+    ):
+
+        return "planner"
+
+
+
+    # ==================================================
+    # STATUS
+    # ==================================================
+
+
+    def status(
+        self
+    ):
+
+        return {
+
+            "name":
+                self.name(),
+
+
+            "plans_created":
+                self.plans_created,
+
+
+            "errors":
+                self.errors
+
+        }
+
+
+
+    # ==================================================
+    # PIPELINE
     # ==================================================
 
 
@@ -64,40 +125,62 @@ class Planner(
         self,
         context
     ):
-        """
-        Executa planejamento dentro
-        da Pipeline Cognitiva.
-        """
+
+
+        try:
+
+
+            parsed = context.data.get(
+                "parsed",
+                {}
+            )
+
+
+            intention = parsed.get(
+                "content"
+            )
+
+
+            context.intention = intention
+
+
+            plan = self.create_plan(
+                intention
+            )
+
+
+            context.plan = plan
+
+
+            context.data[
+                "plan"
+            ] = plan
 
 
 
-        parsed = context.data.get(
-            "parsed",
-            {}
-        )
+            self.plans_created += 1
 
 
 
-        intention = parsed.get(
-            "content"
-        )
+        except Exception as error:
 
 
-
-        context.intention = intention
-
+            self.errors += 1
 
 
-        plan = self.create_plan(
-            intention
-        )
+            context.data[
+                "plan"
+            ] = {
+
+                "error":
+                    str(error)
+
+            }
 
 
-
-        context.plan = plan
-
-
-        context.data["plan"] = plan
+            self.log_error(
+                str(error)
+            )
 
 
 
@@ -106,7 +189,7 @@ class Planner(
 
 
     # ==================================================
-    # PlannerInterface
+    # CRIAÇÃO
     # ==================================================
 
 
@@ -114,11 +197,6 @@ class Planner(
         self,
         intention
     ):
-        """
-        Cria um plano baseado
-        na intenção recebida.
-        """
-
 
 
         if not intention:
@@ -126,9 +204,20 @@ class Planner(
 
             return {
 
-                "goal": None,
+                "id":
+                    str(uuid.uuid4()),
 
-                "steps": []
+
+                "goal":
+                    None,
+
+
+                "steps":
+                    [],
+
+
+                "status":
+                    "empty"
 
             }
 
@@ -136,8 +225,26 @@ class Planner(
 
         return {
 
+
+            "id":
+                str(uuid.uuid4()),
+
+
+            "created":
+                datetime.now()
+                .isoformat(),
+
+
             "goal":
-            intention,
+                intention,
+
+
+            "priority":
+                "normal",
+
+
+            "status":
+                "draft",
 
 
             "steps":
@@ -146,48 +253,64 @@ class Planner(
 
                 {
 
+                    "order":
+                        1,
+
+
                     "action":
-                    "analyze",
+                        "analyze",
 
 
                     "description":
-                    "Analisar objetivo recebido."
+                        "Analisar objetivo e contexto."
 
                 },
 
 
                 {
 
+                    "order":
+                        2,
+
+
                     "action":
-                    "prepare",
+                        "prepare",
 
 
                     "description":
-                    "Preparar recursos necessários."
+                        "Preparar recursos necessários."
 
                 },
 
 
                 {
 
+                    "order":
+                        3,
+
+
                     "action":
-                    "execute",
+                        "execute",
 
 
                     "description":
-                    "Executar objetivo."
+                        "Executar estratégia definida."
 
                 },
 
 
                 {
 
+                    "order":
+                        4,
+
+
                     "action":
-                    "verify",
+                        "verify",
 
 
                     "description":
-                    "Verificar resultado."
+                        "Avaliar resultado obtido."
 
                 }
 
@@ -198,16 +321,91 @@ class Planner(
 
 
     # ==================================================
+    # DECOMPOSIÇÃO
+    # ==================================================
+
+
+    def decompose(
+        self,
+        goal
+    ):
+
+
+        if not goal:
+
+            return []
+
+
+
+        return [
+
+            {
+
+                "step":
+                    1,
+
+
+                "action":
+                    "analyze",
+
+
+                "goal":
+                    goal
+
+            },
+
+            {
+
+                "step":
+                    2,
+
+
+                "action":
+                    "execute",
+
+
+                "goal":
+                    goal
+
+            }
+
+        ]
+
+
+
+    # ==================================================
+    # CANCELAMENTO
+    # ==================================================
+
+
+    def cancel_plan(
+        self,
+        plan_id
+    ):
+
+
+        return {
+
+            "id":
+                plan_id,
+
+
+            "status":
+                "cancelled"
+
+        }
+
+
+
+    # ==================================================
+    # VALIDAÇÃO
+    # ==================================================
 
 
     def validate_plan(
         self,
         plan
     ):
-        """
-        Verifica se o plano
-        possui estrutura válida.
-        """
 
 
         if not isinstance(
@@ -219,22 +417,34 @@ class Planner(
 
 
 
-        if "steps" not in plan:
+        required = [
 
-            return False
+            "id",
 
+            "goal",
 
+            "steps"
 
-        if not plan["steps"]:
-
-            return False
-
-
-
-        return True
+        ]
 
 
 
+        for field in required:
+
+            if field not in plan:
+
+                return False
+
+
+
+        return len(
+            plan["steps"]
+        ) > 0
+
+
+
+    # ==================================================
+    # OTIMIZAÇÃO
     # ==================================================
 
 
@@ -242,16 +452,60 @@ class Planner(
         self,
         plan
     ):
-        """
-        Otimiza plano existente.
 
-        Futuramente:
 
-        - IA
-        - prioridades
-        - custos
-        - contexto
-        """
+        if not plan:
+
+            return plan
+
+
+
+        plan["optimized"] = True
 
 
         return plan
+
+
+
+    # ==================================================
+    # LOG
+    # ==================================================
+
+
+    def log_error(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.error(
+                message
+            )
+
+
+
+    # ==================================================
+    # DIAGNÓSTICO
+    # ==================================================
+
+
+    def info(
+        self
+    ):
+
+        return {
+
+            "name":
+                self.name(),
+
+
+            "plans_created":
+                self.plans_created,
+
+
+            "errors":
+                self.errors
+
+        }

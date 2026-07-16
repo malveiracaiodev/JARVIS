@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/cognitive/reflection.py
@@ -8,15 +8,15 @@ core/cognitive/reflection.py
 Descrição:
 Módulo de reflexão cognitiva do Genesis Core.
 
-Responsável por analisar resultados de
-processos cognitivos e gerar feedback
-para melhoria futura do sistema.
+Responsável por analisar resultados,
+avaliar desempenho e gerar feedback
+para evolução futura.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+III - Matrix
 
 Autor:
 Caio Vitor Malveira
@@ -24,37 +24,62 @@ Caio Vitor Malveira
 """
 
 
-from core.pipeline.pipeline_step import PipelineStep
+import uuid
+
+from datetime import datetime
+
+
+from core.pipeline.pipeline_step import (
+    PipelineStep
+)
 
 
 
 class Reflection(
     PipelineStep
 ):
+
     """
-    Sistema de reflexão cognitiva.
+    Camada de avaliação cognitiva.
 
-    Analisa resultados produzidos pelos
-    módulos cognitivos.
+    Observa resultados.
 
-    Não executa ações.
+    Gera conhecimento.
+
+    Não executa.
     Não altera memória diretamente.
     """
 
 
 
     def __init__(
-        self
+        self,
+        logger=None,
+        memory=None
     ):
+
 
         super().__init__(
             "reflection"
         )
 
 
+        self.logger = logger
+
+        self.memory = memory
+
+
+        self.reflections = 0
+
+        self.failures = 0
+
+
+        self.history = []
+
+
 
     # ==================================================
-    # PipelineStep
+    # PIPELINE
     # ==================================================
 
 
@@ -62,26 +87,74 @@ class Reflection(
         self,
         context
     ):
-        """
-        Executa reflexão sobre
-        resultado da execução.
-        """
 
 
-        execution = context.data.get(
-            "execution",
-            {}
-        )
+        try:
+
+
+            execution = context.data.get(
+                "execution",
+                {}
+            )
+
+
+            reasoning = context.data.get(
+                "reasoning",
+                {}
+            )
 
 
 
-        reflection = self.analyze(
-            execution
-        )
+            reflection = self.analyze(
+
+                execution,
+
+                reasoning
+
+            )
 
 
 
-        context.data["reflection"] = reflection
+            context.data[
+                "reflection"
+            ] = reflection
+
+
+
+            self.reflections += 1
+
+
+            self.history.append(
+                reflection
+            )
+
+
+
+        except Exception as error:
+
+
+            self.failures += 1
+
+
+            context.data[
+                "reflection"
+            ] = {
+
+
+                "success":
+                False,
+
+
+                "error":
+                str(error)
+
+            }
+
+
+
+            self.log_error(
+                str(error)
+            )
 
 
 
@@ -90,27 +163,37 @@ class Reflection(
 
 
     # ==================================================
-    # Análise
+    # ANÁLISE
     # ==================================================
 
 
     def analyze(
         self,
-        result
+        result,
+        reasoning=None
     ):
-        """
-        Analisa resultado de execução.
-        """
 
 
         if not result:
 
+
             return {
 
-                "success": False,
+                "id":
+                str(uuid.uuid4()),
+
+
+                "success":
+                False,
+
 
                 "analysis":
-                "Nenhum resultado disponível."
+                "Nenhum resultado disponível.",
+
+
+                "timestamp":
+                datetime.now()
+                .isoformat()
 
             }
 
@@ -127,12 +210,17 @@ class Reflection(
 
 
             evaluation = (
-                "Processo concluído com sucesso."
+                "Execução concluída."
             )
 
 
+            quality = 1.0
+
+
             improvement = (
-                "Nenhuma falha crítica identificada."
+
+                "Estratégia considerada eficiente."
+
             )
 
 
@@ -140,21 +228,45 @@ class Reflection(
         else:
 
 
+            self.failures += 1
+
+
             evaluation = (
-                "Processo apresentou falhas."
+
+                "Execução apresentou falhas."
+
             )
 
 
+            quality = 0.0
+
+
             improvement = (
-                "Necessário revisar estratégia."
+
+                "Reavaliar estratégia e recursos."
+
             )
 
 
 
         return {
 
+
+            "id":
+            str(uuid.uuid4()),
+
+
+            "timestamp":
+            datetime.now()
+            .isoformat(),
+
+
             "success":
             success,
+
+
+            "quality":
+            quality,
 
 
             "evaluation":
@@ -165,6 +277,10 @@ class Reflection(
             improvement,
 
 
+            "reasoning":
+            reasoning,
+
+
             "original_result":
             result
 
@@ -173,7 +289,7 @@ class Reflection(
 
 
     # ==================================================
-    # Comparação
+    # COMPARAÇÃO
     # ==================================================
 
 
@@ -182,13 +298,10 @@ class Reflection(
         expected,
         actual
     ):
-        """
-        Compara resultado esperado
-        com resultado obtido.
-        """
 
 
         return {
+
 
             "expected":
             expected,
@@ -199,14 +312,64 @@ class Reflection(
 
 
             "match":
-            expected == actual
+            expected == actual,
+
+
+            "timestamp":
+            datetime.now()
+            .isoformat()
 
         }
 
 
 
     # ==================================================
-    # Sugestões
+    # APRENDIZADO
+    # ==================================================
+
+
+    def extract_lesson(
+        self,
+        reflection
+    ):
+
+        """
+        Extrai experiência para futura memória.
+
+        Futuramente enviado ao MemoryManager.
+        """
+
+
+        if not reflection:
+
+            return None
+
+
+
+        return {
+
+
+            "type":
+            "experience",
+
+
+            "success":
+            reflection.get(
+                "success"
+            ),
+
+
+            "lesson":
+            reflection.get(
+                "improvement"
+            )
+
+        }
+
+
+
+    # ==================================================
+    # MELHORIAS
     # ==================================================
 
 
@@ -214,9 +377,6 @@ class Reflection(
         self,
         reflection
     ):
-        """
-        Gera sugestões de melhoria.
-        """
 
 
         if not reflection:
@@ -236,7 +396,16 @@ class Reflection(
 
 
             suggestions.append(
-                "Reavaliar plano de execução."
+
+                "Reavaliar plano cognitivo."
+
+            )
+
+
+            suggestions.append(
+
+                "Buscar alternativa de execução."
+
             )
 
 
@@ -244,9 +413,69 @@ class Reflection(
 
 
             suggestions.append(
+
                 "Registrar estratégia bem sucedida."
+
+            )
+
+
+            suggestions.append(
+
+                "Priorizar abordagem semelhante no futuro."
+
             )
 
 
 
         return suggestions
+
+
+
+    # ==================================================
+    # LOG
+    # ==================================================
+
+
+    def log_error(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.error(
+                message
+            )
+
+
+
+    # ==================================================
+    # DIAGNÓSTICO
+    # ==================================================
+
+
+    def info(self):
+
+
+        return {
+
+
+            "name":
+            "reflection",
+
+
+            "reflections":
+            self.reflections,
+
+
+            "failures":
+            self.failures,
+
+
+            "history":
+            len(
+                self.history
+            )
+
+        }

@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/mind/brain.py
@@ -8,8 +8,15 @@ core/mind/brain.py
 Descrição:
 Orquestrador cognitivo central do Genesis Core.
 
-Responsável por coordenar a inteligência,
-memória, conhecimento e Pipeline Cognitiva.
+Responsável por coordenar:
+- Estado cognitivo
+- Pipeline Cognitiva
+- Memória de trabalho
+- Histórico de processamento
+
+Não executa ferramentas.
+Não controla infraestrutura.
+Não decide ações.
 
 Arquitetura:
 Genesis Core
@@ -38,6 +45,11 @@ from core.interfaces.brain_interface import (
 )
 
 
+from core.mind.brain_state import (
+    BrainState
+)
+
+
 
 class BrainStatus(Enum):
 
@@ -59,55 +71,74 @@ class Brain(
 ):
 
     """
-    Cérebro central do Genesis Core.
+    Núcleo cognitivo do Genesis Core.
 
-    O Brain coordena.
+    O Brain coordena:
 
-    Não executa ferramentas.
-    Não gerencia serviços.
-    Não controla infraestrutura.
+    - Estado mental
+    - Pipeline cognitiva
+    - Histórico
+    - Memória
+    - Conhecimento
+
+    O Brain não executa ações externas.
     """
 
 
 
     def __init__(
         self,
-        logger=None
+        logger=None,
+        event_bus=None
     ):
+
 
         super().__init__(
             "core.mind.brain"
         )
 
 
-        self.version = "Mark III - Cognitive Brain"
+        self.version = (
+            "Genesis Core Mark III"
+        )
 
 
         self.logger = logger
 
+        self.event_bus = event_bus
+
+
+
+        # Estado central
+
+        self.state = BrainState(
+            logger=self.logger
+        )
+
+
+
+        # Pipeline cognitiva
 
         self.pipeline = None
 
-        self.memory = None
-
-        self.knowledge = None
-
-        self.reasoning = None
-
-        self.tools = None
-
-        self.engine = None
 
 
-        self.brain_status = BrainStatus.OFFLINE
+        self.status = (
+            BrainStatus.OFFLINE
+        )
 
 
         self.started_at = None
 
 
+        self.cycles = 0
+
+        self.errors = 0
+
+
 
     # ==================================================
-    # Logs
+    # LOG
     # ==================================================
 
 
@@ -117,7 +148,9 @@ class Brain(
         message
     ):
 
+
         if self.logger:
+
 
             method = getattr(
                 self.logger,
@@ -125,11 +158,15 @@ class Brain(
                 None
             )
 
-            if method:
 
-                method(message)
+            if callable(method):
+
+                method(
+                    message
+                )
 
                 return
+
 
 
         print(
@@ -139,18 +176,14 @@ class Brain(
 
 
     # ==================================================
-    # Conexões
+    # CONEXÕES
     # ==================================================
 
 
     def connect(
         self,
         pipeline=None,
-        memory=None,
-        knowledge=None,
-        reasoning=None,
-        tools=None,
-        engine=None
+        reasoner=None
     ):
 
 
@@ -159,63 +192,52 @@ class Brain(
             self.pipeline = pipeline
 
 
-        if memory:
-
-            self.memory = memory
-
-
-        if knowledge:
-
-            self.knowledge = knowledge
-
-
-        if reasoning:
-
-            self.reasoning = reasoning
-
-
-        if tools:
-
-            self.tools = tools
-
-
-        if engine:
-
-            self.engine = engine
-
-
 
         self._log(
             "info",
-            "Dependências cognitivas conectadas."
+            "Componentes cognitivos conectados."
         )
 
 
 
     # ==================================================
-    # Lifecycle
+    # CICLO DE VIDA
     # ==================================================
 
 
-    def initialize(self):
+    def initialize(
+        self
+    ):
+
+
+        self.status = (
+            BrainStatus.INITIALIZING
+        )
+
 
         self.set_status(
             ModuleStatus.INITIALIZING
         )
 
 
-        self.brain_status = BrainStatus.INITIALIZING
+
+        self.state.initialize()
+
 
 
         self.started_at = datetime.now()
 
 
-        self.brain_status = BrainStatus.ONLINE
+
+        self.status = (
+            BrainStatus.ONLINE
+        )
 
 
         self.set_status(
             ModuleStatus.ONLINE
         )
+
 
 
         self._log(
@@ -225,14 +247,28 @@ class Brain(
 
 
 
-    def shutdown(self):
+        return True
 
-        self.brain_status = BrainStatus.OFFLINE
+
+
+    def shutdown(
+        self
+    ):
+
+
+        self.state.shutdown()
+
+
+
+        self.status = (
+            BrainStatus.OFFLINE
+        )
 
 
         self.set_status(
             ModuleStatus.OFFLINE
         )
+
 
 
         self._log(
@@ -242,8 +278,12 @@ class Brain(
 
 
 
+        return True
+
+
+
     # ==================================================
-    # Pensamento
+    # PROCESSAMENTO COGNITIVO
     # ==================================================
 
 
@@ -253,13 +293,15 @@ class Brain(
     ):
 
 
-        self.brain_status = BrainStatus.THINKING
-
-
-
         if not self.pipeline:
 
-            self.brain_status = BrainStatus.ERROR
+
+            self.errors += 1
+
+
+            self.status = (
+                BrainStatus.ERROR
+            )
 
 
             return {
@@ -274,12 +316,54 @@ class Brain(
         try:
 
 
+            self.status = (
+                BrainStatus.THINKING
+            )
+
+
+
+            self.state.context.set_last_message(
+                input_data
+            )
+
+
+
             result = self.pipeline.process(
                 input_data
             )
 
 
-            self.brain_status = BrainStatus.ONLINE
+
+            self.cycles += 1
+
+
+
+            self.state.add_history(
+
+                {
+
+                    "timestamp":
+                    datetime.now()
+                    .isoformat(),
+
+
+                    "input":
+                    input_data,
+
+
+                    "result":
+                    result
+
+                }
+
+            )
+
+
+
+            self.status = (
+                BrainStatus.ONLINE
+            )
+
 
 
             return result
@@ -289,7 +373,12 @@ class Brain(
         except Exception as error:
 
 
-            self.brain_status = BrainStatus.ERROR
+            self.errors += 1
+
+
+            self.status = (
+                BrainStatus.ERROR
+            )
 
 
             self._log(
@@ -300,14 +389,107 @@ class Brain(
 
             return {
 
-                "error": str(error)
+                "error":
+                str(error)
 
             }
 
 
 
     # ==================================================
-    # Informação
+    # MEMÓRIA
+    # ==================================================
+
+
+    def remember(
+        self,
+        data,
+        memory_type="general",
+        importance=1
+    ):
+
+
+        return self.state.memory.store(
+            data,
+            memory_type,
+            importance
+        )
+
+
+
+    def recall(
+        self,
+        query
+    ):
+
+
+        return self.state.memory.retrieve(
+            query
+        )
+
+
+
+    # ==================================================
+    # CONHECIMENTO
+    # ==================================================
+
+
+    def learn(
+        self,
+        topic,
+        information,
+        source="internal",
+        tags=None
+    ):
+
+
+        return self.state.knowledge.add(
+            topic,
+            information,
+            source,
+            tags
+        )
+
+
+
+    def search(
+        self,
+        query
+    ):
+
+
+        return self.state.knowledge.search(
+            query
+        )
+
+
+
+    # ==================================================
+    # RESET
+    # ==================================================
+
+
+    def reset(
+        self
+    ):
+
+
+        if self.get_status() != ModuleStatus.ONLINE:
+
+            return False
+
+
+
+        self.state.context.clear_temporary()
+
+
+
+        return True
+
+
+
+    # ==================================================
+    # INFORMAÇÕES
     # ==================================================
 
 
@@ -315,24 +497,35 @@ class Brain(
         self
     ):
 
+
         return {
 
-            "status":
-            self.brain_status.value,
+
+            "name":
+            self.name,
+
 
             "version":
             self.version,
 
+
+            "status":
+            self.status.value,
+
+
             "pipeline":
             self.pipeline is not None,
 
-            "memory":
-            self.memory is not None,
 
-            "knowledge":
-            self.knowledge is not None,
+            "cycles":
+            self.cycles,
 
-            "tools":
-            self.tools is not None
+
+            "errors":
+            self.errors,
+
+
+            "state":
+            self.state.snapshot()
 
         }
