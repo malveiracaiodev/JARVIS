@@ -1,60 +1,240 @@
-"""Construcao da pipeline cognitiva do Genesis Core."""
+"""
+=========================================
+GENESIS CORE
 
-from core.cognitive import Executor, Parser, Planner, Reasoner, Reflection
+Arquivo:
+core/pipeline/pipeline_initializer.py
+
+Descrição:
+Construtor da Pipeline Cognitiva.
+
+Responsável por:
+- Registrar ferramentas iniciais
+- Construir fluxo cognitivo
+- Conectar Executor ao ToolManager
+- Manter diagnóstico das etapas
+
+Arquitetura:
+Genesis Core
+
+Mark:
+III - Intelligence
+
+Autor:
+Caio Vitor Malveira
+=========================================
+"""
+
+
+from core.cognitive import (
+    Executor,
+    Parser,
+    Planner,
+    Reasoner,
+    Reflection
+)
+
 from core.pipeline.cognitive_pipeline import CognitivePipeline
+
 from core.tools import SystemTestTool
 
 
-class PipelineInitializer:
-    """Monta a pipeline e conecta o Executor ao ToolManager central."""
 
-    def __init__(self, logger=None, tool_manager=None):
+class PipelineInitializer:
+    """
+    Montador da inteligência cognitiva Genesis.
+    """
+
+
+    def __init__(
+        self,
+        logger=None,
+        tool_manager=None
+    ):
+
         self.logger = logger
+
         self.tool_manager = tool_manager
+
         self.pipeline = None
+
+        self.steps = []
+
+
+
+    # ==================================================
+    # Construção
+    # ==================================================
+
 
     def build(self):
+
         if self.pipeline:
-            self._log("info", "Pipeline ja inicializada.")
+
+            self._log(
+                "info",
+                "Pipeline já inicializada."
+            )
+
             return self.pipeline
 
+
+
         if not self.tool_manager:
-            raise RuntimeError("Pipeline Cognitiva requer um ToolManager.")
 
-        self._log("info", "Construindo Pipeline Cognitiva.")
+            raise RuntimeError(
+                "Pipeline Cognitiva requer ToolManager."
+            )
 
-        if "system_test" not in self.tool_manager.list_tools():
-            self.tool_manager.register(SystemTestTool())
-            self._log("info", "Ferramenta registrada: system_test")
+
+
+        self._log(
+            "info",
+            "Construindo Pipeline Cognitiva."
+        )
+
+
+
+        self._register_default_tools()
+
+
 
         pipeline = CognitivePipeline()
-        steps = [
+
+
+
+        self.steps = [
+
             Parser(),
+
             Planner(),
+
             Reasoner(),
-            Executor(tool_manager=self.tool_manager),
-            Reflection(),
+
+            Executor(
+                tool_manager=self.tool_manager
+            ),
+
+            Reflection()
+
         ]
 
-        for step in steps:
-            pipeline.add_step(step)
-            self._log("info", f"Etapa registrada: {step.name}")
+
+
+        for step in self.steps:
+
+
+            pipeline.add_step(
+                step
+            )
+
+
+            self._log(
+                "info",
+                f"Etapa registrada: {step.name}"
+            )
+
+
 
         self.pipeline = pipeline
-        self._log("success", "Pipeline Cognitiva construida.")
+
+
+
+        self._log(
+            "success",
+            "Pipeline Cognitiva construída."
+        )
+
+
         return pipeline
 
+
+
+    # ==================================================
+    # Tools
+    # ==================================================
+
+
+    def _register_default_tools(self):
+
+        if "system_test" not in self.tool_manager.list_tools():
+
+            self.tool_manager.register(
+                SystemTestTool()
+            )
+
+
+            self._log(
+                "info",
+                "Ferramenta registrada: system_test"
+            )
+
+
+
+    # ==================================================
+    # Consulta
+    # ==================================================
+
+
     def get_pipeline(self):
+
         return self.pipeline
 
+
+
+    def get_steps(self):
+
+        return [
+            step.name
+            for step in self.steps
+        ]
+
+
+
+    # ==================================================
+    # Reset
+    # ==================================================
+
+
     def reset(self):
+
         self.pipeline = None
 
-    def _log(self, level, message):
+        self.steps.clear()
+
+
+
+    # ==================================================
+    # Log
+    # ==================================================
+
+
+    def _log(
+        self,
+        level,
+        message
+    ):
+
         if self.logger:
-            method = getattr(self.logger, level, None)
+
+
+            method = getattr(
+                self.logger,
+                level,
+                None
+            )
+
+
             if method:
-                method(message)
+
+                method(
+                    message
+                )
+
                 return
 
-        print(f"[PIPELINE:{level.upper()}] {message}")
+
+
+        print(
+            f"[PIPELINE:{level.upper()}] {message}"
+        )

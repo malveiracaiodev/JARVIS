@@ -86,5 +86,32 @@
         },
         "importance": 1,
         "created_at": "2026-07-16T18:56:17.474110"
+    },
+    {
+        "id": "aa48213b-adab-43ac-bb7d-0e0d7aefbf9a",
+        "type": "general",
+        "data": {
+            "teste": "Genesis funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-16T20:04:48.205857"
+    },
+    {
+        "id": "5464d831-bf35-4565-a15d-9e6887a35beb",
+        "type": "general",
+        "data": {
+            "teste": "Genesis funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-17T15:31:46.459959"
+    },
+    {
+        "id": "e6682a0a-1ef2-4579-9554-18f78ecbaa65",
+        "type": "general",
+        "data": {
+            "teste": "Genesis funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-17T17:55:02.172537"
     }
 ]

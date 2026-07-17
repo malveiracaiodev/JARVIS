@@ -6,343 +6,554 @@ Arquivo:
 core/managers/tool_manager.py
 
 Descrição:
-Gerenciador central de ferramentas do
-Genesis Core.
+Gerenciador central das ferramentas
+executáveis do Genesis Core.
 
-Responsável por registrar, localizar,
-validar e executar ferramentas do
-sistema.
+Responsável por:
+- Registrar Tools
+- Validar capacidades
+- Executar ações
+- Integrar capacidades ao Registry
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+III - Matrix (Tool Layer)
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
+
 import threading
 
-from core.base.module import Module, ModuleStatus
-from core.interfaces.tool_interface import ToolInterface
+
+from core.base.module import (
+    Module,
+    ModuleStatus
+)
+
+
+from core.interfaces.tool_interface import (
+    ToolInterface
+)
+
+
+
 
 
 class ToolManager(Module):
+
     """
-    Gerenciador central das ferramentas
-    executáveis do Genesis Core.
-
-    Responsabilidades:
-
-    - Registrar ferramentas
-    - Remover ferramentas
-    - Localizar ferramentas
-    - Executar ferramentas
-    - Centralizar capacidades do sistema
-
-    O ToolManager é o único responsável
-    por conhecer as Tools registradas.
+    Núcleo de capacidades executáveis.
     """
+
+
 
     def __init__(
         self,
-        logger=None
+        logger=None,
+        registry=None
     ):
-        super().__init__("core.tool_manager")
+
+
+        super().__init__(
+            "core.tool_manager"
+        )
+
+
+        self.version = "3.5"
+
 
         self.logger = logger
+
+        self.registry = registry
+
+
 
         self._tools = {}
 
         self._lock = threading.RLock()
 
+
+
+
+
     # ==================================================
-    # Ciclo de vida
+    # CICLO DE VIDA
     # ==================================================
 
+
     def initialize(self):
+
 
         self.set_status(
             ModuleStatus.INITIALIZING
         )
 
+
         self.set_status(
             ModuleStatus.ONLINE
         )
 
-        self._success(
-            "Tool Manager ativado."
+
+        self.log_success(
+            "Tool Manager Mark III ONLINE."
         )
+
+
+
+
 
     def shutdown(self):
 
+
         self.clear()
+
+
 
         self.set_status(
             ModuleStatus.OFFLINE
         )
 
-        self._info(
+
+        self.log_info(
             "Tool Manager encerrado."
         )
 
+
+
+
+
     # ==================================================
-    # Registro
+    # REGISTRO
     # ==================================================
+
 
     def register(
         self,
         tool
     ):
-        """
-        Registra ou atualiza uma
-        ferramenta.
-        """
+
 
         if not isinstance(
             tool,
             ToolInterface
         ):
+
+
             raise TypeError(
-                "A ferramenta deve implementar ToolInterface."
+                "Tool precisa implementar ToolInterface."
             )
 
+
+
         name = tool.name()
+
+
 
         if not name:
 
             raise ValueError(
-                "A ferramenta precisa possuir um nome."
+                "Tool sem nome."
             )
+
+
 
         with self._lock:
 
-            self._tools[name] = tool
 
-        self._info(
-            f"Ferramenta registrada: {name}"
+            if name in self._tools:
+
+
+                self.log_info(
+                    f"Tool já registrada: {name}"
+                )
+
+
+                return False
+
+
+
+            self._tools[name] = {
+
+
+                "object":
+                    tool,
+
+
+                "version":
+                    getattr(
+                        tool,
+                        "version",
+                        "1.0"
+                    ),
+
+
+                "status":
+                    "online"
+
+            }
+
+
+
+        if self.registry:
+
+
+            self.registry.register_capability(
+                name,
+                tool
+            )
+
+
+
+        self.log_info(
+            f"Tool registrada: {name}"
         )
+
+
+        return True
+
+
+
+
 
     def unregister(
         self,
         name
     ):
-        """
-        Remove uma ferramenta.
-        """
+
 
         with self._lock:
 
-            tool = self._tools.pop(
+
+            data = self._tools.pop(
                 name,
                 None
             )
 
-        if tool:
 
-            self._info(
-                f"Ferramenta removida: {name}"
-            )
 
-        return tool
+        if data:
 
-    def clear(
-        self
-    ):
-        """
-        Remove todas as ferramentas.
-        """
 
-        with self._lock:
+            if self.registry:
 
-            self._tools.clear()
 
-    # ==================================================
-    # Consulta
-    # ==================================================
-
-    def find(
-        self,
-        action
-    ):
-        """
-        Localiza uma ferramenta
-        compatível com a ação.
-        """
-
-        with self._lock:
-
-            tools = list(
-                self._tools.values()
-            )
-
-        for tool in tools:
-
-            try:
-
-                if tool.validate(
-                    action
-                ):
-
-                    return tool
-
-            except Exception as error:
-
-                self._error(
-                    f"Falha ao validar "
-                    f"{tool.name()}: {error}"
+                self.registry.unregister(
+                    name
                 )
 
-        return None
 
-    def has(
-        self,
-        action
-    ):
-        """
-        Verifica se existe uma
-        ferramenta compatível.
-        """
-
-        return self.find(
-            action
-        ) is not None
-
-    def execute(
-        self,
-        action
-    ):
-        """
-        Executa uma ação utilizando
-        a primeira ferramenta
-        compatível encontrada.
-        """
-
-        if not action:
-
-            return {
-
-                "success": False,
-
-                "message":
-                "Nenhuma ação fornecida."
-
-            }
-
-        tool = self.find(
-            action
-        )
-
-        if tool is None:
-
-            return {
-
-                "success": False,
-
-                "message":
-                "Nenhuma ferramenta compatível encontrada."
-
-            }
-
-        try:
-
-            result = tool.execute(
-                action
+            self.log_info(
+                f"Tool removida: {name}"
             )
 
-            return {
 
-                "success": True,
+            return True
 
-                "tool":
-                tool.name(),
 
-                "result":
-                result
 
-            }
+        return False
 
-        except Exception as error:
 
-            self._error(
-                f"Erro executando "
-                f"{tool.name()}: {error}"
-            )
 
-            return {
 
-                "success": False,
 
-                "error":
-                str(error)
+    def clear(self):
 
-            }
-
-    # ==================================================
-    # Informações
-    # ==================================================
-
-    def get_all(
-        self
-    ):
-        """
-        Retorna uma cópia do catálogo
-        de ferramentas.
-        """
 
         with self._lock:
 
-            return dict(
-                self._tools
+
+            names = list(
+                self._tools.keys()
             )
 
-    def list_tools(
-        self
+
+        for name in names:
+
+            self.unregister(
+                name
+            )
+
+
+
+
+
+    # ==================================================
+    # CONSULTA
+    # ==================================================
+
+
+    def get(
+        self,
+        name
     ):
-        """
-        Lista todas as ferramentas
-        registradas.
-        """
+
 
         with self._lock:
+
+
+            data = self._tools.get(
+                name
+            )
+
+
+            return (
+                data["object"]
+                if data
+                else None
+            )
+
+
+
+
+
+    def get_all(self):
+
+
+        with self._lock:
+
+
+            return {
+
+                name:
+                data["object"]
+
+                for name, data
+
+                in self._tools.items()
+
+            }
+
+
+
+
+
+    def list_tools(self):
+
+
+        with self._lock:
+
 
             return list(
                 self._tools.keys()
             )
 
+
+
+
+
     # ==================================================
-    # Logging
+    # BUSCA
     # ==================================================
 
-    def _info(
-        self,
-        message
-    ):
-        if self.logger:
 
-            self.logger.info(
-                message
+    def find(
+        self,
+        action
+    ):
+
+
+        with self._lock:
+
+
+            tools = [
+
+                data["object"]
+
+                for data
+
+                in self._tools.values()
+
+            ]
+
+
+
+        for tool in tools:
+
+
+            try:
+
+
+                if tool.validate(
+                    action
+                ):
+
+
+                    return tool
+
+
+
+            except Exception as error:
+
+
+                self.log_error(
+                    f"Erro validando {tool.name()}: {error}"
+                )
+
+
+
+        return None
+
+
+
+
+
+    def has(
+        self,
+        action
+    ):
+
+
+        return self.find(
+            action
+        ) is not None
+
+
+
+
+
+    # ==================================================
+    # EXECUÇÃO
+    # ==================================================
+
+
+    def execute(
+        self,
+        action,
+        context=None
+    ):
+
+
+        if not action:
+
+
+            return {
+
+                "success":
+                    False,
+
+                "message":
+                    "Ação vazia."
+
+            }
+
+
+
+        tool = self.find(
+            action
+        )
+
+
+
+        if not tool:
+
+
+            return {
+
+                "success":
+                    False,
+
+                "message":
+                    "Nenhuma Tool encontrada."
+
+            }
+
+
+
+
+        try:
+
+
+            result = tool.execute(
+                action,
+                context
             )
 
-    def _success(
-        self,
-        message
-    ):
-        if self.logger:
 
-            self.logger.success(
-                message
+
+            return {
+
+
+                "success":
+                    True,
+
+
+                "tool":
+                    tool.name(),
+
+
+                "result":
+                    result
+
+            }
+
+
+
+        except Exception as error:
+
+
+            self.log_error(
+                f"Falha executando {tool.name()}: {error}"
             )
 
-    def _error(
+
+            return {
+
+
+                "success":
+                    False,
+
+
+                "error":
+                    str(error)
+
+            }
+
+
+
+
+
+    # ==================================================
+    # LOG
+    # ==================================================
+
+
+    def log_info(
         self,
-        message
+        msg
     ):
+
         if self.logger:
 
-            self.logger.error(
-                message
-            )
+            self.logger.info(msg)
+
+
+
+
+
+    def log_success(
+        self,
+        msg
+    ):
+
+        if self.logger:
+
+            self.logger.success(msg)
+
+
+
+
+
+    def log_error(
+        self,
+        msg
+    ):
+
+        if self.logger:
+
+            self.logger.error(msg)

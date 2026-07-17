@@ -30,5 +30,29 @@
         "source": "internal",
         "tags": [],
         "created_at": "2026-07-16T18:56:17.506276"
+    },
+    {
+        "id": "79142389-041e-430b-b043-5ada50403a07",
+        "topic": "teste",
+        "information": "Genesis funcionando",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-16T20:04:48.223710"
+    },
+    {
+        "id": "55b66d69-bd05-4074-8076-5d1271fa5fd4",
+        "topic": "teste",
+        "information": "Genesis funcionando",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-17T15:31:47.411370"
+    },
+    {
+        "id": "cde60a28-9eca-4467-b13e-f1347632030e",
+        "topic": "teste",
+        "information": "Genesis funcionando",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-17T17:55:02.188201"
     }
 ]

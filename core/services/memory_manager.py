@@ -3,178 +3,617 @@
 JARVIS CORE
 
 Arquivo:
-memory_manager.py
+core/services/memory_manager.py
 
 Descrição:
-Gerenciador de armazenamento da memória.
+Gerenciador central da memória do Genesis Core.
 
 Responsável por:
-- Persistência de dados atômica e segura
-- Carregamento com tratamento de falhas
-- Histórico e busca thread-safe
-- Eventos de memória
+- Persistência segura de memórias
+- Histórico cognitivo
+- Busca thread-safe
+- Recuperação contra corrupção
+- Comunicação com EventBus
 
 Arquitetura:
 Genesis Core
 
 Mark:
-II - Evolution (Patch 2.1 - Production Ready)
+III - Matrix (Memory Layer)
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
+
+import copy
 import json
+import os
 import shutil
 import threading
-from pathlib import Path
+
+
 from datetime import datetime
+from pathlib import Path
+
+
 
 from core.base.module import (
     Module,
     ModuleStatus
 )
+
+
 from core.events import MemoryEvents
+
 
 
 class MemoryManager(Module):
     """
-    Serviço responsável pela persistência estável da memória do JARVIS.
+    Serviço responsável pela memória persistente
+    do Genesis Core.
     """
 
-    MEMORY_FOLDER = Path("data/memory")
-    MEMORY_FILE = MEMORY_FOLDER / "long_term.json"
 
-    def __init__(self, logger=None, event_bus=None):
-        super().__init__("core.memory_manager")
-        self.version = "2.1"
+
+    MEMORY_FOLDER = Path(
+        "data/memory"
+    )
+
+
+    MEMORY_FILE = (
+        MEMORY_FOLDER /
+        "long_term.json"
+    )
+
+
+
+    def __init__(
+        self,
+        logger=None,
+        event_bus=None
+    ):
+
+        super().__init__(
+            "core.memory_manager"
+        )
+
+
+        self.version = "3.0"
+
+
         self.logger = logger
+
         self.event_bus = event_bus
+
+
         self.memories = []
-        self._lock = threading.RLock()  # Proteção contra concorrência de múltiplos módulos
+
+
+        self._lock = threading.RLock()
+
+
 
     # ==========================================================
-    # Ciclo de vida
+    # CICLO DE VIDA
     # ==========================================================
+
 
     def initialize(self):
-        self.set_status(ModuleStatus.INITIALIZING)
+
+        self.set_status(
+            ModuleStatus.INITIALIZING
+        )
+
+
         try:
-            self.MEMORY_FOLDER.mkdir(parents=True, exist_ok=True)
+
+
+            self.MEMORY_FOLDER.mkdir(
+                parents=True,
+                exist_ok=True
+            )
+
+
             self.load()
 
-            if self.event_bus:
-                self.event_bus.subscribe(MemoryEvents.SEARCH, self.search)
 
-            self.set_status(ModuleStatus.ONLINE)
-            self.log_success("Memory Manager iniciado com persistência segura")
+
+            self.set_status(
+                ModuleStatus.ONLINE
+            )
+
+
+
+            self.log_success(
+                "Memory Manager Mark III ONLINE."
+            )
+
+
+
         except Exception as error:
-            self.set_error(str(error))
+
+
+            self.set_error(
+                str(error)
+            )
+
+
+            self.log_error(
+                str(error)
+            )
+
+
+
+
 
     def shutdown(self):
-        self.save()
-        self.set_status(ModuleStatus.OFFLINE)
-        self.log_info("Memory Manager encerrado")
+
+        try:
+
+            self.save()
+
+
+        except Exception:
+
+            pass
+
+
+
+        self.set_status(
+            ModuleStatus.OFFLINE
+        )
+
+
+        self.log_info(
+            "Memory Manager encerrado."
+        )
+
+
 
     # ==========================================================
-    # Memória
+    # MEMÓRIA
     # ==========================================================
 
-    def remember(self, content, memory_type="experience", importance=1):
+
+    def remember(
+        self,
+        content,
+        memory_type="experience",
+        importance=1
+    ):
+
+
         with self._lock:
-            # Garante ID incremental seguro baseado no conteúdo atual
-            next_id = max([m.get("id", 0) for m in self.memories], default=0) + 1
-            
+
+
+            next_id = (
+
+                max(
+                    [
+                        memory.get(
+                            "id",
+                            0
+                        )
+
+                        for memory in self.memories
+                    ],
+
+                    default=0
+
+                )
+
+                + 1
+
+            )
+
+
+
             memory = {
-                "id": next_id,
-                "type": memory_type,
-                "content": content,
-                "importance": importance,
-                "created": datetime.now().isoformat()
+
+
+                "id":
+                    next_id,
+
+
+                "type":
+                    memory_type,
+
+
+                "content":
+                    content,
+
+
+                "importance":
+                    importance,
+
+
+                "created":
+                    datetime.now()
+                    .isoformat(),
+
+
+                "access_count":
+                    0
+
+
             }
 
-            self.memories.append(memory)
-            self.emit(MemoryEvents.CREATED, memory)
+
+
+            self.memories.append(
+                memory
+            )
+
+
+            self.emit(
+                MemoryEvents.CREATED,
+                memory
+            )
+
+
             self.save()
-            return memory
 
-    def last_events(self, limit=10):
+
+
+            return copy.deepcopy(
+                memory
+            )
+
+
+
+
+
+    def last_events(
+        self,
+        limit=10
+    ):
+
+
         with self._lock:
-            return self.memories[-limit:]
 
-    def search(self, text):
+
+            return copy.deepcopy(
+                self.memories[-limit:]
+            )
+
+
+
+
+
+    def search(
+        self,
+        text
+    ):
+
+
         if not text:
+
             return []
-            
-        target = text.lower()
+
+
+
+        target = (
+            str(text)
+            .lower()
+        )
+
+
         results = []
-        
+
+
+
         with self._lock:
+
+
             for memory in self.memories:
-                content = str(memory.get("content", "")).lower()
+
+
+                content = (
+
+                    str(
+                        memory.get(
+                            "content",
+                            ""
+                        )
+
+                    )
+
+                    .lower()
+
+                )
+
+
+
                 if target in content:
-                    results.append(memory)
-                    
+
+
+                    memory["access_count"] = (
+
+                        memory.get(
+                            "access_count",
+                            0
+                        )
+
+                        + 1
+
+                    )
+
+
+                    results.append(
+                        copy.deepcopy(memory)
+                    )
+
+
+
         return results
 
+
+
     # ==========================================================
-    # Persistência
+    # PERSISTÊNCIA
     # ==========================================================
+
+
 
     def load(self):
+
         with self._lock:
+
+
             if not self.MEMORY_FILE.exists():
+
+
                 self.memories = []
-                self.log_info("Base de dados de memória não encontrada. Inicializando estrutura vazia.")
+
+
+                self.log_info(
+                    "Memória inexistente. Criando estrutura vazia."
+                )
+
+
                 return
 
+
+
             try:
-                with open(self.MEMORY_FILE, "r", encoding="utf-8") as file:
-                    self.memories = json.load(file)
-                self.log_info(f"Memórias carregadas: {len(self.memories)}")
-                self.emit(MemoryEvents.LOADED)
-            except (json.JSONDecodeError, TypeError) as decode_error:
-                # Recuperação de desastres: se o arquivo JSON quebrar, cria um backup e não trava o boot do JARVIS
-                backup_path = self.MEMORY_FOLDER / f"corrupted_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-                shutil.copy(self.MEMORY_FILE, backup_path)
+
+
+                with open(
+                    self.MEMORY_FILE,
+                    "r",
+                    encoding="utf-8"
+                ) as file:
+
+
+                    self.memories = json.load(
+                        file
+                    )
+
+
+
+                self.log_info(
+                    f"Memórias carregadas: {len(self.memories)}"
+                )
+
+
+                self.emit(
+                    MemoryEvents.LOADED
+                )
+
+
+
+            except (
+                json.JSONDecodeError,
+                TypeError
+            ):
+
+
+
+                backup_path = (
+
+                    self.MEMORY_FOLDER /
+
+                    (
+                        "corrupted_memory_"
+
+                        +
+
+                        datetime.now()
+                        .strftime(
+                            "%Y%m%d_%H%M%S"
+                        )
+
+                        +
+
+                        ".json"
+
+                    )
+
+                )
+
+
+
+                shutil.copy(
+                    self.MEMORY_FILE,
+                    backup_path
+                )
+
+
+
                 self.memories = []
-                if self.logger and hasattr(self.logger, "error"):
-                    self.logger.error(f"Arquivo de memória corrompido! Backup gerado em {backup_path.name}. Resetando banco.")
-                self.emit(MemoryEvents.LOADED)
+
+
+
+                self.log_error(
+                    "Memória corrompida. "
+                    f"Backup criado: {backup_path.name}"
+                )
+
+
+
+                self.emit(
+                    MemoryEvents.LOADED
+                )
+
+
+
+
 
     def save(self):
+
         with self._lock:
-            temp_file = self.MEMORY_FILE.with_suffix(".tmp")
+
+
+
+            temp_file = (
+
+                self.MEMORY_FILE
+                .with_suffix(".tmp")
+
+            )
+
+
+
             try:
-                # Escrita atômica: primeiro escreve no arquivo temporário
-                with open(temp_file, "w", encoding="utf-8") as file:
-                    json.dump(self.memories, file, indent=4, ensure_ascii=False)
-                
-                # Se deu tudo certo na escrita, substitui o oficial instantaneamente
+
+
+                with open(
+                    temp_file,
+                    "w",
+                    encoding="utf-8"
+                ) as file:
+
+
+
+                    json.dump(
+
+                        self.memories,
+
+                        file,
+
+                        indent=4,
+
+                        ensure_ascii=False
+
+                    )
+
+
+
+                    file.flush()
+
+
+                    os.fsync(
+                        file.fileno()
+                    )
+
+
+
+                temp_file.replace(
+                    self.MEMORY_FILE
+                )
+
+
+
+                self.emit(
+                    MemoryEvents.SAVED
+                )
+
+
+
+            except Exception as error:
+
+
+
                 if temp_file.exists():
-                    temp_file.replace(self.MEMORY_FILE)
-                    
-                self.emit(MemoryEvents.SAVED)
-            except Exception as e:
-                if temp_file.exists():
+
                     temp_file.unlink()
-                if self.logger and hasattr(self.logger, "error"):
-                    self.logger.error(f"Falha ao salvar memórias no disco: {str(e)}")
-                raise e
+
+
+
+                self.log_error(
+                    f"Falha salvando memória: {error}"
+                )
+
+
+                raise
+
+
+
+
 
     # ==========================================================
-    # Auxiliares
+    # EVENTOS E LOG
     # ==========================================================
 
-    def emit(self, event, *args):
+
+    def emit(
+        self,
+        event,
+        *args
+    ):
+
+
         if self.event_bus:
-            self.event_bus.emit(event, *args)
 
-    def log_info(self, message):
-        if self.logger:
-            self.logger.info(message)
 
-    def log_success(self, message):
+            try:
+
+                self.event_bus.emit(
+                    event,
+                    *args
+                )
+
+
+            except Exception:
+
+                pass
+
+
+
+
+
+    def log_info(
+        self,
+        message
+    ):
+
+
         if self.logger:
-            self.logger.success(message)
+
+            self.logger.info(
+                message
+            )
+
+
+
+
+
+    def log_success(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.success(
+                message
+            )
+
+
+
+
+
+    def log_error(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.error(
+                message
+            )

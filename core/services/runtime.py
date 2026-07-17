@@ -3,21 +3,22 @@
 JARVIS CORE
 
 Arquivo:
-runtime.py
+core/services/runtime.py
 
 Descrição:
-Gerenciador de execução do JARVIS.
+Gerenciador central de execução do Genesis Core.
 
 Responsável por:
 - Controlar workers
-- Administrar fila
-- Executar tarefas em background
+- Administrar execução assíncrona
+- Encaminhar tarefas
+- Monitorar ciclo operacional
 
 Arquitetura:
 Genesis Core
 
 Mark:
-II - Evolution (Patch 2.1 - Execution Guard)
+III - Matrix (Execution Layer)
 
 Autor:
 Caio Vitor Malveira
@@ -35,14 +36,10 @@ from core.base.module import (
 
 
 
-
-
-
 class Runtime(Module):
-
-
     """
-    Núcleo de execução do JARVIS.
+    Núcleo responsável pela execução
+    de tarefas do Genesis Core.
     """
 
 
@@ -55,23 +52,19 @@ class Runtime(Module):
         worker=None
     ):
 
-
         super().__init__(
             "core.runtime"
         )
 
 
-        self.version = "2.1"
+        self.version = "3.0"
 
 
         self.logger = logger
 
-
         self.event_bus = event_bus
 
-
         self.queue = task_queue
-
 
         self.worker = worker
 
@@ -80,52 +73,82 @@ class Runtime(Module):
         self.running = False
 
 
-        self.thread = None
+        self._lock = threading.RLock()
 
 
 
-
-
-
-
-    # ==========================================================
-    # Ciclo de vida
-    # ==========================================================
+    # ======================================================
+    # CICLO DE VIDA
+    # ======================================================
 
 
     def initialize(self):
 
-
-        self.set_status(
-            ModuleStatus.INITIALIZING
-        )
+        with self._lock:
 
 
+            if self.running:
 
-        self.running = True
+                self.log_info(
+                    "Runtime já está ativo."
+                )
 
-
-
-        if self.worker:
-
-
-            self.worker.start()
+                return
 
 
 
-
-
-        self.set_status(
-            ModuleStatus.ONLINE
-        )
+            self.set_status(
+                ModuleStatus.INITIALIZING
+            )
 
 
 
-        self.log_success(
-            "Runtime iniciado"
-        )
+            try:
 
 
+                if self.worker:
+
+
+                    self.worker.start()
+
+
+
+                self.running = True
+
+
+
+                self.set_status(
+                    ModuleStatus.ONLINE
+                )
+
+
+
+                self.emit(
+                    "RUNTIME_STARTED"
+                )
+
+
+
+                self.log_success(
+                    "Runtime Mark III ONLINE."
+                )
+
+
+
+            except Exception as error:
+
+
+                self.running = False
+
+
+                self.set_error(
+                    str(error)
+                )
+
+
+                self.log_error(
+                    f"Falha iniciando Runtime: {error}"
+                )
 
 
 
@@ -133,40 +156,57 @@ class Runtime(Module):
 
     def shutdown(self):
 
-
-        self.running = False
-
+        with self._lock:
 
 
-        if self.worker:
+            if not self.running:
 
-
-            self.worker.stop()
+                return
 
 
 
-
-
-        self.set_status(
-            ModuleStatus.OFFLINE
-        )
+            self.running = False
 
 
 
-        self.log_info(
-            "Runtime encerrado"
-        )
+            try:
+
+
+                if self.worker:
+
+                    self.worker.stop()
 
 
 
+            except Exception as error:
+
+
+                self.log_error(
+                    f"Erro parando worker: {error}"
+                )
 
 
 
+            self.emit(
+                "RUNTIME_STOPPED"
+            )
 
 
-    # ==========================================================
-    # Tarefas
-    # ==========================================================
+
+            self.set_status(
+                ModuleStatus.OFFLINE
+            )
+
+
+            self.log_info(
+                "Runtime encerrado."
+            )
+
+
+
+    # ======================================================
+    # EXECUÇÃO DE TAREFAS
+    # ======================================================
 
 
     def submit(
@@ -175,68 +215,155 @@ class Runtime(Module):
     ):
 
 
-        if not self.running:
-
-            self.log_error(
-                f"Tentativa de envio rejeitada. Runtime offline: {task.name}"
-            )
-
-            return False
+        with self._lock:
 
 
-
-        if not self.queue:
-
-
-            self.log_error(
-                "Fila de tarefas inexistente"
-            )
+            if not self.running:
 
 
-            return False
+                self.log_error(
+                    "Runtime offline. "
+                    "Tarefa rejeitada."
+                )
+
+
+                return False
 
 
 
-
-        self.queue.push(
-            task
-        )
+            if not self.queue:
 
 
-
-        self.log_info(
-            f"Tarefa enviada: {task.name}"
-        )
-
+                self.log_error(
+                    "Fila de tarefas inexistente."
+                )
 
 
-        return True
+                return False
 
 
 
+            try:
+
+
+                self.queue.push(
+                    task
+                )
+
+
+
+                task_name = getattr(
+                    task,
+                    "name",
+                    str(task)
+                )
+
+
+
+                self.log_info(
+                    f"Tarefa enviada: {task_name}"
+                )
+
+
+
+                self.emit(
+                    "TASK_SUBMITTED",
+                    task
+                )
+
+
+
+                return True
+
+
+
+            except Exception as error:
+
+
+                self.log_error(
+                    f"Erro enviando tarefa: {error}"
+                )
+
+
+                return False
 
 
 
 
-    # ==========================================================
-    # Estado
-    # ==========================================================
+
+    # ======================================================
+    # ESTADO
+    # ======================================================
 
 
-    def is_running(self):
+    def is_running(
+        self
+    ):
 
 
-        return self.running
+        with self._lock:
+
+            return self.running
+
+
+
+
+    def status(
+        self
+    ):
+
+
+        return {
+
+            "running":
+                self.running,
+
+            "worker":
+                self.worker is not None,
+
+            "queue":
+                self.queue is not None
+
+        }
 
 
 
 
 
+    # ======================================================
+    # EVENTOS
+    # ======================================================
 
 
-    # ==========================================================
-    # Logs
-    # ==========================================================
+    def emit(
+        self,
+        event,
+        *args
+    ):
+
+
+        if self.event_bus:
+
+
+            try:
+
+                self.event_bus.emit(
+                    event,
+                    *args
+                )
+
+
+            except Exception:
+
+                pass
+
+
+
+
+
+    # ======================================================
+    # LOG
+    # ======================================================
 
 
     def log_info(
@@ -247,10 +374,10 @@ class Runtime(Module):
 
         if self.logger:
 
-
             self.logger.info(
                 message
             )
+
 
 
 
@@ -263,10 +390,10 @@ class Runtime(Module):
 
         if self.logger:
 
-
             self.logger.success(
                 message
             )
+
 
 
 
@@ -278,7 +405,6 @@ class Runtime(Module):
 
 
         if self.logger:
-
 
             self.logger.error(
                 message

@@ -3,7 +3,7 @@
 JARVIS CORE
 
 Arquivo:
-core/mind/models/intention.py
+core/models/intention.py
 
 Descrição:
 Modelo de intenção cognitiva.

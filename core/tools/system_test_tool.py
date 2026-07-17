@@ -6,14 +6,19 @@ Arquivo:
 core/tools/system_test_tool.py
 
 Descrição:
-Primeira ferramenta de teste
+Ferramenta de diagnóstico interno
 do Executor Cognitivo.
+
+Responsável por:
+- Validar pipeline cognitiva
+- Testar execução de ferramentas
+- Confirmar comunicação entre módulos
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+III - Matrix (Tool Layer)
 
 Autor:
 Caio Vitor Malveira
@@ -21,7 +26,14 @@ Caio Vitor Malveira
 """
 
 
-from core.interfaces.tool_interface import ToolInterface
+from datetime import datetime
+
+
+from core.interfaces.tool_interface import (
+    ToolInterface
+)
+
+
 
 
 
@@ -30,55 +42,74 @@ class SystemTestTool(
 ):
 
     """
-    Ferramenta inicial de diagnóstico.
+    Ferramenta interna de diagnóstico.
 
-    Usada para validar:
+    Utilizada para validar:
 
-    Pipeline
-    Reasoner
-    Executor
-    Reflection
+    - Parser
+    - Planner
+    - Reasoner
+    - Executor
+    - Reflection
     """
 
 
 
-    def __init__(
-        self
-    ):
+    def __init__(self):
 
-        self._name = "system_test"
-
-
-
-    # ==============================================
-    # METADADOS DA TOOL
-    # ==============================================
+        self._name = (
+            "system_test"
+        )
 
 
-    def name(
-        self
-    ):
+        self._version = (
+            "1.0"
+        )
+
+
+
+    # ==================================================
+    # IDENTIDADE
+    # ==================================================
+
+
+    def id(self):
 
         return self._name
 
 
 
+    def name(self):
+
+        return self._name
+
+
+
+
+
     @property
-    def description(
-        self
-    ):
+    def description(self):
 
         return (
-            "Ferramenta interna para "
-            "diagnóstico do Genesis Core."
+            "Ferramenta interna de diagnóstico "
+            "do Genesis Core."
         )
 
 
 
+
+
     @property
-    def permissions(
-        self
-    ):
+    def version(self):
+
+        return self._version
+
+
+
+
+
+    @property
+    def permissions(self):
 
         return [
 
@@ -88,30 +119,56 @@ class SystemTestTool(
 
 
 
+
+
     @property
-    def status(
-        self
-    ):
+    def status(self):
 
-        return "online"
+        return "ONLINE"
 
 
 
-    # ==============================================
+
+
+    # ==================================================
+    # METADATA
+    # ==================================================
+
+
+    def metadata(self):
+
+        return {
+
+            "name":
+                self.name(),
+
+            "description":
+                self.description,
+
+            "version":
+                self.version,
+
+            "permissions":
+                self.permissions,
+
+            "status":
+                self.status
+
+        }
+
+
+
+
+
+    # ==================================================
     # VALIDAÇÃO
-    # ==============================================
+    # ==================================================
 
 
     def validate(
         self,
         action
     ):
-
-
-        if not action:
-
-            return False
-
 
 
         if not isinstance(
@@ -123,10 +180,14 @@ class SystemTestTool(
 
 
 
-        goal = action.get(
-            "goal",
-            ""
-        )
+        goal = str(
+
+            action.get(
+                "goal",
+                ""
+            )
+
+        ).lower()
 
 
 
@@ -138,21 +199,17 @@ class SystemTestTool(
 
             "sistema",
 
-            "cognitivo"
+            "cognitivo",
+
+            "diagnostico"
 
         ]
 
 
 
-        text = str(
-            goal
-        ).lower()
-
-
-
         return any(
 
-            word in text
+            word in goal
 
             for word in keywords
 
@@ -160,9 +217,24 @@ class SystemTestTool(
 
 
 
-    # ==============================================
+
+
+    def can_execute(
+        self,
+        action
+    ):
+
+        return self.validate(
+            action
+        )
+
+
+
+
+
+    # ==================================================
     # EXECUÇÃO
-    # ==============================================
+    # ==================================================
 
 
     def execute(
@@ -173,6 +245,11 @@ class SystemTestTool(
 
 
         return {
+
+
+            "success":
+                True,
+
 
             "message":
                 "Sistema cognitivo operacional.",
@@ -186,7 +263,16 @@ class SystemTestTool(
                 action,
 
 
+            "context_received":
+                context is not None,
+
+
+            "executed_at":
+                datetime.now()
+                .isoformat(),
+
+
             "status":
-                "success"
+                "SUCCESS"
 
         }

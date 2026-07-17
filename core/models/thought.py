@@ -3,7 +3,7 @@
 JARVIS CORE
 
 Arquivo:
-core/mind/models/thought.py
+core/models/thought.py
 
 Descrição:
 Modelo de pensamento cognitivo.

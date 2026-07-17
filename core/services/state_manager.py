@@ -3,21 +3,23 @@
 JARVIS CORE
 
 Arquivo:
-state_manager.py
+core/services/state_manager.py
 
 Descrição:
-Gerenciador do estado global do sistema.
+Gerenciador do estado global do Genesis Core.
 
 Responsável por:
-- Controlar ciclo operacional
-- Registrar mudanças
+- Controlar estado operacional
+- Registrar transições
+- Monitorar ciclo de vida
 - Emitir eventos de sistema
+- Fornecer diagnóstico global
 
 Arquitetura:
 Genesis Core
 
 Mark:
-II - Evolution (Patch 2.1 - Thread-Safe)
+III - Matrix (State Layer)
 
 Autor:
 Caio Vitor Malveira
@@ -25,10 +27,13 @@ Caio Vitor Malveira
 """
 
 
+import copy
+import threading
+
+
 from enum import Enum
 from datetime import datetime
 from collections import deque
-import threading
 
 
 
@@ -39,10 +44,7 @@ from core.base.module import (
 
 
 
-
-
 class SystemState(Enum):
-
 
     BOOTING = "BOOTING"
 
@@ -52,7 +54,11 @@ class SystemState(Enum):
 
     IDLE = "IDLE"
 
+    PROCESSING = "PROCESSING"
+
     BUSY = "BUSY"
+
+    LEARNING = "LEARNING"
 
     WARNING = "WARNING"
 
@@ -64,14 +70,10 @@ class SystemState(Enum):
 
 
 
-
-
 class StateManager(Module):
-
-
     """
-    Controla o estado global
-    do JARVIS.
+    Controlador do estado global
+    do Genesis Core.
     """
 
 
@@ -80,7 +82,7 @@ class StateManager(Module):
         self,
         logger=None,
         event_bus=None,
-        max_history=100
+        max_history=200
     ):
 
 
@@ -89,42 +91,42 @@ class StateManager(Module):
         )
 
 
-        self.version = "2.1"
+        self.version = "3.0"
 
 
         self.logger = logger
-
 
         self.event_bus = event_bus
 
 
 
-        self.state = SystemState.BOOTING
+        self.state = (
+            SystemState.BOOTING
+        )
 
 
-        self.last_change = datetime.now()
+        self.last_change = (
+            datetime.now()
+        )
 
 
-        # Otimização: deque evita estouro de memória no histórico de estados
-        self.history = deque(maxlen=max_history)
+        self.history = deque(
+            maxlen=max_history
+        )
 
 
-        # Segurança: Lock garante que modificações de estado paralelas não se corrompam
-        self._lock = threading.Lock()
-
-
+        self._lock = threading.RLock()
 
 
 
 
 
-    # ==========================================================
+    # ======================================================
     # CICLO DE VIDA
-    # ==========================================================
+    # ======================================================
 
 
     def initialize(self):
-
 
         self.set_status(
             ModuleStatus.INITIALIZING
@@ -136,17 +138,14 @@ class StateManager(Module):
         )
 
 
-
         self.set_status(
             ModuleStatus.ONLINE
         )
 
 
         self.log_success(
-            "State Manager iniciado"
+            "State Manager Mark III ONLINE."
         )
-
-
 
 
 
@@ -159,7 +158,10 @@ class StateManager(Module):
         )
 
 
-        self.history.clear()
+        with self._lock:
+
+            self.history.clear()
+
 
 
         self.set_status(
@@ -168,18 +170,16 @@ class StateManager(Module):
 
 
         self.log_info(
-            "State Manager encerrado"
+            "State Manager encerrado."
         )
 
 
 
 
 
-
-
-    # ==========================================================
-    # CONTROLE
-    # ==========================================================
+    # ======================================================
+    # CONTROLE DE ESTADO
+    # ======================================================
 
 
     def change_state(
@@ -193,14 +193,15 @@ class StateManager(Module):
             SystemState
         ):
 
-
             raise ValueError(
-                "Estado inválido"
+                "Estado inválido."
             )
 
 
 
         with self._lock:
+
+
 
             if self.state == new_state:
 
@@ -215,6 +216,7 @@ class StateManager(Module):
             self.state = new_state
 
 
+
             now = datetime.now()
 
 
@@ -225,14 +227,18 @@ class StateManager(Module):
 
             record = {
 
+
                 "from":
-                old_state.value,
+                    old_state.value,
+
 
                 "to":
-                new_state.value,
+                    new_state.value,
+
 
                 "time":
-                now.isoformat()
+                    now.isoformat()
+
 
             }
 
@@ -245,7 +251,11 @@ class StateManager(Module):
 
 
             self.log_info(
-                f"Estado: {old_state.value} -> {new_state.value}"
+                (
+                    "Estado alterado: "
+                    f"{old_state.value} -> "
+                    f"{new_state.value}"
+                )
             )
 
 
@@ -259,19 +269,30 @@ class StateManager(Module):
 
 
 
+    def set_state(
+        self,
+        state
+    ):
+
+        self.change_state(
+            state
+        )
 
 
 
-    # ==========================================================
+
+
+    # ======================================================
     # CONSULTA
-    # ==========================================================
+    # ======================================================
 
 
     def get_state(self):
 
 
-        return self.state
+        with self._lock:
 
+            return self.state
 
 
 
@@ -283,8 +304,9 @@ class StateManager(Module):
     ):
 
 
-        return self.state == state
+        with self._lock:
 
+            return self.state == state
 
 
 
@@ -293,10 +315,12 @@ class StateManager(Module):
     def get_history(self):
 
 
-        # Mantém compatibilidade convertendo o deque interno para lista
-        return list(self.history)
+        with self._lock:
 
 
+            return copy.deepcopy(
+                list(self.history)
+            )
 
 
 
@@ -305,49 +329,78 @@ class StateManager(Module):
     def status_report(self):
 
 
-        return {
-
-            "system_state":
-            self.state.value,
-
-            "last_change":
-
-            self.last_change.isoformat()
-            if self.last_change
-            else None,
-
-            "changes":
-            len(self.history)
-
-        }
+        with self._lock:
 
 
+            return {
+
+
+                "system_state":
+                    self.state.value,
+
+
+                "last_change":
+                    (
+                        self.last_change.isoformat()
+                        if self.last_change
+                        else None
+                    ),
+
+
+                "history_size":
+                    len(self.history),
+
+
+                "module_status":
+                    self.status.value
+                    if hasattr(
+                        self.status,
+                        "value"
+                    )
+                    else str(self.status)
+
+            }
 
 
 
 
 
 
-    # ==========================================================
-    # Auxiliares
-    # ==========================================================
+
+    # ======================================================
+    # EVENTOS
+    # ======================================================
 
 
     def emit(
         self,
         event,
-        data
+        data=None
     ):
 
 
         if self.event_bus:
 
 
-            self.event_bus.emit(
-                event,
-                data
-            )
+            try:
 
+                self.event_bus.emit(
+                    event,
+                    data
+                )
+
+
+            except Exception:
+
+                pass
+
+
+
+
+
+    # ======================================================
+    # LOG
+    # ======================================================
 
 
     def log_info(
@@ -364,6 +417,8 @@ class StateManager(Module):
 
 
 
+
+
     def log_success(
         self,
         message
@@ -373,5 +428,21 @@ class StateManager(Module):
         if self.logger:
 
             self.logger.success(
+                message
+            )
+
+
+
+
+
+    def log_error(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.error(
                 message
             )

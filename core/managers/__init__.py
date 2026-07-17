@@ -1,21 +1,27 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Pacote:
 managers
 
 Descrição:
-Gerenciadores centrais do Genesis Core.
+Camada de gerenciamento estrutural
+do Genesis Core.
 
-Responsáveis por controlar registros,
-serviços, plugins e ferramentas do sistema.
+Responsável por:
+
+- Registro global de componentes
+- Controle de serviços
+- Gerenciamento de plugins
+- Orquestração de ferramentas
+- Integração entre módulos do sistema
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+III - Matrix
 
 Autor:
 Caio Vitor Malveira
@@ -30,6 +36,10 @@ from .service_manager import ServiceManager
 from .plugin_manager import PluginManager
 
 from .tool_manager import ToolManager
+
+
+
+__version__ = "3.5"
 
 
 

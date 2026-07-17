@@ -3,22 +3,25 @@
 JARVIS CORE
 
 Arquivo:
-diagnostics.py
+core/services/diagnostics.py
 
 Descrição:
-Sistema de diagnóstico interno e integridade.
+Sistema de diagnóstico interno e
+telemetria do Genesis Core.
 
 Responsável por:
-- Gerar relatórios dinâmicos de subsistemas
-- Verificar o estado operacional dos módulos do Kernel
-- Exibir telemetria estruturada no terminal
-- Rastreamento seguro do histórico de status
+
+- Diagnóstico dos módulos
+- Estado do Kernel
+- Estado do Runtime
+- Histórico circular
+- Relatórios estruturados
 
 Arquitetura:
 Genesis Core
 
 Mark:
-II - Evolution (Patch 2.1 - Resilient)
+III - Matrix
 
 Autor:
 Caio Vitor Malveira
@@ -31,148 +34,263 @@ from datetime import datetime
 
 from core.base.module import (
     Module,
-    ModuleStatus
+    ModuleStatus,
 )
 
 
 class Diagnostics(Module):
     """
-    Sistema de diagnóstico e telemetria de integridade do JARVIS.
+    Sistema responsável pela inspeção da
+    integridade do Genesis Core.
     """
 
     def __init__(self, kernel=None, logger=None):
         super().__init__("core.diagnostics")
-        self.version = "2.1"
+
+        self.version = "3.0"
+
         self.kernel = kernel
         self.logger = logger
 
-        # Evita vazamento de memória usando histórico circular controlado
         self.max_history = 500
         self.history = deque(maxlen=self.max_history)
-        
-        # Lock para isolamento em coletas simultâneas de relatórios
-        self._lock = threading.Lock()
 
-    # ==========================================================
-    # Ciclo de Vida
-    # ==========================================================
+        self._lock = threading.RLock()
+
+    # =====================================================
+    # Ciclo de vida
+    # =====================================================
 
     def initialize(self):
-        self.set_status(ModuleStatus.INITIALIZING)
+
         with self._lock:
+
+            self.set_status(ModuleStatus.INITIALIZING)
+
             self.history.clear()
-            
-        self.set_status(ModuleStatus.ONLINE)
-        self.success("Diagnostics iniciado com sucesso")
+
+            self.set_status(ModuleStatus.ONLINE)
+
+        self.success("Diagnostics ONLINE.")
 
     def shutdown(self):
-        self.set_status(ModuleStatus.OFFLINE)
-        self.info("Diagnostics encerrado")
 
-    # ==========================================================
+        self.set_status(ModuleStatus.OFFLINE)
+
+        self.info("Diagnostics OFFLINE.")
+
+    # =====================================================
     # Relatório
-    # ==========================================================
+    # =====================================================
 
     def report(self):
-        # Template padrão seguro
+
         report = {
-            "time": datetime.now().isoformat(),
+            "timestamp": datetime.now().isoformat(),
             "kernel": "OFFLINE",
-            "modules": {},
             "health": 0,
-            "memory": 0,
             "state": "UNKNOWN",
-            "tasks": 0
+            "modules": {},
+            "runtime": {},
+            "memory": 0,
+            "tasks": 0,
         }
 
         if not self.kernel:
             return report
 
         with self._lock:
-            try:
-                # Extração segura do status do Kernel
-                kernel_status = self.kernel.get_status()
-                report["kernel"] = kernel_status.name if kernel_status else "UNKNOWN"
-            except Exception as e:
-                report["kernel"] = f"ERROR ({type(e).__name__})"
 
-            # Módulos ativos (Tratamento thread-safe para varreduras dinâmicas)
-            try:
-                modules_list = list(getattr(self.kernel, "modules", []))
-                for module in modules_list:
-                    if hasattr(module, "name") and hasattr(module, "status"):
-                        report["modules"][module.name] = module.status.name
-            except Exception:
-                report["modules"] = {"error": "Falha ao ler árvore de módulos"}
+            report["kernel"] = self._kernel_status()
 
-            # Coleta individual isolada dos subsistemas do Kernel
-            try:
-                monitor = getattr(self.kernel, "monitor", None)
-                if monitor:
-                    report["health"] = getattr(monitor, "health", 0)
-            except Exception:
-                report["health"] = -1
+            report["modules"] = self._modules()
 
-            try:
-                memory = getattr(self.kernel, "memory", None)
-                if memory:
-                    report["memory"] = len(getattr(memory, "memories", []))
-            except Exception:
-                report["memory"] = 0
+            report["health"] = self._health(report["modules"])
 
-            try:
-                state_manager = getattr(self.kernel, "state", None)
-                if state_manager:
-                    report["state"] = state_manager.get_state().value
-            except Exception:
-                report["state"] = "UNSTABLE"
+            report["memory"] = self._memory()
 
-            try:
-                task_manager = getattr(self.kernel, "task_manager", None)
-                if task_manager:
-                    report["tasks"] = len(getattr(task_manager, "tasks", []))
-            except Exception:
-                report["tasks"] = 0
+            report["state"] = self._state()
 
-            # Adiciona ao histórico circular protegido
+            report["tasks"] = self._tasks()
+
+            report["runtime"] = self._runtime()
+
             self.history.append(report)
 
         return report
 
-    # ==========================================================
-    # Histórico e Exibição
-    # ==========================================================
+    # =====================================================
+    # Coleta
+    # =====================================================
+
+    def _kernel_status(self):
+
+        try:
+            status = self.kernel.get_status()
+            return status.name
+
+        except Exception:
+            return "UNKNOWN"
+
+    def _modules(self):
+
+        modules = {}
+
+        try:
+
+            for module in list(getattr(self.kernel, "modules", [])):
+
+                name = getattr(module, "name", "Unknown")
+
+                if hasattr(module, "get_status"):
+                    status = module.get_status().name
+                else:
+                    status = getattr(module, "status", "UNKNOWN")
+
+                    if hasattr(status, "name"):
+                        status = status.name
+
+                modules[name] = status
+
+        except Exception:
+
+            modules["error"] = "Falha ao coletar módulos"
+
+        return modules
+
+    def _health(self, modules):
+
+        if not modules:
+            return 0
+
+        total = len(modules)
+
+        online = sum(
+            1
+            for status in modules.values()
+            if status == "ONLINE"
+        )
+
+        return round((online / total) * 100)
+
+    def _memory(self):
+
+        try:
+
+            memory = getattr(self.kernel, "memory", None)
+
+            if memory is None:
+                return 0
+
+            return len(getattr(memory, "memories", []))
+
+        except Exception:
+
+            return 0
+
+    def _tasks(self):
+
+        try:
+
+            runtime = getattr(self.kernel, "runtime", None)
+
+            if runtime:
+
+                return runtime.queue.size()
+
+            manager = getattr(self.kernel, "task_manager", None)
+
+            if manager:
+
+                return len(getattr(manager, "tasks", []))
+
+        except Exception:
+            pass
+
+        return 0
+
+    def _runtime(self):
+
+        runtime = getattr(self.kernel, "runtime", None)
+
+        if runtime is None:
+            return {}
+
+        try:
+            return runtime.status()
+
+        except Exception:
+            return {}
+
+    def _state(self):
+
+        try:
+
+            state = getattr(self.kernel, "state", None)
+
+            if state:
+
+                return state.get_state().value
+
+        except Exception:
+            pass
+
+        return "UNKNOWN"
+
+    # =====================================================
+    # Histórico
+    # =====================================================
 
     def get_history(self):
+
         with self._lock:
             return list(self.history)
 
+    # =====================================================
+    # Exibição
+    # =====================================================
+
     def display(self):
+
         report = self.report()
 
-        print("\n" + "=" * 45)
-        print("         JARVIS CORE DIAGNOSTICS")
-        print("=" * 45)
-        print(f"Kernel Status : {report['kernel']}")
-        print(f"System State  : {report['state']}")
-        print(f"Core Health   : {report['health']}%")
-        print("-" * 45)
-        print("Módulos Identificados:")
-        
-        if report["modules"]:
-            for name, status in report["modules"].items():
-                print(f"  ▪ {name:<20} -> [{status}]")
-        else:
-            print("  (Nenhum módulo registrado)")
-            
-        print("-" * 45)
-        print(f"Memórias Ativas : {report['memory']}")
-        print(f"Tarefas Ativas  : {report['tasks']}")
-        print("=" * 45 + "\n")
+        print("\n" + "=" * 60)
+        print("             GENESIS CORE DIAGNOSTICS")
+        print("=" * 60)
 
-    # ==========================================================
-    # Atalhos de Mensagens (Encaminhados para a Logger Base)
-    # ==========================================================
+        print(f"Kernel : {report['kernel']}")
+        print(f"Estado : {report['state']}")
+        print(f"Health : {report['health']}%")
+
+        runtime = report["runtime"]
+
+        if runtime:
+
+            print("-" * 60)
+            print("Runtime")
+
+            print(f"Workers : {runtime.get('active_workers', 0)}")
+            print(f"Fila    : {runtime.get('pending_tasks', 0)}")
+            print(f"Uptime  : {runtime.get('uptime_seconds', 0)} s")
+
+        print("-" * 60)
+
+        print("Módulos")
+
+        for name, status in report["modules"].items():
+            print(f"  {name:<30} [{status}]")
+
+        print("-" * 60)
+
+        print(f"Memórias : {report['memory']}")
+        print(f"Tarefas  : {report['tasks']}")
+
+        print("=" * 60)
+        print()
+
+    # =====================================================
+    # Logging
+    # =====================================================
 
     def info(self, message):
         if self.logger:
@@ -181,6 +299,10 @@ class Diagnostics(Module):
     def success(self, message):
         if self.logger:
             self.logger.success(message)
+
+    def warning(self, message):
+        if self.logger:
+            self.logger.warning(message)
 
     def error(self, message):
         if self.logger:

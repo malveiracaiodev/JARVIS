@@ -3,17 +3,22 @@
 JARVIS CORE
 
 Pacote:
-tools
+core.tools
 
 Descrição:
-Sistema de ferramentas executáveis
+Camada de ferramentas executáveis
 do Genesis Core.
+
+Responsável por:
+- Expor ferramentas registradas
+- Centralizar imports
+- Padronizar Tool Layer
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+III - Matrix (Tool Layer)
 
 Autor:
 Caio Vitor Malveira
@@ -21,10 +26,29 @@ Caio Vitor Malveira
 """
 
 
-from core.interfaces.tool_interface import ToolInterface
+# ======================================================
+# Interfaces
+# ======================================================
 
-from .system_test_tool import SystemTestTool
+from core.interfaces.tool_interface import (
+    ToolInterface
+)
 
+
+
+# ======================================================
+# Ferramentas internas
+# ======================================================
+
+from .system_test_tool import (
+    SystemTestTool
+)
+
+
+
+# ======================================================
+# Exportações públicas
+# ======================================================
 
 
 __all__ = [

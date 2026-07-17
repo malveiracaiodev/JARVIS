@@ -124,19 +124,67 @@ class Executor(
         )
 
 
-        action = (
-
-            reasoning.get(
-                "decision"
-            )
-
-            or
-
-            context.data.get(
-                "plan"
-            )
-
+        decision = reasoning.get(
+            "decision",
+            {}
         )
+
+
+
+        # ==================================================
+        # CONVERSÃO DE DECISÃO COGNITIVA
+        # PARA AÇÃO EXECUTÁVEL
+        # ==================================================
+
+        if isinstance(
+            decision,
+            dict
+        ) and "plan" in decision:
+
+
+            plan = decision.get(
+                "plan",
+                {}
+            )
+
+
+            action = {
+
+                "goal":
+                    plan.get(
+                        "goal",
+                        ""
+                    ),
+
+                "plan":
+                    plan,
+
+                "strategy":
+                    decision.get(
+                        "strategy",
+                        "execute_plan"
+                    )
+
+            }
+
+
+
+        else:
+
+
+            action = (
+
+                decision
+
+                or
+
+                context.data.get(
+                    "plan",
+                    {}
+                )
+
+            )
+
 
 
         result = self.execute_action(
@@ -148,6 +196,7 @@ class Executor(
         context.data[
             "execution"
         ] = result
+
 
 
         return context
@@ -190,6 +239,7 @@ class Executor(
             tool = self.tool_manager.find(
                 action
             )
+
 
 
             if tool is None:
@@ -266,14 +316,21 @@ class Executor(
             return False
 
 
+
         if self.tool_manager is None:
 
             return False
 
 
+
         return (
-            self.tool_manager.find(action)
+
+            self.tool_manager.find(
+                action
+            )
+
             is not None
+
         )
 
 
