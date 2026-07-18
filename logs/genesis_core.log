@@ -16,3 +16,475 @@
 [2026-07-17 17:55:13] [INFO] Etapa registrada: reflection
 [2026-07-17 17:55:13] [SUCCESS] Pipeline Cognitiva construída.
 [2026-07-17 17:55:13] [INFO] Componente acoplado: pipeline
+[2026-07-17 18:14:46] [INFO] Componente acoplado: logger
+[2026-07-17 18:14:46] [INFO] Componente acoplado: event_bus
+[2026-07-17 18:14:46] [INFO] Componente acoplado: config
+[2026-07-17 18:14:46] [INFO] Componente acoplado: identity
+[2026-07-17 18:14:47] [INFO] Componente acoplado: service_manager
+[2026-07-17 18:14:47] [INFO] Componente acoplado: tool_manager
+[2026-07-17 18:14:47] [INFO] Componente acoplado: runtime
+[2026-07-17 18:14:47] [INFO] Componente acoplado: plugin_manager
+[2026-07-17 18:14:47] [INFO] Construindo Pipeline Cognitiva.
+[2026-07-17 18:14:47] [INFO] Tool registrada: system_test
+[2026-07-17 18:14:47] [INFO] Ferramenta registrada: system_test
+[2026-07-17 18:14:47] [INFO] Etapa registrada: parser
+[2026-07-17 18:14:47] [INFO] Etapa registrada: planner
+[2026-07-17 18:14:47] [INFO] Etapa registrada: reasoner
+[2026-07-17 18:14:47] [INFO] Etapa registrada: executor
+[2026-07-17 18:14:47] [INFO] Etapa registrada: reflection
+[2026-07-17 18:14:47] [SUCCESS] Pipeline Cognitiva construída.
+[2026-07-17 18:14:47] [INFO] Componente acoplado: pipeline
+[2026-07-17 18:14:47] [INFO] Componente acoplado: mind
+[2026-07-17 18:14:47] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-17 18:14:47] [BOOT] Sistema de logs Genesis Core inicializado.
+[2026-07-17 18:14:47] [SUCCESS] Logger ONLINE
+[2026-07-17 18:14:47] [INFO] Evento: LOGGER_STARTED
+[2026-07-17 18:14:47] [INFO] [ONLINE] logger
+[2026-07-17 18:14:47] [SUCCESS] EventBus ONLINE.
+[2026-07-17 18:14:47] [INFO] [ONLINE] event_bus
+[2026-07-17 18:15:00] [INFO] Encerrando Genesis Core...
+[2026-07-17 18:15:00] [INFO] BrainState finalizado.
+[2026-07-17 18:15:00] [INFO] Brain desligado.
+[2026-07-17 18:15:00] [INFO] Mind desligado.
+[2026-07-17 18:15:00] [INFO] [OFFLINE] mind
+[2026-07-17 18:15:00] [INFO] [OFFLINE] pipeline
+[2026-07-17 18:15:00] [INFO] Plugin Manager encerrado.
+[2026-07-17 18:15:00] [INFO] [OFFLINE] plugin_manager
+[2026-07-17 18:15:00] [INFO] [OFFLINE] runtime
+[2026-07-17 18:15:00] [INFO] Tool removida: system_test
+[2026-07-17 18:15:00] [INFO] Tool Manager encerrado.
+[2026-07-17 18:15:00] [INFO] [OFFLINE] tool_manager
+[2026-07-17 18:15:00] [INFO] Service Manager encerrado.
+[2026-07-17 18:15:00] [INFO] [OFFLINE] service_manager
+[2026-07-17 18:15:00] [INFO] Identity Manager encerrado.
+[2026-07-17 18:15:00] [INFO] [OFFLINE] identity
+[2026-07-17 18:15:00] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-17 18:15:00] [INFO] [OFFLINE] config
+[2026-07-17 18:15:00] [INFO] EventBus OFFLINE.
+[2026-07-17 18:15:00] [INFO] [OFFLINE] event_bus
+[2026-07-17 18:15:00] [INFO] Logger encerrando.
+[2026-07-17 18:15:00] [INFO] Evento: LOGGER_STOPPED
+[2026-07-17 18:15:00] [INFO] [OFFLINE] logger
+[2026-07-17 18:15:00] [INFO] [OFFLINE] registry
+[2026-07-17 18:15:00] [INFO] Genesis Core desligado.
+[2026-07-17 18:15:07] [INFO] Componente acoplado: logger
+[2026-07-17 18:15:07] [INFO] Componente acoplado: event_bus
+[2026-07-17 18:15:07] [INFO] Componente acoplado: config
+[2026-07-17 18:15:07] [INFO] Componente acoplado: identity
+[2026-07-17 18:15:07] [INFO] Componente acoplado: service_manager
+[2026-07-17 18:15:07] [INFO] Componente acoplado: tool_manager
+[2026-07-17 18:15:07] [INFO] Componente acoplado: runtime
+[2026-07-17 18:15:07] [INFO] Componente acoplado: plugin_manager
+[2026-07-17 18:15:07] [INFO] Construindo Pipeline Cognitiva.
+[2026-07-17 18:15:07] [INFO] Tool registrada: system_test
+[2026-07-17 18:15:07] [INFO] Ferramenta registrada: system_test
+[2026-07-17 18:15:07] [INFO] Etapa registrada: parser
+[2026-07-17 18:15:07] [INFO] Etapa registrada: planner
+[2026-07-17 18:15:07] [INFO] Etapa registrada: reasoner
+[2026-07-17 18:15:07] [INFO] Etapa registrada: executor
+[2026-07-17 18:15:07] [INFO] Etapa registrada: reflection
+[2026-07-17 18:15:07] [SUCCESS] Pipeline Cognitiva construída.
+[2026-07-17 18:15:07] [INFO] Componente acoplado: pipeline
+[2026-07-17 18:15:07] [INFO] Componente acoplado: mind
+[2026-07-17 18:15:07] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-17 18:15:07] [BOOT] Sistema de logs Genesis Core inicializado.
+[2026-07-17 18:15:07] [SUCCESS] Logger ONLINE
+[2026-07-17 18:15:07] [INFO] Evento: LOGGER_STARTED
+[2026-07-17 18:15:07] [INFO] [ONLINE] logger
+[2026-07-17 18:15:07] [SUCCESS] EventBus ONLINE.
+[2026-07-17 18:15:07] [INFO] [ONLINE] event_bus
+[2026-07-17 18:15:08] [SUCCESS] Config Manager iniciado com persistência isolada
+[2026-07-17 18:15:08] [INFO] [ONLINE] config
+[2026-07-17 18:15:08] [INFO] [ONLINE] registry
+[2026-07-17 18:15:08] [INFO] Evento: IDENTITY_LOADED
+[2026-07-17 18:15:08] [SUCCESS] Identity Manager Mark III iniciado.
+[2026-07-17 18:15:08] [INFO] [ONLINE] identity
+[2026-07-17 18:15:08] [SUCCESS] Service Manager Mark III ONLINE.
+[2026-07-17 18:15:08] [INFO] [ONLINE] service_manager
+[2026-07-17 18:15:08] [SUCCESS] Tool Manager Mark III ONLINE.
+[2026-07-17 18:15:08] [INFO] [ONLINE] tool_manager
+[2026-07-17 18:15:08] [SUCCESS] Thread-1 iniciado.
+[2026-07-17 18:15:08] [SUCCESS] Thread-2 iniciado.
+[2026-07-17 18:15:08] [ERROR] Falha iniciando runtime: 'starts'
+[2026-07-17 18:15:08] [SUCCESS] Plugin Manager Mark III ONLINE.
+[2026-07-17 18:15:08] [INFO] [ONLINE] plugin_manager
+[2026-07-17 18:15:08] [INFO] [ONLINE] pipeline
+[2026-07-17 18:15:08] [INFO] Componentes cognitivos conectados.
+[2026-07-17 18:15:08] [SUCCESS] [core.mind.memory] Memory ONLINE.
+[2026-07-17 18:15:08] [SUCCESS] [core.mind.knowledge] Knowledge ONLINE.
+[2026-07-17 18:15:08] [SUCCESS] BrainState inicializado.
+[2026-07-17 18:15:08] [SUCCESS] Brain Cognitivo ONLINE.
+[2026-07-17 18:15:08] [SUCCESS] Mind Cognitivo ONLINE.
+[2026-07-17 18:15:08] [INFO] [ONLINE] mind
+[2026-07-17 18:15:08] [INFO] Evento: system.ready
+[2026-07-17 18:15:08] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-17 18:16:01] [INFO] Encerrando Genesis Core...
+[2026-07-17 18:16:01] [INFO] [core.mind.memory] Memory finalizada.
+[2026-07-17 18:16:01] [INFO] [core.mind.knowledge] Knowledge finalizado.
+[2026-07-17 18:16:01] [INFO] BrainState finalizado.
+[2026-07-17 18:16:01] [INFO] Brain desligado.
+[2026-07-17 18:16:01] [INFO] Mind desligado.
+[2026-07-17 18:16:01] [INFO] [OFFLINE] mind
+[2026-07-17 18:16:01] [INFO] [OFFLINE] pipeline
+[2026-07-17 18:16:01] [INFO] Plugin Manager encerrado.
+[2026-07-17 18:16:01] [INFO] [OFFLINE] plugin_manager
+[2026-07-17 18:16:01] [INFO] Erro encerrando runtime: type object 'ModuleStatus' has no attribute 'STOPPING'
+[2026-07-17 18:16:01] [INFO] Tool removida: system_test
+[2026-07-17 18:16:01] [INFO] Tool Manager encerrado.
+[2026-07-17 18:16:01] [INFO] [OFFLINE] tool_manager
+[2026-07-17 18:16:01] [INFO] Service Manager encerrado.
+[2026-07-17 18:16:01] [INFO] [OFFLINE] service_manager
+[2026-07-17 18:16:01] [INFO] Identity Manager encerrado.
+[2026-07-17 18:16:01] [INFO] [OFFLINE] identity
+[2026-07-17 18:16:01] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-17 18:16:01] [INFO] [OFFLINE] config
+[2026-07-17 18:16:01] [INFO] EventBus OFFLINE.
+[2026-07-17 18:16:01] [INFO] [OFFLINE] event_bus
+[2026-07-17 18:16:01] [INFO] Logger encerrando.
+[2026-07-17 18:16:01] [INFO] Evento: LOGGER_STOPPED
+[2026-07-17 18:16:01] [INFO] [OFFLINE] logger
+[2026-07-17 18:16:01] [INFO] [OFFLINE] registry
+[2026-07-17 18:16:01] [INFO] Genesis Core desligado.
+[2026-07-17 18:30:39] [INFO] Componente acoplado: logger
+[2026-07-17 18:30:39] [INFO] Componente acoplado: event_bus
+[2026-07-17 18:30:39] [INFO] Componente acoplado: config
+[2026-07-17 18:30:39] [INFO] Componente acoplado: identity
+[2026-07-17 18:30:39] [INFO] Componente acoplado: service_manager
+[2026-07-17 18:30:39] [INFO] Componente acoplado: tool_manager
+[2026-07-17 18:30:39] [INFO] Componente acoplado: runtime
+[2026-07-17 18:30:40] [INFO] Componente acoplado: plugin_manager
+[2026-07-17 18:30:40] [INFO] Construindo Pipeline Cognitiva.
+[2026-07-17 18:30:40] [INFO] Tool registrada: system_test
+[2026-07-17 18:30:40] [INFO] Ferramenta registrada: system_test
+[2026-07-17 18:30:40] [INFO] Etapa registrada: parser
+[2026-07-17 18:30:40] [INFO] Etapa registrada: planner
+[2026-07-17 18:30:40] [INFO] Etapa registrada: reasoner
+[2026-07-17 18:30:40] [INFO] Etapa registrada: executor
+[2026-07-17 18:30:40] [INFO] Etapa registrada: reflection
+[2026-07-17 18:30:40] [SUCCESS] Pipeline Cognitiva construída.
+[2026-07-17 18:30:40] [INFO] Componente acoplado: pipeline
+[2026-07-17 18:30:40] [INFO] Componente acoplado: mind
+[2026-07-17 18:30:40] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-17 18:30:40] [BOOT] Sistema de logs Genesis Core inicializado.
+[2026-07-17 18:30:40] [SUCCESS] Logger ONLINE
+[2026-07-17 18:30:40] [INFO] Evento: LOGGER_STARTED
+[2026-07-17 18:30:40] [INFO] [ONLINE] logger
+[2026-07-17 18:30:40] [SUCCESS] EventBus ONLINE.
+[2026-07-17 18:30:40] [INFO] [ONLINE] event_bus
+[2026-07-17 18:30:40] [SUCCESS] Config Manager iniciado com persistência isolada
+[2026-07-17 18:30:40] [INFO] [ONLINE] config
+[2026-07-17 18:30:40] [INFO] [ONLINE] registry
+[2026-07-17 18:30:40] [INFO] Identidade carregada.
+[2026-07-17 18:30:40] [INFO] Evento: IDENTITY_LOADED
+[2026-07-17 18:30:40] [SUCCESS] Identity Manager Mark III iniciado.
+[2026-07-17 18:30:40] [INFO] [ONLINE] identity
+[2026-07-17 18:30:40] [SUCCESS] Service Manager Mark III ONLINE.
+[2026-07-17 18:30:40] [INFO] [ONLINE] service_manager
+[2026-07-17 18:30:40] [SUCCESS] Tool Manager Mark III ONLINE.
+[2026-07-17 18:30:40] [INFO] [ONLINE] tool_manager
+[2026-07-17 18:30:40] [SUCCESS] Worker-1 iniciado.
+[2026-07-17 18:30:40] [SUCCESS] Worker-2 iniciado.
+[2026-07-17 18:30:40] [SUCCESS] Motor Runtime ONLINE com 2 Workers.
+[2026-07-17 18:30:40] [INFO] Evento: runtime.started
+[2026-07-17 18:30:40] [INFO] [ONLINE] runtime
+[2026-07-17 18:30:40] [SUCCESS] Plugin Manager Mark III ONLINE.
+[2026-07-17 18:30:40] [INFO] [ONLINE] plugin_manager
+[2026-07-17 18:30:40] [INFO] [ONLINE] pipeline
+[2026-07-17 18:30:40] [INFO] Componentes cognitivos conectados.
+[2026-07-17 18:30:40] [SUCCESS] [core.mind.memory] Memory ONLINE.
+[2026-07-17 18:30:40] [SUCCESS] [core.mind.knowledge] Knowledge ONLINE.
+[2026-07-17 18:30:40] [SUCCESS] BrainState inicializado.
+[2026-07-17 18:30:40] [SUCCESS] Brain Cognitivo ONLINE.
+[2026-07-17 18:30:40] [SUCCESS] Mind Cognitivo ONLINE.
+[2026-07-17 18:30:40] [INFO] [ONLINE] mind
+[2026-07-17 18:30:40] [INFO] Evento: system.ready
+[2026-07-17 18:30:40] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-17 18:30:49] [INFO] Encerrando Genesis Core...
+[2026-07-17 18:30:49] [INFO] [core.mind.memory] Memory finalizada.
+[2026-07-17 18:30:49] [INFO] [core.mind.knowledge] Knowledge finalizado.
+[2026-07-17 18:30:49] [INFO] BrainState finalizado.
+[2026-07-17 18:30:49] [INFO] Brain desligado.
+[2026-07-17 18:30:49] [INFO] Mind desligado.
+[2026-07-17 18:30:49] [INFO] [OFFLINE] mind
+[2026-07-17 18:30:49] [INFO] [OFFLINE] pipeline
+[2026-07-17 18:30:49] [INFO] Plugin Manager encerrado.
+[2026-07-17 18:30:49] [INFO] [OFFLINE] plugin_manager
+[2026-07-17 18:30:49] [INFO] Worker-1 finalizado.
+[2026-07-17 18:30:49] [INFO] Worker-2 finalizado.
+[2026-07-17 18:30:49] [INFO] Runtime finalizado.
+[2026-07-17 18:30:49] [INFO] Evento: runtime.stopped
+[2026-07-17 18:30:49] [INFO] [OFFLINE] runtime
+[2026-07-17 18:30:49] [INFO] Tool removida: system_test
+[2026-07-17 18:30:49] [INFO] Tool Manager encerrado.
+[2026-07-17 18:30:49] [INFO] [OFFLINE] tool_manager
+[2026-07-17 18:30:49] [INFO] Service Manager encerrado.
+[2026-07-17 18:30:49] [INFO] [OFFLINE] service_manager
+[2026-07-17 18:30:49] [INFO] Identity Manager encerrado.
+[2026-07-17 18:30:49] [INFO] [OFFLINE] identity
+[2026-07-17 18:30:49] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-17 18:30:49] [INFO] [OFFLINE] config
+[2026-07-17 18:30:49] [INFO] EventBus OFFLINE.
+[2026-07-17 18:30:50] [INFO] [OFFLINE] event_bus
+[2026-07-17 18:30:50] [INFO] Logger encerrando.
+[2026-07-17 18:30:50] [INFO] Evento: LOGGER_STOPPED
+[2026-07-17 18:30:50] [INFO] [OFFLINE] logger
+[2026-07-17 18:30:50] [INFO] [OFFLINE] registry
+[2026-07-17 18:30:50] [INFO] Genesis Core desligado.
+[2026-07-18 17:37:59] [INFO] Componente acoplado: logger
+[2026-07-18 17:37:59] [INFO] Componente acoplado: event_bus
+[2026-07-18 17:37:59] [INFO] Componente acoplado: config
+[2026-07-18 17:37:59] [INFO] Componente acoplado: identity
+[2026-07-18 17:37:59] [INFO] Componente acoplado: service_manager
+[2026-07-18 17:37:59] [INFO] Componente acoplado: tool_manager
+[2026-07-18 17:37:59] [INFO] Componente acoplado: runtime
+[2026-07-18 17:37:59] [INFO] Componente acoplado: plugin_manager
+[2026-07-18 17:37:59] [INFO] Construindo Thought Engine.
+[2026-07-18 17:37:59] [INFO] Tool registrada: system_test
+[2026-07-18 17:37:59] [INFO] Ferramenta registrada: system_test
+[2026-07-18 17:37:59] [INFO] Etapa registrada: parser
+[2026-07-18 17:37:59] [INFO] Etapa registrada: planner
+[2026-07-18 17:37:59] [INFO] Etapa registrada: reasoner
+[2026-07-18 17:37:59] [INFO] Etapa registrada: executor
+[2026-07-18 17:37:59] [INFO] Etapa registrada: reflection
+[2026-07-18 17:37:59] [SUCCESS] Thought Engine construída.
+[2026-07-18 17:37:59] [INFO] Componente acoplado: pipeline
+[2026-07-18 17:37:59] [INFO] Componente acoplado: mind
+[2026-07-18 17:37:59] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-18 17:37:59] [BOOT] Sistema de logs Genesis Core inicializado.
+[2026-07-18 17:37:59] [SUCCESS] Logger ONLINE
+[2026-07-18 17:37:59] [INFO] Evento: LOGGER_STARTED
+[2026-07-18 17:38:00] [INFO] [ONLINE] logger
+[2026-07-18 17:38:00] [SUCCESS] EventBus ONLINE.
+[2026-07-18 17:38:00] [INFO] [ONLINE] event_bus
+[2026-07-18 17:38:00] [SUCCESS] Config Manager iniciado com persistência isolada
+[2026-07-18 17:38:00] [INFO] [ONLINE] config
+[2026-07-18 17:38:00] [INFO] [ONLINE] registry
+[2026-07-18 17:38:00] [INFO] Identidade carregada.
+[2026-07-18 17:38:00] [INFO] Evento: IDENTITY_LOADED
+[2026-07-18 17:38:00] [SUCCESS] Identity Manager Mark III iniciado.
+[2026-07-18 17:38:00] [INFO] [ONLINE] identity
+[2026-07-18 17:38:00] [SUCCESS] Service Manager Mark III ONLINE.
+[2026-07-18 17:38:00] [INFO] [ONLINE] service_manager
+[2026-07-18 17:38:00] [SUCCESS] Tool Manager Mark III ONLINE.
+[2026-07-18 17:38:00] [INFO] [ONLINE] tool_manager
+[2026-07-18 17:38:00] [SUCCESS] Worker-1 iniciado.
+[2026-07-18 17:38:00] [SUCCESS] Worker-2 iniciado.
+[2026-07-18 17:38:00] [SUCCESS] Motor Runtime ONLINE com 2 Workers.
+[2026-07-18 17:38:00] [INFO] Evento: runtime.started
+[2026-07-18 17:38:00] [INFO] [ONLINE] runtime
+[2026-07-18 17:38:00] [SUCCESS] Plugin Manager Mark III ONLINE.
+[2026-07-18 17:38:00] [INFO] [ONLINE] plugin_manager
+[2026-07-18 17:38:00] [INFO] [ONLINE] pipeline
+[2026-07-18 17:38:00] [INFO] Componentes cognitivos conectados.
+[2026-07-18 17:38:00] [SUCCESS] [core.mind.memory] Memory ONLINE.
+[2026-07-18 17:38:00] [SUCCESS] [core.mind.knowledge] Knowledge ONLINE.
+[2026-07-18 17:38:00] [SUCCESS] BrainState inicializado.
+[2026-07-18 17:38:00] [SUCCESS] Brain Cognitivo ONLINE.
+[2026-07-18 17:38:00] [SUCCESS] Mind Cognitivo ONLINE.
+[2026-07-18 17:38:00] [INFO] [ONLINE] mind
+[2026-07-18 17:38:00] [INFO] Evento: system.ready
+[2026-07-18 17:38:00] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-18 17:38:03] [ERROR] 'str' object has no attribute 'message'
+[2026-07-18 17:38:04] [INFO] Encerrando Genesis Core...
+[2026-07-18 17:38:04] [INFO] [core.mind.memory] Memory finalizada.
+[2026-07-18 17:38:04] [INFO] [core.mind.knowledge] Knowledge finalizado.
+[2026-07-18 17:38:04] [INFO] BrainState finalizado.
+[2026-07-18 17:38:04] [INFO] Brain desligado.
+[2026-07-18 17:38:04] [INFO] Mind desligado.
+[2026-07-18 17:38:04] [INFO] [OFFLINE] mind
+[2026-07-18 17:38:04] [INFO] [OFFLINE] pipeline
+[2026-07-18 17:38:04] [INFO] Plugin Manager encerrado.
+[2026-07-18 17:38:04] [INFO] [OFFLINE] plugin_manager
+[2026-07-18 17:38:04] [INFO] Worker-2 finalizado.
+[2026-07-18 17:38:04] [INFO] Worker-1 finalizado.
+[2026-07-18 17:38:04] [INFO] Runtime finalizado.
+[2026-07-18 17:38:04] [INFO] Evento: runtime.stopped
+[2026-07-18 17:38:04] [INFO] [OFFLINE] runtime
+[2026-07-18 17:38:04] [INFO] Tool removida: system_test
+[2026-07-18 17:38:04] [INFO] Tool Manager encerrado.
+[2026-07-18 17:38:04] [INFO] [OFFLINE] tool_manager
+[2026-07-18 17:38:04] [INFO] Service Manager encerrado.
+[2026-07-18 17:38:04] [INFO] [OFFLINE] service_manager
+[2026-07-18 17:38:05] [INFO] Identity Manager encerrado.
+[2026-07-18 17:38:05] [INFO] [OFFLINE] identity
+[2026-07-18 17:38:05] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-18 17:38:05] [INFO] [OFFLINE] config
+[2026-07-18 17:38:05] [INFO] EventBus OFFLINE.
+[2026-07-18 17:38:05] [INFO] [OFFLINE] event_bus
+[2026-07-18 17:38:05] [INFO] Logger encerrando.
+[2026-07-18 17:38:05] [INFO] Evento: LOGGER_STOPPED
+[2026-07-18 17:38:05] [INFO] [OFFLINE] logger
+[2026-07-18 17:38:05] [INFO] [OFFLINE] registry
+[2026-07-18 17:38:05] [INFO] Genesis Core desligado.
+[2026-07-18 17:46:44] [INFO] Componente acoplado: logger
+[2026-07-18 17:46:44] [INFO] Componente acoplado: event_bus
+[2026-07-18 17:46:44] [INFO] Componente acoplado: config
+[2026-07-18 17:46:44] [INFO] Componente acoplado: identity
+[2026-07-18 17:46:44] [INFO] Componente acoplado: service_manager
+[2026-07-18 17:46:44] [INFO] Componente acoplado: tool_manager
+[2026-07-18 17:46:44] [INFO] Componente acoplado: runtime
+[2026-07-18 17:46:44] [INFO] Componente acoplado: plugin_manager
+[2026-07-18 17:46:44] [INFO] Construindo Thought Engine.
+[2026-07-18 17:46:44] [INFO] Tool registrada: system_test
+[2026-07-18 17:46:44] [INFO] Ferramenta registrada: system_test
+[2026-07-18 17:46:44] [INFO] Etapa registrada: parser
+[2026-07-18 17:46:44] [INFO] Etapa registrada: planner
+[2026-07-18 17:46:44] [INFO] Etapa registrada: reasoner
+[2026-07-18 17:46:44] [INFO] Etapa registrada: executor
+[2026-07-18 17:46:44] [INFO] Etapa registrada: reflection
+[2026-07-18 17:46:44] [SUCCESS] Thought Engine construída.
+[2026-07-18 17:46:44] [INFO] Componente acoplado: pipeline
+[2026-07-18 17:46:44] [INFO] Componente acoplado: mind
+[2026-07-18 17:46:44] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-18 17:46:44] [BOOT] Sistema de logs Genesis Core inicializado.
+[2026-07-18 17:46:44] [SUCCESS] Logger ONLINE
+[2026-07-18 17:46:44] [INFO] Evento: LOGGER_STARTED
+[2026-07-18 17:46:44] [INFO] [ONLINE] logger
+[2026-07-18 17:46:44] [SUCCESS] EventBus ONLINE.
+[2026-07-18 17:46:44] [INFO] [ONLINE] event_bus
+[2026-07-18 17:46:44] [SUCCESS] Config Manager iniciado com persistência isolada
+[2026-07-18 17:46:44] [INFO] [ONLINE] config
+[2026-07-18 17:46:44] [INFO] [ONLINE] registry
+[2026-07-18 17:46:44] [INFO] Identidade carregada.
+[2026-07-18 17:46:44] [INFO] Evento: IDENTITY_LOADED
+[2026-07-18 17:46:44] [SUCCESS] Identity Manager Mark III iniciado.
+[2026-07-18 17:46:44] [INFO] [ONLINE] identity
+[2026-07-18 17:46:44] [SUCCESS] Service Manager Mark III ONLINE.
+[2026-07-18 17:46:44] [INFO] [ONLINE] service_manager
+[2026-07-18 17:46:44] [SUCCESS] Tool Manager Mark III ONLINE.
+[2026-07-18 17:46:44] [INFO] [ONLINE] tool_manager
+[2026-07-18 17:46:44] [SUCCESS] Worker-1 iniciado.
+[2026-07-18 17:46:44] [SUCCESS] Worker-2 iniciado.
+[2026-07-18 17:46:44] [SUCCESS] Motor Runtime ONLINE com 2 Workers.
+[2026-07-18 17:46:44] [INFO] Evento: runtime.started
+[2026-07-18 17:46:44] [INFO] [ONLINE] runtime
+[2026-07-18 17:46:44] [SUCCESS] Plugin Manager Mark III ONLINE.
+[2026-07-18 17:46:44] [INFO] [ONLINE] plugin_manager
+[2026-07-18 17:46:44] [INFO] [ONLINE] pipeline
+[2026-07-18 17:46:44] [INFO] Componentes cognitivos conectados.
+[2026-07-18 17:46:44] [SUCCESS] [core.mind.memory] Memory ONLINE.
+[2026-07-18 17:46:44] [SUCCESS] [core.mind.knowledge] Knowledge ONLINE.
+[2026-07-18 17:46:44] [SUCCESS] BrainState inicializado.
+[2026-07-18 17:46:44] [SUCCESS] Brain Cognitivo ONLINE.
+[2026-07-18 17:46:44] [SUCCESS] Mind Cognitivo ONLINE.
+[2026-07-18 17:46:44] [INFO] [ONLINE] mind
+[2026-07-18 17:46:44] [INFO] Evento: system.ready
+[2026-07-18 17:46:44] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-18 17:46:46] [ERROR] 'str' object has no attribute 'message'
+[2026-07-18 17:46:47] [INFO] Encerrando Genesis Core...
+[2026-07-18 17:46:47] [INFO] [core.mind.memory] Memory finalizada.
+[2026-07-18 17:46:47] [INFO] [core.mind.knowledge] Knowledge finalizado.
+[2026-07-18 17:46:47] [INFO] BrainState finalizado.
+[2026-07-18 17:46:47] [INFO] Brain desligado.
+[2026-07-18 17:46:47] [INFO] Mind desligado.
+[2026-07-18 17:46:47] [INFO] [OFFLINE] mind
+[2026-07-18 17:46:47] [INFO] [OFFLINE] pipeline
+[2026-07-18 17:46:47] [INFO] Plugin Manager encerrado.
+[2026-07-18 17:46:47] [INFO] [OFFLINE] plugin_manager
+[2026-07-18 17:46:47] [INFO] Worker-1 finalizado.
+[2026-07-18 17:46:47] [INFO] Worker-2 finalizado.
+[2026-07-18 17:46:47] [INFO] Runtime finalizado.
+[2026-07-18 17:46:47] [INFO] Evento: runtime.stopped
+[2026-07-18 17:46:47] [INFO] [OFFLINE] runtime
+[2026-07-18 17:46:48] [INFO] Tool removida: system_test
+[2026-07-18 17:46:48] [INFO] Tool Manager encerrado.
+[2026-07-18 17:46:48] [INFO] [OFFLINE] tool_manager
+[2026-07-18 17:46:48] [INFO] Service Manager encerrado.
+[2026-07-18 17:46:48] [INFO] [OFFLINE] service_manager
+[2026-07-18 17:46:48] [INFO] Identity Manager encerrado.
+[2026-07-18 17:46:48] [INFO] [OFFLINE] identity
+[2026-07-18 17:46:48] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-18 17:46:48] [INFO] [OFFLINE] config
+[2026-07-18 17:46:48] [INFO] EventBus OFFLINE.
+[2026-07-18 17:46:48] [INFO] [OFFLINE] event_bus
+[2026-07-18 17:46:48] [INFO] Logger encerrando.
+[2026-07-18 17:46:48] [INFO] Evento: LOGGER_STOPPED
+[2026-07-18 17:46:48] [INFO] [OFFLINE] logger
+[2026-07-18 17:46:48] [INFO] [OFFLINE] registry
+[2026-07-18 17:46:48] [INFO] Genesis Core desligado.
+[2026-07-18 18:14:39] [INFO] Componente acoplado: logger
+[2026-07-18 18:14:39] [INFO] Componente acoplado: event_bus
+[2026-07-18 18:14:39] [INFO] Componente acoplado: config
+[2026-07-18 18:14:39] [INFO] Componente acoplado: identity
+[2026-07-18 18:14:39] [INFO] Componente acoplado: service_manager
+[2026-07-18 18:14:39] [INFO] Componente acoplado: tool_manager
+[2026-07-18 18:14:39] [INFO] Componente acoplado: runtime
+[2026-07-18 18:14:39] [INFO] Componente acoplado: plugin_manager
+[2026-07-18 18:14:39] [INFO] Construindo Thought Engine.
+[2026-07-18 18:14:39] [INFO] Tool registrada: system_test
+[2026-07-18 18:14:39] [INFO] Ferramenta registrada: system_test
+[2026-07-18 18:14:39] [INFO] Etapa registrada: parser
+[2026-07-18 18:14:39] [INFO] Etapa registrada: planner
+[2026-07-18 18:14:39] [INFO] Etapa registrada: reasoner
+[2026-07-18 18:14:39] [INFO] Etapa registrada: executor
+[2026-07-18 18:14:39] [INFO] Etapa registrada: reflection
+[2026-07-18 18:14:39] [SUCCESS] Thought Engine construída.
+[2026-07-18 18:14:39] [INFO] Componente acoplado: pipeline
+[2026-07-18 18:14:39] [INFO] Componente acoplado: mind
+[2026-07-18 18:14:39] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-18 18:14:39] [BOOT] Sistema de logs Genesis Core inicializado.
+[2026-07-18 18:14:39] [SUCCESS] Logger ONLINE
+[2026-07-18 18:14:39] [INFO] Evento: LOGGER_STARTED
+[2026-07-18 18:14:39] [INFO] [ONLINE] logger
+[2026-07-18 18:14:39] [SUCCESS] EventBus ONLINE.
+[2026-07-18 18:14:39] [INFO] [ONLINE] event_bus
+[2026-07-18 18:14:39] [SUCCESS] Config Manager iniciado com persistência isolada
+[2026-07-18 18:14:39] [INFO] [ONLINE] config
+[2026-07-18 18:14:39] [INFO] [ONLINE] registry
+[2026-07-18 18:14:39] [INFO] Identidade carregada.
+[2026-07-18 18:14:39] [INFO] Evento: IDENTITY_LOADED
+[2026-07-18 18:14:39] [SUCCESS] Identity Manager Mark III iniciado.
+[2026-07-18 18:14:39] [INFO] [ONLINE] identity
+[2026-07-18 18:14:39] [SUCCESS] Service Manager Mark III ONLINE.
+[2026-07-18 18:14:39] [INFO] [ONLINE] service_manager
+[2026-07-18 18:14:39] [SUCCESS] Tool Manager Mark III ONLINE.
+[2026-07-18 18:14:39] [INFO] [ONLINE] tool_manager
+[2026-07-18 18:14:39] [SUCCESS] Worker-1 iniciado.
+[2026-07-18 18:14:39] [SUCCESS] Worker-2 iniciado.
+[2026-07-18 18:14:39] [SUCCESS] Motor Runtime ONLINE com 2 Workers.
+[2026-07-18 18:14:39] [INFO] Evento: runtime.started
+[2026-07-18 18:14:39] [INFO] [ONLINE] runtime
+[2026-07-18 18:14:39] [SUCCESS] Plugin Manager Mark III ONLINE.
+[2026-07-18 18:14:39] [INFO] [ONLINE] plugin_manager
+[2026-07-18 18:14:39] [INFO] [ONLINE] pipeline
+[2026-07-18 18:14:39] [INFO] Componentes cognitivos conectados.
+[2026-07-18 18:14:39] [SUCCESS] [core.mind.memory] Memory ONLINE.
+[2026-07-18 18:14:39] [SUCCESS] [core.mind.knowledge] Knowledge ONLINE.
+[2026-07-18 18:14:39] [SUCCESS] BrainState inicializado.
+[2026-07-18 18:14:39] [SUCCESS] Brain Cognitivo ONLINE.
+[2026-07-18 18:14:39] [SUCCESS] Mind Cognitivo ONLINE.
+[2026-07-18 18:14:39] [INFO] [ONLINE] mind
+[2026-07-18 18:14:39] [INFO] Evento: system.ready
+[2026-07-18 18:14:39] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-18 18:14:41] [ERROR] 'str' object has no attribute 'message'
+[2026-07-18 18:14:42] [INFO] Encerrando Genesis Core...
+[2026-07-18 18:14:42] [INFO] [core.mind.memory] Memory finalizada.
+[2026-07-18 18:14:42] [INFO] [core.mind.knowledge] Knowledge finalizado.
+[2026-07-18 18:14:42] [INFO] BrainState finalizado.
+[2026-07-18 18:14:42] [INFO] Brain desligado.
+[2026-07-18 18:14:42] [INFO] Mind desligado.
+[2026-07-18 18:14:42] [INFO] [OFFLINE] mind
+[2026-07-18 18:14:42] [INFO] [OFFLINE] pipeline
+[2026-07-18 18:14:42] [INFO] Plugin Manager encerrado.
+[2026-07-18 18:14:42] [INFO] [OFFLINE] plugin_manager
+[2026-07-18 18:14:42] [INFO] Worker-1 finalizado.
+[2026-07-18 18:14:42] [INFO] Worker-2 finalizado.
+[2026-07-18 18:14:42] [INFO] Runtime finalizado.
+[2026-07-18 18:14:42] [INFO] Evento: runtime.stopped
+[2026-07-18 18:14:42] [INFO] [OFFLINE] runtime
+[2026-07-18 18:14:42] [INFO] Tool removida: system_test
+[2026-07-18 18:14:42] [INFO] Tool Manager encerrado.
+[2026-07-18 18:14:42] [INFO] [OFFLINE] tool_manager
+[2026-07-18 18:14:42] [INFO] Service Manager encerrado.
+[2026-07-18 18:14:42] [INFO] [OFFLINE] service_manager
+[2026-07-18 18:14:42] [INFO] Identity Manager encerrado.
+[2026-07-18 18:14:42] [INFO] [OFFLINE] identity
+[2026-07-18 18:14:42] [INFO] Config Manager encerrado e dados descarregados em disco
+[2026-07-18 18:14:42] [INFO] [OFFLINE] config
+[2026-07-18 18:14:42] [INFO] EventBus OFFLINE.
+[2026-07-18 18:14:42] [INFO] [OFFLINE] event_bus
+[2026-07-18 18:14:42] [INFO] Logger encerrando.
+[2026-07-18 18:14:42] [INFO] Evento: LOGGER_STOPPED
+[2026-07-18 18:14:42] [INFO] [OFFLINE] logger
+[2026-07-18 18:14:42] [INFO] [OFFLINE] registry
+[2026-07-18 18:14:42] [INFO] Genesis Core desligado.

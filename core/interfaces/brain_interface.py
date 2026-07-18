@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/interfaces/brain_interface.py
@@ -8,10 +8,6 @@ core/interfaces/brain_interface.py
 Descrição:
 Contrato base para o controlador cognitivo
 principal do Genesis Core.
-
-O Brain é o ponto de entrada da Matrix
-Cognitiva, responsável por coordenar o
-pipeline de pensamento.
 
 Arquitetura:
 Genesis Core
@@ -33,24 +29,18 @@ class BrainInterface(ABC):
     """
     Interface base do Brain.
 
-    O Brain não contém inteligência de negócio.
+    Responsável por definir o contrato
+    cognitivo do núcleo mental.
 
-    Sua responsabilidade é:
+    O Brain:
 
-    - receber estímulos;
-    - encaminhar para o Cognitive Pipeline;
-    - controlar memória cognitiva;
-    - gerenciar estado interno.
+    - recebe estímulos;
+    - encaminha para Pipeline Cognitiva;
+    - controla memória cognitiva;
+    - gerencia estado interno.
 
-    A inteligência está nos módulos:
-
-    Parser
-    Planner
-    Reasoner
-    Executor
-    Reflection
+    Não executa infraestrutura.
     """
-
 
 
     # ==================================================
@@ -63,29 +53,7 @@ class BrainInterface(ABC):
         input_data
     ):
         """
-        Inicia um ciclo cognitivo.
-
-        Fluxo:
-
-        input
-          ↓
-        PipelineContext
-          ↓
-        CognitivePipeline
-          ↓
-        resultado
-
-
-        Parameters
-        ----------
-        input_data:
-            Entrada recebida pelo sistema.
-
-
-        Returns
-        -------
-        result:
-            Resultado final do processamento.
+        Executa um ciclo cognitivo.
         """
 
         raise NotImplementedError()
@@ -102,20 +70,7 @@ class BrainInterface(ABC):
         data
     ):
         """
-        Registra aprendizado no sistema.
-
-        O aprendizado pode representar:
-
-        - novas informações;
-        - experiências;
-        - ajustes cognitivos;
-        - atualização de memória.
-
-
-        O Brain apenas encaminha.
-
-        A implementação pertence ao sistema
-        de memória/conhecimento.
+        Registra aprendizado cognitivo.
         """
 
         raise NotImplementedError()
@@ -131,15 +86,7 @@ class BrainInterface(ABC):
         self
     ):
         """
-        Limpa estados temporários
-        do processo cognitivo.
-
-        Exemplos:
-
-        - contexto atual;
-        - pensamentos temporários;
-        - fila cognitiva;
-        - estados internos.
+        Limpa estados temporários.
         """
 
         raise NotImplementedError()
@@ -147,19 +94,23 @@ class BrainInterface(ABC):
 
 
     # ==================================================
-    # STATUS
+    # ESTADO COGNITIVO
     # ==================================================
 
     @abstractmethod
-    def status(
+    def get_brain_status(
         self
     ):
         """
-        Retorna o estado atual
-        do cérebro.
+        Retorna o estado interno cognitivo.
 
-        Usado pelo Kernel,
-        Diagnostics e Dashboard.
+        Exemplos:
+
+        - OFFLINE
+        - INITIALIZING
+        - ONLINE
+        - THINKING
+        - ERROR
         """
 
         raise NotImplementedError()

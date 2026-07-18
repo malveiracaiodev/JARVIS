@@ -8,15 +8,14 @@ core/cognitive/executor.py
 Descrição:
 Executor Cognitivo do Genesis Core.
 
-Transforma decisões cognitivas em
-operações executáveis através do
-ToolManager.
+Transforma decisões armazenadas no Thought
+em operações executáveis através do ToolManager.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -44,6 +43,26 @@ class Executor(
 ):
 
 
+    """
+    Camada executora do ciclo cognitivo.
+
+    Responsabilidades:
+
+    - receber Thought;
+    - extrair decisão;
+    - localizar ferramenta;
+    - executar operação;
+    - salvar resultado no Thought.
+
+    Não decide.
+    Não planeja.
+    Não interpreta.
+
+    Apenas executa.
+    """
+
+
+
     def __init__(
         self,
         tool_manager=None,
@@ -67,9 +86,9 @@ class Executor(
 
 
 
-    # ======================================================
+    # ==================================================
     # IDENTIDADE
-    # ======================================================
+    # ==================================================
 
 
     def name(
@@ -80,14 +99,15 @@ class Executor(
 
 
 
-    # ======================================================
+    # ==================================================
     # STATUS
-    # ======================================================
+    # ==================================================
 
 
     def status(
         self
     ):
+
 
         return {
 
@@ -107,9 +127,9 @@ class Executor(
 
 
 
-    # ======================================================
-    # PIPELINE
-    # ======================================================
+    # ==================================================
+    # PIPELINE MARK IV
+    # ==================================================
 
 
     def process(
@@ -118,84 +138,91 @@ class Executor(
     ):
 
 
-        reasoning = context.data.get(
-            "reasoning",
-            {}
-        )
+        try:
 
 
-        decision = reasoning.get(
-            "decision",
-            {}
-        )
+            thought = context.thought
 
 
 
-        # ==================================================
-        # CONVERSÃO DE DECISÃO COGNITIVA
-        # PARA AÇÃO EXECUTÁVEL
-        # ==================================================
-
-        if isinstance(
-            decision,
-            dict
-        ) and "plan" in decision:
+            if thought is None:
 
 
-            plan = decision.get(
-                "plan",
-                {}
-            )
-
-
-            action = {
-
-                "goal":
-                    plan.get(
-                        "goal",
-                        ""
-                    ),
-
-                "plan":
-                    plan,
-
-                "strategy":
-                    decision.get(
-                        "strategy",
-                        "execute_plan"
-                    )
-
-            }
-
-
-
-        else:
-
-
-            action = (
-
-                decision
-
-                or
-
-                context.data.get(
-                    "plan",
-                    {}
+                context.add_error(
+                    "Nenhum Thought disponível para execução."
                 )
 
+
+                return context
+
+
+
+            decision = thought.decision
+
+
+
+            action = self.build_action(
+                decision,
+                thought
             )
 
 
 
-        result = self.execute_action(
-            action,
-            context
-        )
+            result = self.execute_action(
+                action,
+                context
+            )
 
 
-        context.data[
-            "execution"
-        ] = result
+
+            thought.set_result(
+                result
+            )
+
+
+
+            if result.get(
+                "success",
+                False
+            ):
+
+
+                thought.set_status(
+                    "executed"
+                )
+
+
+            else:
+
+
+                thought.failed()
+
+
+
+        except Exception as error:
+
+
+            self.failures += 1
+
+
+            self.log_error(
+                str(error)
+            )
+
+
+            if context.thought:
+
+
+                context.thought.set_result(
+
+                    self.failure(
+                        str(error)
+                    )
+
+                )
+
+
+                context.thought.failed()
 
 
 
@@ -203,9 +230,78 @@ class Executor(
 
 
 
-    # ======================================================
-    # EXECUÇÃO DE AÇÃO
-    # ======================================================
+    # ==================================================
+    # CONVERSÃO
+    # ==================================================
+
+
+    def build_action(
+        self,
+        decision,
+        thought
+    ):
+
+
+        if not decision:
+
+
+            return None
+
+
+
+        if isinstance(
+            decision,
+            dict
+        ):
+
+
+            return {
+
+
+                "goal":
+
+                    (
+                        thought.plan.get(
+                            "goal"
+                        )
+
+                        if thought.plan
+
+                        else None
+                    ),
+
+
+
+                "strategy":
+
+                    decision.get(
+                        "strategy",
+                        "execute_plan"
+                    ),
+
+
+
+                "plan":
+
+                    thought.plan,
+
+
+
+                "decision":
+
+                    decision
+
+            }
+
+
+
+        return decision
+
+
+
+    # ==================================================
+    # EXECUÇÃO REAL
+    # ==================================================
 
 
     def execute_action(
@@ -219,7 +315,7 @@ class Executor(
 
 
             return self.failure(
-                "Nenhuma ação fornecida."
+                "Nenhuma ação disponível."
             )
 
 
@@ -263,19 +359,27 @@ class Executor(
 
             return {
 
+
                 "success":
+
                     True,
 
 
+
                 "tool":
+
                     tool.name(),
 
 
+
                 "result":
+
                     result,
 
 
+
                 "timestamp":
+
                     datetime.now()
                     .isoformat()
 
@@ -300,9 +404,23 @@ class Executor(
 
 
 
-    # ======================================================
-    # VALIDAÇÃO
-    # ======================================================
+    # ==================================================
+    # INTERFACE
+    # ==================================================
+
+
+    def execute(
+        self,
+        action,
+        context=None
+    ):
+
+
+        return self.execute_action(
+            action,
+            context
+        )
+
 
 
     def validate(
@@ -335,11 +453,6 @@ class Executor(
 
 
 
-    # ======================================================
-    # ROLLBACK
-    # ======================================================
-
-
     def rollback(
         self,
         action
@@ -348,24 +461,28 @@ class Executor(
 
         return {
 
+
             "success":
+
                 False,
 
 
             "message":
+
                 "Rollback ainda não implementado.",
 
 
             "action":
+
                 action
 
         }
 
 
 
-    # ======================================================
-    # ERRO
-    # ======================================================
+    # ==================================================
+    # FALHA
+    # ==================================================
 
 
     def failure(
@@ -376,20 +493,29 @@ class Executor(
 
         return {
 
+
             "success":
+
                 False,
 
 
             "message":
+
                 message,
 
 
             "timestamp":
+
                 datetime.now()
                 .isoformat()
 
         }
 
+
+
+    # ==================================================
+    # LOG
+    # ==================================================
 
 
     def log_error(
@@ -400,19 +526,21 @@ class Executor(
 
         if self.logger:
 
+
             self.logger.error(
                 message
             )
 
 
 
-    # ======================================================
+    # ==================================================
     # DIAGNÓSTICO
-    # ======================================================
+    # ==================================================
 
 
     def info(
         self
     ):
+
 
         return self.status()

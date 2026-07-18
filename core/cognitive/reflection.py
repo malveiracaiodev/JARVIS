@@ -8,15 +8,20 @@ core/cognitive/reflection.py
 Descrição:
 Módulo de reflexão cognitiva do Genesis Core.
 
-Responsável por analisar resultados,
-avaliar desempenho e gerar feedback
-para evolução futura.
+Responsável por analisar o ciclo completo
+do Thought após execução, avaliando:
+
+- intenção;
+- planejamento;
+- decisão;
+- execução;
+- aprendizado.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -40,14 +45,18 @@ class Reflection(
 ):
 
     """
-    Camada de avaliação cognitiva.
+    Camada final do ciclo cognitivo.
 
-    Observa resultados.
+    Responsável por:
 
-    Gera conhecimento.
+    - avaliar resultado;
+    - gerar feedback;
+    - extrair aprendizado;
+    - registrar experiência.
 
     Não executa.
-    Não altera memória diretamente.
+    Não decide.
+    Apenas aprende.
     """
 
 
@@ -79,7 +88,7 @@ class Reflection(
 
 
     # ==================================================
-    # PIPELINE
+    # PIPELINE MARK IV
     # ==================================================
 
 
@@ -92,41 +101,59 @@ class Reflection(
         try:
 
 
-            execution = context.data.get(
-                "execution",
-                {}
-            )
+            thought = context.thought
 
 
-            reasoning = context.data.get(
-                "reasoning",
-                {}
-            )
+
+            if thought is None:
+
+
+                context.add_error(
+                    "Nenhum Thought disponível para reflexão."
+                )
+
+
+                return context
 
 
 
             reflection = self.analyze(
-
-                execution,
-
-                reasoning
-
+                thought
             )
 
 
 
-            context.data[
-                "reflection"
-            ] = reflection
+            thought.set_metadata(
+                "reflection",
+                reflection
+            )
+
+
+
+            lesson = self.extract_lesson(
+                reflection
+            )
+
+
+
+            thought.set_metadata(
+                "lesson",
+                lesson
+            )
 
 
 
             self.reflections += 1
 
 
+
             self.history.append(
                 reflection
             )
+
+
+
+            return context
 
 
 
@@ -136,72 +163,70 @@ class Reflection(
             self.failures += 1
 
 
-            context.data[
-                "reflection"
-            ] = {
-
-
-                "success":
-                False,
-
-
-                "error":
-                str(error)
-
-            }
-
-
-
             self.log_error(
                 str(error)
             )
 
 
 
-        return context
+            if context.thought:
+
+
+                context.thought.set_metadata(
+
+                    "reflection",
+
+                    {
+
+                        "success":
+                            False,
+
+
+                        "error":
+                            str(error)
+
+                    }
+
+                )
+
+
+
+            return context
 
 
 
     # ==================================================
-    # ANÁLISE
+    # ANÁLISE DO THOUGHT
     # ==================================================
 
 
     def analyze(
         self,
-        result,
-        reasoning=None
+        thought
     ):
 
 
-        if not result:
-
-
-            return {
-
-                "id":
-                str(uuid.uuid4()),
-
-
-                "success":
-                False,
-
-
-                "analysis":
-                "Nenhum resultado disponível.",
-
-
-                "timestamp":
-                datetime.now()
-                .isoformat()
-
-            }
+        result = thought.result
 
 
 
-        success = result.get(
-            "success",
-            False
+        success = False
+
+
+        if result:
+
+
+            success = result.get(
+                "success",
+                False
+            )
+
+
+
+        quality = (
+            1.0
+            if success
+            else 0.0
         )
 
 
@@ -210,17 +235,13 @@ class Reflection(
 
 
             evaluation = (
-                "Execução concluída."
+                "Ciclo cognitivo concluído "
+                "com sucesso."
             )
 
 
-            quality = 1.0
-
-
             improvement = (
-
-                "Estratégia considerada eficiente."
-
+                "Estratégia eficiente registrada."
             )
 
 
@@ -232,19 +253,13 @@ class Reflection(
 
 
             evaluation = (
-
-                "Execução apresentou falhas."
-
+                "Ciclo cognitivo apresentou falhas."
             )
 
 
-            quality = 0.0
-
-
             improvement = (
-
-                "Reavaliar estratégia e recursos."
-
+                "Reavaliar intenção, "
+                "plano ou recursos."
             )
 
 
@@ -253,36 +268,67 @@ class Reflection(
 
 
             "id":
-            str(uuid.uuid4()),
+                str(uuid.uuid4()),
+
+
+
+            "thought_id":
+                thought.id,
+
 
 
             "timestamp":
-            datetime.now()
-            .isoformat(),
+                datetime.now()
+                .isoformat(),
+
 
 
             "success":
-            success,
+                success,
+
 
 
             "quality":
-            quality,
+                quality,
+
 
 
             "evaluation":
-            evaluation,
+                evaluation,
+
 
 
             "improvement":
-            improvement,
+                improvement,
 
 
-            "reasoning":
-            reasoning,
+
+            "cognition":
+
+                {
 
 
-            "original_result":
-            result
+                    "intention":
+                        thought.intention,
+
+
+
+                    "plan":
+                        thought.plan,
+
+
+
+                    "decision":
+                        thought.decision
+
+
+
+                },
+
+
+
+            "execution":
+                result
 
         }
 
@@ -304,20 +350,23 @@ class Reflection(
 
 
             "expected":
-            expected,
+                expected,
+
 
 
             "actual":
-            actual,
+                actual,
+
 
 
             "match":
-            expected == actual,
+                expected == actual,
+
 
 
             "timestamp":
-            datetime.now()
-            .isoformat()
+                datetime.now()
+                .isoformat()
 
         }
 
@@ -333,14 +382,9 @@ class Reflection(
         reflection
     ):
 
-        """
-        Extrai experiência para futura memória.
-
-        Futuramente enviado ao MemoryManager.
-        """
-
 
         if not reflection:
+
 
             return None
 
@@ -350,19 +394,34 @@ class Reflection(
 
 
             "type":
-            "experience",
+                "experience",
+
 
 
             "success":
-            reflection.get(
-                "success"
-            ),
+                reflection.get(
+                    "success"
+                ),
+
+
+
+            "quality":
+                reflection.get(
+                    "quality"
+                ),
+
 
 
             "lesson":
-            reflection.get(
-                "improvement"
-            )
+                reflection.get(
+                    "improvement"
+                ),
+
+
+
+            "created_at":
+                datetime.now()
+                .isoformat()
 
         }
 
@@ -381,11 +440,8 @@ class Reflection(
 
         if not reflection:
 
+
             return []
-
-
-
-        suggestions = []
 
 
 
@@ -395,39 +451,32 @@ class Reflection(
         ):
 
 
-            suggestions.append(
-
-                "Reavaliar plano cognitivo."
-
-            )
+            return [
 
 
-            suggestions.append(
-
-                "Buscar alternativa de execução."
-
-            )
+                "Reavaliar intenção.",
 
 
-        else:
+                "Recalcular planejamento.",
 
 
-            suggestions.append(
-
-                "Registrar estratégia bem sucedida."
-
-            )
+                "Buscar nova estratégia."
 
 
-            suggestions.append(
-
-                "Priorizar abordagem semelhante no futuro."
-
-            )
+            ]
 
 
 
-        return suggestions
+        return [
+
+
+            "Registrar estratégia bem sucedida.",
+
+
+            "Reutilizar padrões eficientes."
+
+
+        ]
 
 
 
@@ -444,6 +493,7 @@ class Reflection(
 
         if self.logger:
 
+
             self.logger.error(
                 message
             )
@@ -455,27 +505,32 @@ class Reflection(
     # ==================================================
 
 
-    def info(self):
+    def info(
+        self
+    ):
 
 
         return {
 
 
             "name":
-            "reflection",
+                "reflection",
+
 
 
             "reflections":
-            self.reflections,
+                self.reflections,
+
 
 
             "failures":
-            self.failures,
+                self.failures,
+
 
 
             "history":
-            len(
-                self.history
-            )
+                len(
+                    self.history
+                )
 
         }

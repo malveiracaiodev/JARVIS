@@ -113,5 +113,41 @@
         },
         "importance": 1,
         "created_at": "2026-07-17T17:55:02.172537"
+    },
+    {
+        "id": "dcc592c3-faf9-42f8-9254-234f92c9516c",
+        "type": "general",
+        "data": {
+            "teste": "Genesis Mark IV funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-18T17:37:51.829917"
+    },
+    {
+        "id": "c6b27c7a-6c11-4a4f-8cc8-cb4b6c5c1a68",
+        "type": "general",
+        "data": {
+            "teste": "Genesis Mark IV funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-18T17:46:39.398516"
+    },
+    {
+        "id": "f36a1ee8-e719-4842-a18a-be112f6d0f93",
+        "type": "general",
+        "data": {
+            "teste": "Genesis Mark IV funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-18T18:14:14.449247"
+    },
+    {
+        "id": "c49601f0-9787-4ecf-ac28-6a5a73bd2a13",
+        "type": "general",
+        "data": {
+            "teste": "Genesis Mark IV funcionando"
+        },
+        "importance": 1,
+        "created_at": "2026-07-18T18:14:29.141440"
     }
 ]

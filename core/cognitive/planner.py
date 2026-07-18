@@ -19,7 +19,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -42,11 +42,17 @@ from core.pipeline.pipeline_step import (
 )
 
 
+from core.pipeline.pipeline_context import (
+    PipelineContext
+)
+
+
 
 class Planner(
     PipelineStep,
     PlannerInterface
 ):
+
 
     """
     Criador de planos cognitivos.
@@ -62,6 +68,7 @@ class Planner(
         self,
         logger=None
     ):
+
 
         super().__init__(
             "planner"
@@ -86,6 +93,7 @@ class Planner(
         self
     ):
 
+
         return "planner"
 
 
@@ -99,17 +107,22 @@ class Planner(
         self
     ):
 
+
         return {
 
+
             "name":
+
                 self.name(),
 
 
             "plans_created":
+
                 self.plans_created,
 
 
             "errors":
+
                 self.errors
 
         }
@@ -117,44 +130,93 @@ class Planner(
 
 
     # ==================================================
-    # PIPELINE
+    # PIPELINE MARK IV
     # ==================================================
 
 
     def process(
         self,
-        context
+        context: PipelineContext
     ):
 
 
         try:
 
 
-            parsed = context.data.get(
-                "parsed",
-                {}
+            thought = context.thought
+
+
+
+            if thought is None:
+
+
+                context.add_error(
+
+                    "Planner recebeu Context sem Thought."
+
+                )
+
+
+                return context
+
+
+
+            parsed = thought.get_metadata(
+
+                "parsed"
+
             )
+
+
+
+            if parsed is None:
+
+
+                parsed = context.get(
+
+                    "parsed",
+
+                    {}
+
+                )
+
 
 
             intention = parsed.get(
+
                 "content"
+
             )
 
-
-            context.intention = intention
 
 
             plan = self.create_plan(
+
                 intention
+
             )
 
 
-            context.plan = plan
+
+            # ======================================
+            # THOUGHT CENTRAL
+            # ======================================
 
 
-            context.data[
-                "plan"
-            ] = plan
+            thought.set_plan(
+
+                plan
+
+            )
+
+
+            thought.set_metadata(
+
+                "plan",
+
+                plan
+
+            )
 
 
 
@@ -168,18 +230,25 @@ class Planner(
             self.errors += 1
 
 
-            context.data[
-                "plan"
-            ] = {
 
-                "error":
-                    str(error)
+            if context.thought:
 
-            }
+
+                context.thought.failed()
+
+
+
+            context.add_error(
+
+                str(error)
+
+            )
 
 
             self.log_error(
+
                 str(error)
+
             )
 
 
@@ -195,7 +264,8 @@ class Planner(
 
     def create_plan(
         self,
-        intention
+        intention,
+        context=None
     ):
 
 
@@ -204,19 +274,24 @@ class Planner(
 
             return {
 
+
                 "id":
+
                     str(uuid.uuid4()),
 
 
                 "goal":
+
                     None,
 
 
                 "steps":
+
                     [],
 
 
                 "status":
+
                     "empty"
 
             }
@@ -227,41 +302,56 @@ class Planner(
 
 
             "id":
+
                 str(uuid.uuid4()),
 
 
+
             "created":
+
                 datetime.now()
                 .isoformat(),
 
 
+
             "goal":
+
                 intention,
 
 
+
             "priority":
+
                 "normal",
 
 
+
             "status":
+
                 "draft",
+
 
 
             "steps":
 
             [
 
+
                 {
 
+
                     "order":
+
                         1,
 
 
                     "action":
+
                         "analyze",
 
 
                     "description":
+
                         "Analisar objetivo e contexto."
 
                 },
@@ -269,15 +359,19 @@ class Planner(
 
                 {
 
+
                     "order":
+
                         2,
 
 
                     "action":
+
                         "prepare",
 
 
                     "description":
+
                         "Preparar recursos necessários."
 
                 },
@@ -285,15 +379,19 @@ class Planner(
 
                 {
 
+
                     "order":
+
                         3,
 
 
                     "action":
+
                         "execute",
 
 
                     "description":
+
                         "Executar estratégia definida."
 
                 },
@@ -301,15 +399,19 @@ class Planner(
 
                 {
 
+
                     "order":
+
                         4,
 
 
                     "action":
+
                         "verify",
 
 
                     "description":
+
                         "Avaliar resultado obtido."
 
                 }
@@ -333,38 +435,47 @@ class Planner(
 
         if not goal:
 
+
             return []
 
 
 
         return [
 
+
             {
 
                 "step":
+
                     1,
 
 
                 "action":
+
                     "analyze",
 
 
                 "goal":
+
                     goal
 
             },
 
+
             {
 
                 "step":
+
                     2,
 
 
                 "action":
+
                     "execute",
 
 
                 "goal":
+
                     goal
 
             }
@@ -386,11 +497,14 @@ class Planner(
 
         return {
 
+
             "id":
+
                 plan_id,
 
 
             "status":
+
                 "cancelled"
 
         }
@@ -409,15 +523,20 @@ class Planner(
 
 
         if not isinstance(
+
             plan,
+
             dict
+
         ):
+
 
             return False
 
 
 
         required = [
+
 
             "id",
 
@@ -431,14 +550,18 @@ class Planner(
 
         for field in required:
 
+
             if field not in plan:
+
 
                 return False
 
 
 
         return len(
+
             plan["steps"]
+
         ) > 0
 
 
@@ -455,6 +578,7 @@ class Planner(
 
 
         if not plan:
+
 
             return plan
 
@@ -480,8 +604,11 @@ class Planner(
 
         if self.logger:
 
+
             self.logger.error(
+
                 message
+
             )
 
 
@@ -495,17 +622,22 @@ class Planner(
         self
     ):
 
+
         return {
 
+
             "name":
+
                 self.name(),
 
 
             "plans_created":
+
                 self.plans_created,
 
 
             "errors":
+
                 self.errors
 
         }

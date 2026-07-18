@@ -27,14 +27,18 @@ Caio Vitor Malveira
 from datetime import datetime
 
 
+from core.models.thought import Thought
+
+
 
 class PipelineContext:
     """
     Estado temporário de uma execução
     cognitiva.
 
-    Todas as etapas da pipeline recebem
-    e retornam este objeto.
+    O Context mantém o ambiente.
+
+    O Thought mantém o pensamento.
     """
 
 
@@ -54,7 +58,17 @@ class PipelineContext:
 
 
         # ==============================================
-        # Dados produzidos pela cognição
+        # Pensamento cognitivo atual
+        # ==============================================
+
+        self.thought = Thought(
+            message=message
+        )
+
+
+
+        # ==============================================
+        # Dados auxiliares
         # ==============================================
 
         self.data = {}
@@ -94,6 +108,40 @@ class PipelineContext:
 
 
     # ==============================================
+    # THOUGHT
+    # ==============================================
+
+
+    def set_thought(
+        self,
+        thought
+    ):
+
+        self.thought = thought
+
+
+
+    def get_thought(
+        self
+    ):
+
+        return self.thought
+
+
+
+    def finish_thought(
+        self
+    ):
+
+        if self.thought:
+
+            self.thought.finish()
+
+
+
+    # ==============================================
+    # ETAPA ATUAL
+    # ==============================================
 
 
     def update_step(
@@ -101,15 +149,12 @@ class PipelineContext:
         step_name: str
     ):
 
-        """
-        Define etapa atual da pipeline.
-        """
-
-
         self.current_step = step_name
 
 
 
+    # ==============================================
+    # ERROS
     # ==============================================
 
 
@@ -118,17 +163,14 @@ class PipelineContext:
         error
     ):
 
-        """
-        Registra erro ocorrido.
-        """
-
-
         self.errors.append(
             error
         )
 
 
 
+    # ==============================================
+    # HISTÓRICO
     # ==============================================
 
 
@@ -137,17 +179,14 @@ class PipelineContext:
         event
     ):
 
-        """
-        Registra evento da execução.
-        """
-
-
         self.history.append(
             event
         )
 
 
 
+    # ==============================================
+    # DADOS AUXILIARES
     # ==============================================
 
 
@@ -157,23 +196,8 @@ class PipelineContext:
         value
     ):
 
-        """
-        Armazena dado cognitivo.
-
-        Exemplo:
-
-        context.set(
-            "plan",
-            plano
-        )
-        """
-
-
         self.data[key] = value
 
-
-
-    # ==============================================
 
 
     def get(
@@ -182,11 +206,6 @@ class PipelineContext:
         default=None
     ):
 
-        """
-        Recupera dado cognitivo.
-        """
-
-
         return self.data.get(
             key,
             default
@@ -194,6 +213,8 @@ class PipelineContext:
 
 
 
+    # ==============================================
+    # STATUS
     # ==============================================
 
 
@@ -208,37 +229,45 @@ class PipelineContext:
 
 
     # ==============================================
+    # RESUMO
+    # ==============================================
 
 
     def summary(
         self
     ):
 
-        """
-        Retorna resumo atual
-        da execução cognitiva.
-        """
-
 
         return {
 
+
             "message":
-            self.message,
+                self.message,
+
+
+            "thought":
+                (
+                    self.thought.to_dict()
+                    if self.thought
+                    else None
+                ),
 
 
             "data":
-            self.data,
+                self.data,
 
 
             "current_step":
-            self.current_step,
+                self.current_step,
 
 
             "history":
-            self.history,
+                self.history,
 
 
             "errors":
-            len(self.errors)
+                len(
+                    self.errors
+                )
 
         }

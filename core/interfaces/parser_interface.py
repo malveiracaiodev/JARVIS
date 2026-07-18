@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/interfaces/parser_interface.py
@@ -11,24 +11,28 @@ de entrada do Genesis Core.
 
 Responsável por transformar dados
 brutos recebidos do ambiente em
-estruturas cognitivamente utilizáveis.
+informações cognitivas armazenáveis
+no Thought.
 
 Fluxo:
 
-Entrada bruta
-      |
-      v
-    Parser
-      |
-      v
-PipelineContext
+Entrada
+   |
+   v
+Parser
+   |
+   v
+Thought.metadata
+   |
+   v
+Planner
 
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -44,23 +48,19 @@ from abc import (
 
 
 class ParserInterface(ABC):
+
     """
-    Interface base para Parsers.
+    Contrato dos Parsers.
 
-    O Parser não decide.
+    O Parser não pensa.
 
-    Ele apenas:
+    Não decide.
 
-    - interpreta;
-    - organiza;
-    - classifica;
-    - prepara dados.
+    Não cria planos.
 
-    A inteligência fica nos módulos:
-
-    Planner
-    Reasoner
-    Brain
+    Apenas transforma dados brutos
+    em estruturas compreensíveis
+    pelos módulos cognitivos.
     """
 
 
@@ -69,28 +69,38 @@ class ParserInterface(ABC):
     # INTERPRETAÇÃO
     # ==================================================
 
+
     @abstractmethod
     def parse(
         self,
         input_data,
         context=None
     ):
+
         """
-        Converte entrada bruta
-        em estrutura cognitiva.
+        Converte entrada bruta em
+        estrutura cognitiva.
 
         Parameters
         ----------
+
         input_data:
-            Informação recebida.
+
+            Informação recebida
+            pelo sistema.
+
 
         context:
-            Contexto atual do sistema.
+
+            Contexto atual da execução.
+
 
         Returns
         -------
+
         parsed_data:
-            Dados estruturados.
+
+            Estrutura interpretada.
         """
 
         raise NotImplementedError()
@@ -101,24 +111,30 @@ class ParserInterface(ABC):
     # COMPATIBILIDADE
     # ==================================================
 
+
     @abstractmethod
     def supports(
         self,
         input_type
     ):
+
         """
-        Verifica suporte ao tipo
-        de entrada.
+        Verifica tipos de entrada
+        suportados.
 
         Exemplos:
 
         text
+
         voice
+
         command
-        json
+
         image
+
+        file
+
         sensor
-        api
         """
 
         raise NotImplementedError()
@@ -129,24 +145,23 @@ class ParserInterface(ABC):
     # CONFIANÇA
     # ==================================================
 
+
     @abstractmethod
     def confidence(
         self,
         input_data
     ):
+
         """
-        Retorna nível de confiança
-        da interpretação.
+        Retorna confiança da
+        interpretação realizada.
 
-        Exemplo:
+        Usado futuramente pelo
+        Reasoner para decidir:
 
-        0.95
-        0.70
-        0.40
-
-        Usado pelo Reasoner para
-        decidir se deve perguntar
-        confirmação.
+        - continuar;
+        - solicitar confirmação;
+        - buscar informação.
         """
 
         raise NotImplementedError()
@@ -157,18 +172,21 @@ class ParserInterface(ABC):
     # IDENTIDADE
     # ==================================================
 
+
     @abstractmethod
     def name(
         self
     ):
+
         """
-        Retorna nome lógico
-        do parser.
+        Nome lógico do Parser.
 
         Exemplos:
 
         parser.text
+
         parser.voice
+
         parser.image
         """
 
@@ -180,13 +198,15 @@ class ParserInterface(ABC):
     # STATUS
     # ==================================================
 
+
     @abstractmethod
     def status(
         self
     ):
+
         """
         Retorna estado operacional
-        do parser.
+        do Parser.
         """
 
         raise NotImplementedError()

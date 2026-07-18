@@ -109,7 +109,7 @@ class Brain(
 
 
 
-        # Estado central
+        # Estado cognitivo central
 
         self.state = BrainState(
             logger=self.logger
@@ -117,19 +117,21 @@ class Brain(
 
 
 
-        # Pipeline cognitiva
+        # Pipeline Cognitiva
 
         self.pipeline = None
 
 
 
-        self.status = (
+        # Estado interno do Brain
+
+        self._brain_status = (
             BrainStatus.OFFLINE
         )
 
 
-        self.started_at = None
 
+        self.started_at = None
 
         self.cycles = 0
 
@@ -138,9 +140,20 @@ class Brain(
 
 
     # ==================================================
-    # LOG
+    # ESTADO COGNITIVO
     # ==================================================
 
+    def get_brain_status(
+        self
+    ):
+
+        return self._brain_status
+
+
+
+    # ==================================================
+    # LOG
+    # ==================================================
 
     def _log(
         self,
@@ -179,7 +192,6 @@ class Brain(
     # CONEXÕES
     # ==================================================
 
-
     def connect(
         self,
         pipeline=None,
@@ -204,13 +216,12 @@ class Brain(
     # CICLO DE VIDA
     # ==================================================
 
-
     def initialize(
         self
     ):
 
 
-        self.status = (
+        self._brain_status = (
             BrainStatus.INITIALIZING
         )
 
@@ -229,7 +240,7 @@ class Brain(
 
 
 
-        self.status = (
+        self._brain_status = (
             BrainStatus.ONLINE
         )
 
@@ -260,7 +271,7 @@ class Brain(
 
 
 
-        self.status = (
+        self._brain_status = (
             BrainStatus.OFFLINE
         )
 
@@ -286,7 +297,6 @@ class Brain(
     # PROCESSAMENTO COGNITIVO
     # ==================================================
 
-
     def process(
         self,
         input_data
@@ -299,9 +309,10 @@ class Brain(
             self.errors += 1
 
 
-            self.status = (
+            self._brain_status = (
                 BrainStatus.ERROR
             )
+
 
 
             return {
@@ -316,7 +327,7 @@ class Brain(
         try:
 
 
-            self.status = (
+            self._brain_status = (
                 BrainStatus.THINKING
             )
 
@@ -339,7 +350,6 @@ class Brain(
 
 
             self.state.add_history(
-
                 {
 
                     "timestamp":
@@ -355,12 +365,11 @@ class Brain(
                     result
 
                 }
-
             )
 
 
 
-            self.status = (
+            self._brain_status = (
                 BrainStatus.ONLINE
             )
 
@@ -376,15 +385,17 @@ class Brain(
             self.errors += 1
 
 
-            self.status = (
+            self._brain_status = (
                 BrainStatus.ERROR
             )
+
 
 
             self._log(
                 "error",
                 str(error)
             )
+
 
 
             return {
@@ -399,7 +410,6 @@ class Brain(
     # ==================================================
     # MEMÓRIA
     # ==================================================
-
 
     def remember(
         self,
@@ -432,7 +442,6 @@ class Brain(
     # ==================================================
     # CONHECIMENTO
     # ==================================================
-
 
     def learn(
         self,
@@ -468,7 +477,6 @@ class Brain(
     # RESET
     # ==================================================
 
-
     def reset(
         self
     ):
@@ -492,7 +500,6 @@ class Brain(
     # INFORMAÇÕES
     # ==================================================
 
-
     def get_brain_info(
         self
     ):
@@ -510,7 +517,11 @@ class Brain(
 
 
             "status":
-            self.status.value,
+            self._brain_status.value,
+
+
+            "module_status":
+            self.get_status().value,
 
 
             "pipeline":

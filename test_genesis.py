@@ -9,15 +9,21 @@ Descrição:
 Teste geral de integridade do Genesis Core.
 
 Verifica:
+
 - Estrutura
 - Imports
 - Estado cognitivo
+- Thought Engine
 - Pipeline
 - Ferramentas
-- Componentes principais
+- Memória
+- Conhecimento
+
+Arquitetura:
+Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 =========================================
 """
 
@@ -28,9 +34,17 @@ import traceback
 
 def separator(title):
 
-    print("\n" + "=" * 60)
-    print(title)
-    print("=" * 60)
+    print(
+        "\n" + "=" * 60
+    )
+
+    print(
+        title
+    )
+
+    print(
+        "=" * 60
+    )
 
 
 
@@ -38,7 +52,10 @@ errors = []
 
 
 
-def test(name, function):
+def test(
+    name,
+    function
+):
 
     try:
 
@@ -53,9 +70,11 @@ def test(name, function):
 
     except Exception as error:
 
+
         print(
             f"[ERRO] {name}"
         )
+
 
         print(
             error
@@ -63,14 +82,25 @@ def test(name, function):
 
 
         errors.append(
+
             {
-                "teste": name,
-                "erro": str(error),
-                "trace": traceback.format_exc()
+
+                "teste":
+                    name,
+
+                "erro":
+                    str(error),
+
+                "trace":
+                    traceback.format_exc()
+
             }
+
         )
 
+
         return None
+
 
 
 
@@ -80,8 +110,9 @@ def test(name, function):
 
 
 separator(
-    "TESTE DE IMPORTS"
+    "TESTE DE IMPORTS MARK IV"
 )
+
 
 
 test(
@@ -115,6 +146,16 @@ test(
 
 
 test(
+    "Thought",
+    lambda:
+        __import__(
+            "core.models.thought"
+        )
+)
+
+
+
+test(
     "Pipeline",
     lambda:
         __import__(
@@ -134,14 +175,16 @@ test(
 
 
 
+
 # ==================================================
-# ESTADO MENTAL
+# BRAIN STATE
 # ==================================================
 
 
 separator(
     "TESTE BRAIN STATE"
 )
+
 
 
 def create_brain_state():
@@ -181,6 +224,7 @@ if state:
 
 
 
+
 # ==================================================
 # MEMORIA
 # ==================================================
@@ -189,6 +233,7 @@ if state:
 separator(
     "TESTE MEMORIA"
 )
+
 
 
 def test_memory():
@@ -203,15 +248,16 @@ def test_memory():
     memory.initialize()
 
 
-    entry = memory.store(
+    return memory.store(
+
         {
+
             "teste":
-            "Genesis funcionando"
+                "Genesis Mark IV funcionando"
+
         }
+
     )
-
-
-    return entry
 
 
 
@@ -219,6 +265,7 @@ test(
     "Memory Store",
     test_memory
 )
+
 
 
 
@@ -246,8 +293,11 @@ def test_knowledge():
 
 
     return knowledge.add(
+
         "teste",
-        "Genesis funcionando"
+
+        "Thought Engine ativa"
+
     )
 
 
@@ -256,6 +306,7 @@ test(
     "Knowledge Add",
     test_knowledge
 )
+
 
 
 
@@ -293,13 +344,14 @@ tool_manager = test(
 
 
 
+
 # ==================================================
 # PIPELINE
 # ==================================================
 
 
 separator(
-    "TESTE PIPELINE"
+    "TESTE THOUGHT ENGINE"
 )
 
 
@@ -312,12 +364,11 @@ def build_pipeline():
     )
 
 
-    pipeline = PipelineInitializer(
+    return PipelineInitializer(
+
         tool_manager=tool_manager
+
     ).build()
-
-
-    return pipeline
 
 
 
@@ -342,13 +393,14 @@ if pipeline:
 
 
 
+
 # ==================================================
-# TESTE COGNITIVO COMPLETO
+# TESTE COGNITIVO MARK IV
 # ==================================================
 
 
 separator(
-    "TESTE COGNITIVO COMPLETO"
+    "TESTE CICLO COGNITIVO COMPLETO"
 )
 
 
@@ -356,24 +408,59 @@ separator(
 def run_pipeline():
 
 
-    result = pipeline.process(
-        "Jarvis teste seu sistema cognitivo"
+    from core.models.thought import Thought
+
+
+    thought = Thought(
+
+        message=
+            "Jarvis teste seu sistema cognitivo",
+
+        agent=
+            "jarvis",
+
+        source=
+            "test"
+
     )
 
 
-    return result
+    print(
+        "\nTHOUGHT INICIAL:"
+    )
+
+
+    print(
+        thought
+    )
+
+
+    context = pipeline.process(
+
+        thought
+
+    )
+
+
+    return context
 
 
 
 context = None
 
 
+
 if pipeline:
 
+
     context = test(
-        "Executar Pipeline",
+
+        "Executar Thought Engine",
+
         run_pipeline
+
     )
+
 
 
 
@@ -381,32 +468,49 @@ if context:
 
 
     print(
+
         "\nRESUMO:"
+
     )
 
 
     print(
+
         context.summary()
+
     )
 
 
 
     print(
-        "\nDADOS:"
+
+        "\nTHOUGHT FINAL:"
+
     )
 
 
-    for key, value in context.data.items():
+    print(
+
+        context.thought.to_dict()
+
+    )
+
+
+
+    print(
+
+        "\nHISTÓRICO:"
+
+    )
+
+
+    for item in context.history:
+
 
         print(
-            "\n---",
-            key,
-            "---"
+            item
         )
 
-        print(
-            value
-        )
 
 
 
@@ -425,7 +529,9 @@ if errors:
 
 
     print(
+
         f"[FALHAS] {len(errors)} erro(s)"
+
     )
 
 
@@ -433,13 +539,18 @@ if errors:
 
 
         print(
+
             "\nTeste:",
+
             error["teste"]
+
         )
 
 
         print(
+
             error["erro"]
+
         )
 
 
@@ -448,5 +559,7 @@ else:
 
 
     print(
-        "[SUCESSO] Genesis Core passou em todos os testes."
+
+        "[SUCESSO] Genesis Core Mark IV passou em todos os testes."
+
     )

@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/pipeline/cognitive_pipeline.py
@@ -10,6 +10,7 @@ Motor principal da Pipeline Cognitiva
 do Genesis Core.
 
 Responsável por:
+
 - Gerenciar etapas cognitivas
 - Executar PipelineSteps
 - Transportar PipelineContext
@@ -20,7 +21,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -42,6 +43,11 @@ from core.interfaces.pipeline_interface import (
 )
 
 
+from core.models.thought import (
+    Thought
+)
+
+
 from core.pipeline.pipeline_context import (
     PipelineContext
 )
@@ -58,6 +64,7 @@ class CognitivePipeline(
     PipelineInterface
 ):
 
+
     """
     Orquestrador da Pipeline Cognitiva.
 
@@ -65,15 +72,17 @@ class CognitivePipeline(
 
     Apenas coordena:
 
-    Parser
-      |
-    Planner
-      |
-    Reasoner
-      |
-    Executor
-      |
-    Reflection
+        Parser
+          |
+        Planner
+          |
+        Reasoner
+          |
+        Executor
+          |
+        Reflection
+
+    O Thought é transportado pelo Context.
     """
 
 
@@ -82,6 +91,7 @@ class CognitivePipeline(
         self,
         name="core.cognitive_pipeline"
     ):
+
 
         super().__init__(
             name
@@ -123,9 +133,11 @@ class CognitivePipeline(
         self
     ):
 
+
         self.set_status(
             ModuleStatus.ONLINE
         )
+
 
         return True
 
@@ -134,6 +146,7 @@ class CognitivePipeline(
     def shutdown(
         self
     ):
+
 
         self.steps_list.clear()
 
@@ -157,10 +170,12 @@ class CognitivePipeline(
         step
     ):
 
+
         if not isinstance(
             step,
             PipelineStep
         ):
+
 
             raise TypeError(
                 "A etapa precisa herdar PipelineStep."
@@ -178,6 +193,7 @@ class CognitivePipeline(
         step_name
     ):
 
+
         self.steps_list = [
 
             step
@@ -194,6 +210,7 @@ class CognitivePipeline(
         self
     ):
 
+
         return self.steps_list
 
 
@@ -201,6 +218,7 @@ class CognitivePipeline(
     def list_steps(
         self
     ):
+
 
         return [
 
@@ -213,37 +231,53 @@ class CognitivePipeline(
 
 
     # ==================================================
-    # EXECUÇÃO
+    # EXECUÇÃO MARK IV
     # ==================================================
 
 
     def process(
         self,
-        input_data,
-        context=None
-    ):
+        thought: Thought,
+        context: PipelineContext | None = None
+    ) -> PipelineContext:
+
 
 
         if context is None:
 
+
             context = PipelineContext(
-                input_data
+
+                thought.message
+
+            )
+
+
+            context.set_thought(
+                thought
             )
 
 
 
         if not self.steps_list:
 
+
             context.add_error(
+
                 "Pipeline sem etapas registradas."
+
             )
+
+
+            thought.failed()
+
 
             return context
 
 
 
-
         for step in self.steps_list:
+
 
 
             started = datetime.now()
@@ -253,55 +287,77 @@ class CognitivePipeline(
             try:
 
 
+
                 context.update_step(
+
                     step.name
+
                 )
 
 
 
                 context.add_history(
+
                     {
 
                         "step":
+
                             step.name,
 
 
                         "status":
+
                             "started",
 
 
                         "timestamp":
+
                             started.isoformat()
 
                     }
+
                 )
 
 
 
-                # ==========================================
-                # EXECUTA ETAPA
-                # ==========================================
+                # ======================================
+                # MARK IV
+                #
+                # Cada etapa recebe e devolve
+                # o mesmo PipelineContext.
+                #
+                # O método correto é process().
+                #
+                # execute() pertence à camada
+                # de execução de ações.
+                # ======================================
 
-                context = step.execute(
+
+                context = step.process(
+
                     context
+
                 )
 
 
-
-                # ==========================================
-                # VALIDA CONTRATO
-                # ==========================================
 
                 if not isinstance(
+
                     context,
+
                     PipelineContext
+
                 ):
 
+
                     raise TypeError(
-                        f"A etapa '{step.name}' "
-                        f"retornou "
+
+                        f"A etapa '{step.name}' retornou "
+
                         f"{type(context).__name__}. "
+
                         "Esperado PipelineContext."
+
                     )
 
 
@@ -310,34 +366,53 @@ class CognitivePipeline(
 
 
 
+                duration = (
+
+                    finished - started
+
+                ).total_seconds()
+
+
+
                 self.history.append(
+
                     {
 
                         "step":
+
                             step.name,
 
 
                         "duration":
-                            str(
-                                finished - started
-                            )
+
+                            duration
 
                     }
+
                 )
 
 
 
                 context.add_history(
+
                     {
 
                         "step":
+
                             step.name,
 
 
                         "status":
-                            "completed"
+
+                            "completed",
+
+
+                        "duration":
+
+                            duration
 
                     }
+
                 )
 
 
@@ -347,39 +422,45 @@ class CognitivePipeline(
 
 
                 self.errors.append(
+
                     {
 
                         "step":
+
                             step.name,
 
 
                         "error":
+
                             str(error)
 
                     }
+
                 )
 
 
 
-                # Proteção contra erro em cascata
+                context.add_error(
 
-                if isinstance(
-                    context,
-                    PipelineContext
-                ):
+                    {
 
-                    context.add_error(
-                        {
+                        "step":
 
-                            "step":
-                                step.name,
+                            step.name,
 
 
-                            "error":
-                                str(error)
+                        "error":
 
-                        }
-                    )
+                            str(error)
+
+                    }
+
+                )
+
+
+
+                thought.failed()
+
 
 
                 break
@@ -398,6 +479,7 @@ class CognitivePipeline(
     def reset(
         self
     ):
+
 
         self.history.clear()
 
@@ -421,21 +503,26 @@ class CognitivePipeline(
 
         return {
 
+
             "name":
+
                 self._name,
 
 
             "status":
+
                 self.get_status().value,
 
 
             "steps":
+
                 len(
                     self.steps_list
                 ),
 
 
             "errors":
+
                 len(
                     self.errors
                 )

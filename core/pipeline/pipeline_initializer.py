@@ -9,16 +9,17 @@ Descrição:
 Construtor da Pipeline Cognitiva.
 
 Responsável por:
+
 - Registrar ferramentas iniciais
-- Construir fluxo cognitivo
+- Construir fluxo Thought Engine
 - Conectar Executor ao ToolManager
-- Manter diagnóstico das etapas
+- Preparar módulos cognitivos
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -34,16 +35,37 @@ from core.cognitive import (
     Reflection
 )
 
-from core.pipeline.cognitive_pipeline import CognitivePipeline
 
-from core.tools import SystemTestTool
+from core.pipeline.cognitive_pipeline import (
+    CognitivePipeline
+)
+
+
+from core.tools import (
+    SystemTestTool
+)
 
 
 
 class PipelineInitializer:
     """
     Montador da inteligência cognitiva Genesis.
+
+    Cria a cadeia:
+
+        Parser
+          |
+        Planner
+          |
+        Reasoner
+          |
+        Executor
+          |
+        Reflection
+
+    O Thought é o núcleo do fluxo.
     """
+
 
 
     def __init__(
@@ -51,6 +73,7 @@ class PipelineInitializer:
         logger=None,
         tool_manager=None
     ):
+
 
         self.logger = logger
 
@@ -63,18 +86,23 @@ class PipelineInitializer:
 
 
     # ==================================================
-    # Construção
+    # CONSTRUÇÃO
     # ==================================================
 
 
-    def build(self):
+    def build(
+        self
+    ):
+
 
         if self.pipeline:
+
 
             self._log(
                 "info",
                 "Pipeline já inicializada."
             )
+
 
             return self.pipeline
 
@@ -82,15 +110,21 @@ class PipelineInitializer:
 
         if not self.tool_manager:
 
+
             raise RuntimeError(
+
                 "Pipeline Cognitiva requer ToolManager."
+
             )
 
 
 
         self._log(
+
             "info",
-            "Construindo Pipeline Cognitiva."
+
+            "Construindo Thought Engine."
+
         )
 
 
@@ -105,17 +139,40 @@ class PipelineInitializer:
 
         self.steps = [
 
-            Parser(),
 
-            Planner(),
-
-            Reasoner(),
-
-            Executor(
-                tool_manager=self.tool_manager
+            Parser(
+                logger=self.logger
             ),
 
-            Reflection()
+
+
+            Planner(
+                logger=self.logger
+            ),
+
+
+
+            Reasoner(
+                logger=self.logger
+            ),
+
+
+
+            Executor(
+
+                tool_manager=self.tool_manager,
+
+                logger=self.logger
+
+            ),
+
+
+
+            Reflection(
+
+                logger=self.logger
+
+            )
 
         ]
 
@@ -130,9 +187,16 @@ class PipelineInitializer:
 
 
             self._log(
+
                 "info",
+
                 f"Etapa registrada: {step.name}"
+
             )
+
+
+
+        pipeline.initialize()
 
 
 
@@ -141,9 +205,13 @@ class PipelineInitializer:
 
 
         self._log(
+
             "success",
-            "Pipeline Cognitiva construída."
+
+            "Thought Engine construída."
+
         )
+
 
 
         return pipeline
@@ -151,52 +219,80 @@ class PipelineInitializer:
 
 
     # ==================================================
-    # Tools
+    # REGISTRO DE TOOLS
     # ==================================================
 
 
-    def _register_default_tools(self):
+    def _register_default_tools(
+        self
+    ):
+
 
         if "system_test" not in self.tool_manager.list_tools():
 
+
             self.tool_manager.register(
+
                 SystemTestTool()
+
             )
 
 
             self._log(
+
                 "info",
+
                 "Ferramenta registrada: system_test"
+
             )
 
 
 
     # ==================================================
-    # Consulta
+    # CONSULTA
     # ==================================================
 
 
-    def get_pipeline(self):
+    def get_pipeline(
+        self
+    ):
+
 
         return self.pipeline
 
 
 
-    def get_steps(self):
+    def get_steps(
+        self
+    ):
+
 
         return [
+
             step.name
+
             for step in self.steps
+
         ]
 
 
 
     # ==================================================
-    # Reset
+    # RESET
     # ==================================================
 
 
-    def reset(self):
+    def reset(
+        self
+    ):
+
+
+        if self.pipeline:
+
+
+            self.pipeline.shutdown()
+
+
 
         self.pipeline = None
 
@@ -205,7 +301,7 @@ class PipelineInitializer:
 
 
     # ==================================================
-    # Log
+    # LOG
     # ==================================================
 
 
@@ -215,17 +311,23 @@ class PipelineInitializer:
         message
     ):
 
+
         if self.logger:
 
 
             method = getattr(
+
                 self.logger,
+
                 level,
+
                 None
+
             )
 
 
             if method:
+
 
                 method(
                     message
@@ -236,5 +338,7 @@ class PipelineInitializer:
 
 
         print(
+
             f"[PIPELINE:{level.upper()}] {message}"
+
         )

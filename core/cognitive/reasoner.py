@@ -17,7 +17,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -26,6 +26,7 @@ Caio Vitor Malveira
 
 
 import uuid
+
 
 from datetime import datetime
 
@@ -40,11 +41,17 @@ from core.pipeline.pipeline_step import (
 )
 
 
+from core.pipeline.pipeline_context import (
+    PipelineContext
+)
+
+
 
 class Reasoner(
     PipelineStep,
     ReasonerInterface
 ):
+
 
     """
     Núcleo de decisão cognitiva.
@@ -95,6 +102,7 @@ class Reasoner(
         self
     ):
 
+
         return "reasoner"
 
 
@@ -108,45 +116,84 @@ class Reasoner(
         self
     ):
 
+
         return {
 
+
             "name":
-            self.name(),
+
+                self.name(),
+
 
             "decisions":
-            self.decisions,
+
+                self.decisions,
+
 
             "errors":
-            self.errors
+
+                self.errors
 
         }
 
 
 
     # ==================================================
-    # PIPELINE
+    # PIPELINE MARK IV
     # ==================================================
 
 
     def process(
         self,
-        context
+        context: PipelineContext
     ):
 
 
         try:
 
 
-            parsed = context.data.get(
+            thought = context.thought
+
+
+
+            if thought is None:
+
+
+                context.add_error(
+
+                    "Reasoner recebeu Context sem Thought."
+
+                )
+
+
+                return context
+
+
+
+            parsed = thought.get_metadata(
+
                 "parsed",
+
                 {}
+
             )
 
 
-            plan = context.data.get(
-                "plan",
-                {}
-            )
+
+            plan = thought.plan
+
+
+
+            if plan is None:
+
+
+                plan = thought.get_metadata(
+
+                    "plan",
+
+                    {}
+
+                )
 
 
 
@@ -154,27 +201,78 @@ class Reasoner(
 
 
                 "input":
-                parsed.get(
-                    "content"
-                ),
+
+                    parsed.get(
+
+                        "content"
+
+                    ),
+
 
 
                 "plan":
-                plan
+
+                    plan
 
             }
 
 
 
             result = self.reason(
+
                 reasoning_context
+
             )
 
 
 
-            context.data[
-                "reasoning"
-            ] = result
+            # ======================================
+            # ATUALIZA THOUGHT
+            # ======================================
+
+
+            thought.set_decision(
+
+                result.get(
+
+                    "decision"
+
+                )
+
+            )
+
+
+            thought.set_metadata(
+
+                "reasoning",
+
+                result
+
+            )
+
+
+
+            thought.confidence = (
+
+                result.get(
+
+                    "confidence",
+
+                    0
+
+                )
+
+            )
+
+
+
+            context.set(
+
+                "reasoning",
+
+                result
+
+            )
 
 
 
@@ -184,25 +282,58 @@ class Reasoner(
             self.errors += 1
 
 
-            context.data[
-                "reasoning"
-            ] = {
+
+            result = {
+
 
                 "decision":
-                None,
+
+                    None,
+
 
                 "confidence":
-                0,
+
+                    0,
+
 
                 "error":
-                str(error)
+
+                    str(error)
 
             }
 
 
 
+            if context.thought:
+
+
+                context.thought.set_metadata(
+
+                    "reasoning",
+
+                    result
+
+                )
+
+
+                context.thought.failed()
+
+
+
+            context.set(
+
+                "reasoning",
+
+                result
+
+            )
+
+
+
             self.log_error(
+
                 str(error)
+
             )
 
 
@@ -222,9 +353,13 @@ class Reasoner(
     ):
 
 
+
         plan = context.get(
+
             "plan"
+
         )
+
 
 
         if not plan:
@@ -232,64 +367,96 @@ class Reasoner(
 
             return {
 
+
                 "decision":
-                None,
+
+                    None,
+
 
                 "confidence":
-                0,
+
+                    0,
+
 
                 "analysis":
-                "Nenhum plano disponível."
+
+                    "Nenhum plano disponível."
 
             }
 
 
 
         options = self.generate_options(
+
             plan
+
         )
+
 
 
         decision = self.decide(
+
             options
+
         )
+
 
 
         result = {
 
 
             "id":
-            str(uuid.uuid4()),
+
+                str(
+
+                    uuid.uuid4()
+
+                ),
+
 
 
             "timestamp":
-            datetime.now()
-            .isoformat(),
+
+                datetime.now()
+
+                .isoformat(),
+
 
 
             "alternatives":
-            options,
+
+                options,
+
 
 
             "decision":
-            decision,
+
+                decision,
+
 
 
             "confidence":
-            self.confidence(
-                decision
-            )
 
+                self.confidence(
+
+                    decision
+
+                )
 
         }
+
 
 
         self.decisions += 1
 
 
+
         self.history.append(
+
             result
+
         )
+
 
 
         return result
@@ -309,16 +476,25 @@ class Reasoner(
 
         return [
 
+
             {
 
+
                 "strategy":
-                "execute_plan",
+
+                    "execute_plan",
+
+
 
                 "plan":
-                plan,
+
+                    plan,
+
+
 
                 "score":
-                1.0
+
+                    1.0
 
             }
 
@@ -343,11 +519,15 @@ class Reasoner(
 
             return {
 
+
                 "valid":
-                False,
+
+                    False,
+
 
                 "score":
-                0
+
+                    0
 
             }
 
@@ -355,17 +535,26 @@ class Reasoner(
 
         return {
 
+
             "option":
-            option,
+
+                option,
+
 
             "score":
-            option.get(
-                "score",
-                0
-            ),
+
+                option.get(
+
+                    "score",
+
+                    0
+
+                ),
+
 
             "valid":
-            True
+
+                True
 
         }
 
@@ -384,6 +573,7 @@ class Reasoner(
 
         if not possibilities:
 
+
             return None
 
 
@@ -393,10 +583,14 @@ class Reasoner(
             possibilities,
 
             key=lambda x:
-            x.get(
-                "score",
-                0
-            ),
+
+                x.get(
+
+                    "score",
+
+                    0
+
+                ),
 
             reverse=True
 
@@ -417,12 +611,17 @@ class Reasoner(
 
         if not decision:
 
+
             return 0
 
 
+
         return decision.get(
+
             "score",
+
             0
+
         )
 
 
@@ -440,12 +639,16 @@ class Reasoner(
 
         if not decision:
 
+
             return "Nenhuma decisão tomada."
 
 
+
         return (
+
             "Decisão selecionada baseada "
             "na maior pontuação disponível."
+
         )
 
 
@@ -461,12 +664,18 @@ class Reasoner(
         context=None
     ):
 
+
         return [
 
+
             self.evaluate(
+
                 option,
+
                 context
+
             )
+
 
             for option in options
 
@@ -487,6 +696,49 @@ class Reasoner(
 
         if self.logger:
 
+
             self.logger.error(
+
                 message
+
             )
+
+
+
+    # ==================================================
+    # DIAGNÓSTICO
+    # ==================================================
+
+
+    def info(
+        self
+    ):
+
+
+        return {
+
+
+            "name":
+
+                self.name(),
+
+
+            "decisions":
+
+                self.decisions,
+
+
+            "errors":
+
+                self.errors,
+
+
+            "history":
+
+                len(
+
+                    self.history
+
+                )
+
+        }

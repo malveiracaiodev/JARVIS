@@ -8,7 +8,8 @@ test_pipeline.py
 Teste completo da Pipeline Cognitiva.
 
 Arquitetura:
-Genesis Core Mark III
+Genesis Core Mark IV
+Thought Engine
 =========================================
 """
 
@@ -23,13 +24,20 @@ from core.pipeline.pipeline_initializer import (
 )
 
 
+from core.models.thought import (
+    Thought
+)
+
+
 
 # ==================================================
 # TOOL MANAGER
 # ==================================================
 
 
-print("\n[BOOT] Inicializando ToolManager...")
+print(
+    "\n[BOOT] Inicializando ToolManager..."
+)
 
 
 tool_manager = ToolManager()
@@ -51,13 +59,20 @@ print(
 
 
 print(
-    "\n[BOOT] Construindo Pipeline Cognitiva..."
+    "\n[BOOT] Construindo Thought Engine..."
 )
 
 
-pipeline = PipelineInitializer(
+
+initializer = PipelineInitializer(
+
     tool_manager=tool_manager
-).build()
+
+)
+
+
+
+pipeline = initializer.build()
 
 
 
@@ -77,7 +92,9 @@ print(
 )
 
 
+
 for step in pipeline.list_steps():
+
 
     print(
         "-",
@@ -87,13 +104,16 @@ for step in pipeline.list_steps():
 
 
 # ==================================================
-# PROCESSAMENTO
+# CRIAÇÃO DO THOUGHT
 # ==================================================
 
 
 message = (
+
     "Jarvis, teste seu sistema cognitivo"
+
 )
+
 
 
 print(
@@ -101,14 +121,46 @@ print(
 )
 
 
+
 print(
     message
 )
 
 
 
+thought = Thought(
+
+    message=message,
+
+    agent="jarvis",
+
+    source="test"
+
+)
+
+
+
+print(
+    "\nTHOUGHT CRIADO:"
+)
+
+
+
+print(
+    thought
+)
+
+
+
+# ==================================================
+# EXECUÇÃO COGNITIVA
+# ==================================================
+
+
 context = pipeline.process(
-    message
+
+    thought
+
 )
 
 
@@ -119,8 +171,21 @@ context = pipeline.process(
 
 
 print(
-    "\nRESUMO:"
+    "\n=============================="
 )
+
+
+
+print(
+    "RESUMO FINAL"
+)
+
+
+
+print(
+    "=============================="
+)
+
 
 
 print(
@@ -130,20 +195,62 @@ print(
 
 
 # ==================================================
-# DEBUG COGNITIVO
+# THOUGHT FINAL
 # ==================================================
 
 
 print(
-    "\nDADOS INTERNOS:"
+    "\n=============================="
 )
+
+
+
+print(
+    "THOUGHT FINAL"
+)
+
+
+
+print(
+    "=============================="
+)
+
+
+
+print(
+    context.thought.to_dict()
+)
+
+
+
+# ==================================================
+# DADOS INTERNOS
+# ==================================================
+
+
+print(
+    "\n=============================="
+)
+
+
+
+print(
+    "DADOS INTERNOS"
+)
+
+
+
+print(
+    "=============================="
+)
+
 
 
 for key, value in context.data.items():
 
 
     print(
-        "\n======================"
+        "\n----------------------"
     )
 
 
@@ -155,3 +262,66 @@ for key, value in context.data.items():
     print(
         value
     )
+
+
+
+# ==================================================
+# HISTÓRICO
+# ==================================================
+
+
+print(
+    "\n=============================="
+)
+
+
+
+print(
+    "HISTÓRICO DA PIPELINE"
+)
+
+
+
+print(
+    "=============================="
+)
+
+
+
+for event in context.history:
+
+
+    print(
+        event
+    )
+
+
+
+# ==================================================
+# STATUS FINAL
+# ==================================================
+
+
+print(
+    "\n=============================="
+)
+
+
+
+print(
+    "STATUS"
+)
+
+
+
+print(
+    "=============================="
+)
+
+
+
+print(
+
+    pipeline.status
+
+)

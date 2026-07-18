@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/interfaces/planner_interface.py
@@ -10,17 +10,18 @@ Contrato base para sistemas de
 planejamento cognitivo do Genesis Core.
 
 Responsável por transformar intenções
-em planos estruturados de ação.
+armazenadas no Thought em planos
+estruturados.
 
 Fluxo:
 
-Intenção
+Thought
    |
    v
 Planner
    |
    v
-Plano Cognitivo
+Thought.plan
    |
    v
 Reasoner
@@ -30,7 +31,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -46,19 +47,22 @@ from abc import (
 
 
 class PlannerInterface(ABC):
-    """
-    Interface base para Planners.
 
-    O Planner cria estratégias.
+    """
+    Contrato dos Planners.
+
+    O Planner cria caminhos.
+
+    Ele não escolhe caminhos.
 
     Ele não executa ações.
 
     Responsabilidades:
 
+    - transformar intenção em plano;
     - decompor objetivos;
-    - criar sequência de passos;
-    - avaliar recursos;
-    - preparar execução.
+    - organizar etapas;
+    - preparar raciocínio.
     """
 
 
@@ -67,28 +71,37 @@ class PlannerInterface(ABC):
     # CRIAÇÃO DE PLANO
     # ==================================================
 
+
     @abstractmethod
     def create_plan(
         self,
         intention,
         context=None
     ):
+
         """
-        Cria um plano baseado
-        em uma intenção.
+        Cria uma estrutura de plano.
 
         Parameters
         ----------
+
         intention:
-            Objetivo identificado.
+
+            Objetivo identificado
+            pelo sistema.
+
 
         context:
-            Contexto cognitivo atual.
+
+            PipelineContext atual.
+
 
         Returns
         -------
+
         plan:
-            Plano estruturado.
+
+            Estrutura planejável.
         """
 
         raise NotImplementedError()
@@ -99,25 +112,27 @@ class PlannerInterface(ABC):
     # VALIDAÇÃO
     # ==================================================
 
+
     @abstractmethod
     def validate_plan(
         self,
         plan
     ):
+
         """
-        Verifica se o plano
-        pode ser executado.
+        Verifica consistência
+        de um plano.
 
-        Considera:
+        Deve avaliar:
 
+        - estrutura;
         - dependências;
         - recursos;
-        - segurança;
-        - consistência.
+        - segurança.
 
-        Returns
-        -------
-        bool
+        Returns:
+
+            bool
         """
 
         raise NotImplementedError()
@@ -128,20 +143,22 @@ class PlannerInterface(ABC):
     # OTIMIZAÇÃO
     # ==================================================
 
+
     @abstractmethod
     def optimize_plan(
         self,
         plan
     ):
+
         """
-        Otimiza um plano.
+        Melhora um plano existente.
 
-        Pode melhorar:
+        Pode alterar:
 
-        - quantidade de passos;
-        - ordem das ações;
-        - recursos utilizados;
-        - tempo de execução.
+        - ordem dos passos;
+        - quantidade de etapas;
+        - eficiência;
+        - custo.
         """
 
         raise NotImplementedError()
@@ -152,25 +169,26 @@ class PlannerInterface(ABC):
     # DECOMPOSIÇÃO
     # ==================================================
 
+
     @abstractmethod
     def decompose(
         self,
         goal
     ):
+
         """
-        Divide um objetivo complexo
-        em subtarefas menores.
+        Divide objetivos complexos.
 
         Exemplo:
 
-        "Preparar ambiente"
+        "Configurar ambiente"
 
-        vira:
+        torna-se:
 
         [
-          abrir_editor,
-          carregar_projeto,
-          iniciar_servicos
+            instalar recursos,
+            configurar sistema,
+            validar execução
         ]
         """
 
@@ -182,19 +200,21 @@ class PlannerInterface(ABC):
     # CANCELAMENTO
     # ==================================================
 
+
     @abstractmethod
     def cancel_plan(
         self,
         plan_id
     ):
+
         """
         Cancela um plano existente.
 
-        Usado para:
+        Usado em:
 
-        - segurança;
         - interrupção humana;
-        - falhas.
+        - falha;
+        - segurança.
         """
 
         raise NotImplementedError()
@@ -205,10 +225,12 @@ class PlannerInterface(ABC):
     # STATUS
     # ==================================================
 
+
     @abstractmethod
     def status(
         self
     ):
+
         """
         Retorna estado operacional
         do Planner.
@@ -222,18 +244,22 @@ class PlannerInterface(ABC):
     # IDENTIDADE
     # ==================================================
 
+
     @abstractmethod
     def name(
         self
     ):
+
         """
         Nome lógico do Planner.
 
         Exemplos:
 
         planner.basic
-        planner.ai
+
         planner.strategy
+
+        planner.ai
         """
 
         raise NotImplementedError()

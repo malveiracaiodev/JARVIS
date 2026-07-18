@@ -6,7 +6,8 @@ Arquivo:
 engine.py
 
 Descrição:
-Motor e orquestrador principal de processamento assíncrono paralelo e ciclo de vida do Kernel.
+Motor e orquestrador principal de processamento
+assíncrono paralelo e ciclo de vida do Kernel.
 
 Arquitetura:
 Genesis Core
@@ -21,30 +22,51 @@ Caio Vitor Malveira
 
 import os
 import threading
+
 from datetime import datetime
 
-from core.base.module import Module, ModuleStatus
-from core.runtime.queue import TaskQueue
-from core.runtime.worker import Worker
+
+from core.base.module import (
+    Module,
+    ModuleStatus
+)
+
+
+from core.runtime.queue import (
+    TaskQueue
+)
+
+
+from core.runtime.worker import (
+    Worker
+)
+
 
 
 class Runtime(Module):
+
     """
     Gerenciador unificado de execução em background.
 
     Responsável por:
 
-    • Gerenciar o pool de Workers
+    • Gerenciar Workers
     • Receber tarefas assíncronas
     • Distribuir tarefas na fila
-    • Coletar métricas de execução
-    • Controlar o ciclo de vida do Runtime
+    • Coletar métricas
+    • Controlar ciclo de vida
 
-    Não executa lógica cognitiva.
-    Não conhece Brain.
-    Não conhece IA.
-    Apenas coordena a infraestrutura de execução.
+    Não conhece:
+
+    - Brain
+    - Pipeline
+    - Agents
+    - IA
+
+    Apenas fornece infraestrutura.
     """
+
+
 
     def __init__(
         self,
@@ -52,188 +74,531 @@ class Runtime(Module):
         event_bus=None,
         worker_pool_size=None,
     ):
-        super().__init__("core.runtime")
 
-        self.version = "3.1"
+
+        super().__init__(
+            "core.runtime"
+        )
+
+
+
+        self.version = (
+            "Genesis Core Mark III"
+        )
+
+
 
         self.logger = logger
+
         self.event_bus = event_bus
 
-        # Número automático de Workers
+
+
+        # =====================================================
+        # WORKERS
+        # =====================================================
+
+
         if worker_pool_size is None:
-            cpu = os.cpu_count() or 2
-            self.worker_count = max(2, cpu)
+
+
+            cpu = (
+                os.cpu_count()
+                or 2
+            )
+
+
+            self.worker_count = max(
+                2,
+                cpu
+            )
+
+
         else:
-            self.worker_count = max(1, worker_pool_size)
+
+
+            self.worker_count = max(
+                1,
+                worker_pool_size
+            )
+
+
+
+        # =====================================================
+        # FILA
+        # =====================================================
+
 
         self.queue = TaskQueue()
 
+
         self.workers = []
+
 
         self.start_time = None
 
+
+
         self._lock = threading.RLock()
 
-        # Métricas
-        self.metrics = {
+
+
+        # =====================================================
+        # MÉTRICAS
+        # =====================================================
+        #
+        # IMPORTANTE:
+        #
+        # Não substitui as métricas
+        # existentes do Module.
+        #
+        # Apenas adiciona métricas
+        # específicas do Runtime.
+        #
+        # =====================================================
+
+
+        self.metrics.update({
+
             "queued_tasks": 0,
+
             "processed_tasks": 0,
+
             "failed_tasks": 0,
+
             "running_tasks": 0,
+
             "queue_peak": 0,
-        }
+
+        })
+
+
 
     # =====================================================
-    # Ciclo de vida
+    # CICLO DE VIDA
     # =====================================================
 
-    def initialize(self):
+
+
+    def initialize(
+        self
+    ):
+
+
         with self._lock:
 
-            if self.get_status() == ModuleStatus.ONLINE:
-                self.info("Runtime já está ONLINE.")
-                return
 
-            self.set_status(ModuleStatus.INITIALIZING)
+
+            if (
+                self.get_status()
+                ==
+                ModuleStatus.ONLINE
+            ):
+
+                self.info(
+                    "Runtime já está ONLINE."
+                )
+
+                return True
+
+
+
+
+            self.set_status(
+                ModuleStatus.INITIALIZING
+            )
+
+
 
             self.start_time = datetime.now()
 
+
+
             self.workers = [
+
                 Worker(
                     queue=self.queue,
                     logger=self.logger,
                     event_bus=self.event_bus,
+                    name=f"Worker-{index + 1}"
                 )
-                for _ in range(self.worker_count)
+
+                for index
+
+                in range(
+                    self.worker_count
+                )
+
             ]
 
+
+
             for worker in self.workers:
+
                 worker.start()
 
-            self.set_status(ModuleStatus.ONLINE)
 
-            self.success(
-                f"Motor de execução ONLINE com {self.worker_count} Workers."
+
+            self.set_status(
+                ModuleStatus.ONLINE
             )
 
-            self._emit("runtime.started")
 
-    def start(self):
-        self.initialize()
 
-    def stop(self):
+            self.success(
+                f"Motor Runtime ONLINE com {self.worker_count} Workers."
+            )
+
+
+
+            self._emit(
+                "runtime.started"
+            )
+
+
+
+        return True
+
+
+
+
+
+    def start(
+        self
+    ):
+
+        return self.initialize()
+
+
+
+
+
+    def stop(
+        self
+    ):
+
+
         with self._lock:
 
-            if self.get_status() == ModuleStatus.OFFLINE:
-                return
 
-            self.set_status(ModuleStatus.STOPPING)
+
+            if (
+                self.get_status()
+                ==
+                ModuleStatus.OFFLINE
+            ):
+
+                return True
+
+
+
+
+            self.set_status(
+                ModuleStatus.WARNING
+            )
+
+
 
             for worker in self.workers:
+
                 worker.stop()
 
-            # Aguarda encerramento das threads
+
+
             for worker in self.workers:
+
                 worker.join()
+
+
 
             self.workers.clear()
 
-            self.set_status(ModuleStatus.OFFLINE)
 
-            self.info("Runtime finalizado.")
 
-            self._emit("runtime.stopped")
+            self.set_status(
+                ModuleStatus.OFFLINE
+            )
 
-    def shutdown(self):
-        self.stop()
+
+
+            self.info(
+                "Runtime finalizado."
+            )
+
+
+
+            self._emit(
+                "runtime.stopped"
+            )
+
+
+
+        return True
+
+
+
+
+
+    def shutdown(
+        self
+    ):
+
+        return self.stop()
+
+
 
     # =====================================================
-    # Fila
+    # FILA
     # =====================================================
 
-    def add_task(self, task):
+
+
+    def add_task(
+        self,
+        task
+    ):
+
         """
-        Adiciona uma tarefa à fila de execução.
+        Adiciona uma tarefa
+        para execução assíncrona.
         """
 
-        self.queue.push(task)
 
-        self.metrics["queued_tasks"] += 1
 
-        queue_size = self.queue.size()
+        self.queue.push(
+            task
+        )
 
-        if queue_size > self.metrics["queue_peak"]:
-            self.metrics["queue_peak"] = queue_size
+
+
+        self.metrics[
+            "queued_tasks"
+        ] += 1
+
+
+
+        queue_size = (
+            self.queue.size()
+        )
+
+
+
+        if (
+            queue_size
+            >
+            self.metrics["queue_peak"]
+        ):
+
+            self.metrics[
+                "queue_peak"
+            ] = queue_size
+
+
+
 
         task_name = getattr(
+
             task,
+
             "name",
+
             task.__class__.__name__
-            if hasattr(task, "__class__")
-            else "LambdaTask",
+
         )
 
+
+
         self.info(
-            f"Carga assíncrona adicionada à fila: '{task_name}'"
+            f"Tarefa adicionada: {task_name}"
         )
+
+
 
         self._emit(
             "runtime.task.queued",
-            task=task_name,
+            task=task_name
         )
 
-    # =====================================================
-    # Consulta
-    # =====================================================
 
-    def status(self):
-        with self._lock:
-
-            uptime = 0
-
-            if self.start_time:
-                uptime = (
-                    datetime.now() - self.start_time
-                ).total_seconds()
-
-            return {
-                "name": self.name,
-                "version": self.version,
-                "status": self.get_status().value,
-                "worker_count": self.worker_count,
-                "active_workers": len(self.workers),
-                "pending_tasks": self.queue.size(),
-                "uptime_seconds": round(uptime, 2),
-                "metrics": self.metrics.copy(),
-            }
 
     # =====================================================
-    # Eventos
+    # STATUS
     # =====================================================
 
-    def _emit(self, event, **payload):
-        if self.event_bus:
-            try:
-                self.event_bus.emit(event, **payload)
-            except Exception as e:
-                self.info(f"Falha ao emitir evento '{event}': {e}")
+
+
+    def status(
+        self
+    ):
+
+
+
+        uptime = 0
+
+
+
+        if self.start_time:
+
+
+            uptime = (
+
+                datetime.now()
+
+                -
+
+                self.start_time
+
+            ).total_seconds()
+
+
+
+
+        return {
+
+
+            "name":
+
+                self.name,
+
+
+            "version":
+
+                self.version,
+
+
+            "status":
+
+                self.get_status()
+                .value,
+
+
+            "workers":
+
+                self.worker_count,
+
+
+            "active_workers":
+
+                len(
+                    self.workers
+                ),
+
+
+            "pending_tasks":
+
+                self.queue.size(),
+
+
+            "uptime":
+
+                round(
+                    uptime,
+                    2
+                ),
+
+
+            "metrics":
+
+                self.metrics.copy()
+
+        }
+
+
+
 
     # =====================================================
-    # Logging
+    # EVENTOS
     # =====================================================
 
-    def info(self, msg):
+
+
+    def _emit(
+        self,
+        event,
+        **payload
+    ):
+
+
+        if not self.event_bus:
+
+            return
+
+
+
+        try:
+
+
+            self.event_bus.emit(
+                event,
+                payload
+            )
+
+
+        except Exception as error:
+
+
+            self.info(
+                f"Falha evento {event}: {error}"
+            )
+
+
+
+    # =====================================================
+    # LOGGING
+    # =====================================================
+
+
+
+    def info(
+        self,
+        message
+    ):
+
+
         if self.logger:
-            self.logger.info(msg)
 
-    def success(self, msg):
-        if self.logger:
-            self.logger.success(msg)
+            self.logger.info(
+                message
+            )
 
-    def warning(self, msg):
-        if self.logger:
-            self.logger.warning(msg)
 
-    def error(self, msg):
+
+    def success(
+        self,
+        message
+    ):
+
+
         if self.logger:
-            self.logger.error(msg)
+
+            self.logger.success(
+                message
+            )
+
+
+
+    def warning(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.warning(
+                message
+            )
+
+
+
+    def error(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+            self.logger.error(
+                message
+            )

@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/pipeline/pipeline_step.py
@@ -9,14 +9,17 @@ Descrição:
 Classe base para etapas da Pipeline
 Cognitiva do Genesis Core.
 
-Responsável por padronizar execução
-das etapas cognitivas.
+Cada etapa trabalha exclusivamente
+sobre o PipelineContext.
+
+O Thought é transportado pelo Context
+como unidade cognitiva central.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -24,25 +27,38 @@ Caio Vitor Malveira
 """
 
 
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod
+)
+
+
+from core.pipeline.pipeline_context import (
+    PipelineContext
+)
 
 
 
 class PipelineStep(
     ABC
 ):
+
+
     """
-    Classe base de uma etapa cognitiva.
+    Classe base das etapas cognitivas.
 
-    Toda etapa deve implementar:
+    Responsabilidade:
 
-    process(context)
+    Receber Context.
 
-    A Pipeline chama:
+    Ler Thought.
 
-    execute(context)
+    Atualizar Thought.
 
-    que controla o ciclo da etapa.
+    Retornar Context.
+
+    Não cria fluxo.
+    Não controla outras etapas.
     """
 
 
@@ -52,26 +68,20 @@ class PipelineStep(
         name: str
     ):
 
+
         self.name = name
 
 
 
     # ==================================================
-    # Execução padrão da Pipeline
+    # EXECUÇÃO PADRÃO MARK IV
     # ==================================================
 
 
     def execute(
         self,
-        context
-    ):
-        """
-        Ponto único de entrada
-        da Pipeline.
-
-        Responsável por chamar
-        o processamento real.
-        """
+        context: PipelineContext
+    ) -> PipelineContext:
 
 
         return self.process(
@@ -81,36 +91,39 @@ class PipelineStep(
 
 
     # ==================================================
-    # Processamento obrigatório
+    # PROCESSAMENTO
     # ==================================================
 
 
     @abstractmethod
     def process(
         self,
-        context
-    ):
-        """
-        Cada etapa deve implementar
-        sua própria lógica.
-        """
+        context: PipelineContext
+    ) -> PipelineContext:
 
 
-        raise NotImplementedError
+        """
+        Processa uma etapa cognitiva.
+
+        Cada módulo deve:
+
+        - acessar context.thought;
+        - atualizar Thought;
+        - retornar Context.
+        """
+
+        raise NotImplementedError()
 
 
 
     # ==================================================
-    # Informações da etapa
+    # IDENTIDADE
     # ==================================================
 
 
     def get_name(
         self
     ):
-        """
-        Retorna nome da etapa.
-        """
 
 
         return self.name
@@ -118,7 +131,7 @@ class PipelineStep(
 
 
     # ==================================================
-    # Representação
+    # REPRESENTAÇÃO
     # ==================================================
 
 
@@ -126,6 +139,9 @@ class PipelineStep(
         self
     ):
 
+
         return (
+
             f"<PipelineStep:{self.name}>"
+
         )

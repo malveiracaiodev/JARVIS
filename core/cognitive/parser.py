@@ -15,7 +15,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -36,20 +36,30 @@ from core.pipeline.pipeline_step import (
 )
 
 
+from core.pipeline.pipeline_context import (
+    PipelineContext
+)
+
+
 
 class Parser(
     PipelineStep,
     ParserInterface
 ):
 
+
     """
     Entrada inicial da inteligência.
 
-    Não interpreta.
+    Responsável por:
+
+    - estruturar entrada;
+    - identificar tipo;
+    - registrar interpretação inicial.
+
+    Não interpreta profundamente.
     Não raciocina.
     Não executa.
-
-    Apenas estrutura informação.
     """
 
 
@@ -58,6 +68,7 @@ class Parser(
         self,
         logger=None
     ):
+
 
         super().__init__(
             "parser"
@@ -95,17 +106,22 @@ class Parser(
         self
     ):
 
+
         return {
 
+
             "name":
+
                 self.name(),
 
 
             "processed":
+
                 self.processed,
 
 
             "errors":
+
                 self.errors
 
         }
@@ -140,26 +156,73 @@ class Parser(
 
 
     # ==================================================
-    # PIPELINE
+    # PIPELINE MARK IV
     # ==================================================
 
 
     def process(
         self,
-        context
-    ):
+        context: PipelineContext
+    ) -> PipelineContext:
+
 
         try:
 
 
+            thought = context.thought
+
+
+
+            if thought is None:
+
+
+                context.add_error(
+
+                    "Parser recebeu Context sem Thought."
+
+                )
+
+
+                return context
+
+
+
             parsed = self.parse(
-                context.message
+
+                thought.message
+
             )
 
 
-            context.data[
-                "parsed"
-            ] = parsed
+
+            # ======================================
+            # CONTEXTO AUXILIAR
+            # ======================================
+
+
+            context.set(
+
+                "parsed",
+
+                parsed
+
+            )
+
+
+
+            # ======================================
+            # THOUGHT CENTRAL
+            # ======================================
+
+
+            thought.set_metadata(
+
+                "parsed",
+
+                parsed
+
+            )
+
 
 
             self.processed += 1
@@ -172,27 +235,58 @@ class Parser(
             self.errors += 1
 
 
-            context.data[
-                "parsed"
-            ] = {
+
+            error_data = {
 
 
                 "type":
+
                     "error",
 
 
                 "content":
+
                     None,
 
 
                 "error":
+
                     str(error)
 
             }
 
 
+
+            context.set(
+
+                "parsed",
+
+                error_data
+
+            )
+
+
+
+            if context.thought:
+
+
+                context.thought.set_metadata(
+
+                    "parsed",
+
+                    error_data
+
+                )
+
+
+                context.thought.failed()
+
+
+
             self.log_error(
+
                 str(error)
+
             )
 
 
@@ -213,10 +307,7 @@ class Parser(
     ):
 
 
-        timestamp = (
-            datetime.now()
-            .isoformat()
-        )
+        timestamp = datetime.now().isoformat()
 
 
 
@@ -227,21 +318,30 @@ class Parser(
 
 
                 "type":
+
                     "empty",
 
 
+
                 "content":
+
                     None,
 
 
+
                 "metadata":
+
                 {
 
+
                     "source":
+
                         "unknown",
 
 
+
                     "timestamp":
+
                         timestamp
 
                 }
@@ -251,7 +351,9 @@ class Parser(
 
 
         content = str(
+
             input_data
+
         ).strip()
 
 
@@ -260,27 +362,40 @@ class Parser(
 
 
             "type":
+
                 self.detect_type(
+
                     input_data
+
                 ),
 
 
+
             "content":
+
                 content,
 
 
+
             "metadata":
+
             {
 
+
                 "source":
+
                     "user",
 
 
+
                 "timestamp":
+
                     timestamp,
 
 
+
                 "length":
+
                     len(content)
 
             }
@@ -301,8 +416,11 @@ class Parser(
 
 
         if isinstance(
+
             data,
+
             str
+
         ):
 
             return "text"
@@ -310,7 +428,9 @@ class Parser(
 
 
         return type(
+
             data
+
         ).__name__
 
 
@@ -327,6 +447,7 @@ class Parser(
 
 
         return input_type in [
+
 
             "text",
 
@@ -355,8 +476,11 @@ class Parser(
 
         if self.logger:
 
+
             self.logger.error(
+
                 message
+
             )
 
 
@@ -375,20 +499,29 @@ class Parser(
 
 
             "name":
+
                 self.name(),
 
 
+
             "processed":
+
                 self.processed,
 
 
+
             "errors":
+
                 self.errors,
 
 
+
             "confidence":
+
                 self.confidence(
+
                     None
+
                 )
 
         }

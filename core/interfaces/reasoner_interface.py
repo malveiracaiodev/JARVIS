@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/interfaces/reasoner_interface.py
@@ -9,28 +9,29 @@ Descrição:
 Contrato base para sistemas de raciocínio
 cognitivo do Genesis Core.
 
-Responsável por analisar contexto,
-avaliar possibilidades e gerar decisões.
+Responsável por analisar planos,
+avaliar alternativas e produzir decisões
+armazenadas no Thought.
 
 Fluxo:
 
-Contexto
-   |
-   v
-Reasoner
-   |
-   v
-Decisão Cognitiva
-   |
-   v
-Executor
+Thought.plan
+      |
+      v
+  Reasoner
+      |
+      v
+Thought.decision
+      |
+      v
+  Executor
 
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -46,19 +47,26 @@ from abc import (
 
 
 class ReasonerInterface(ABC):
+
     """
-    Interface base para Reasoners.
+    Contrato dos Reasoners.
 
-    O Reasoner é responsável por:
+    O Reasoner representa a camada
+    de escolha cognitiva.
 
-    - analisar informações;
-    - avaliar alternativas;
-    - considerar riscos;
-    - gerar decisões.
+    Ele:
 
-    Ele não executa ações.
+    - analisa;
+    - compara;
+    - avalia;
+    - decide.
 
-    Ele apenas decide.
+
+    Ele NÃO:
+
+    - executa;
+    - controla ferramentas;
+    - altera ambiente.
     """
 
 
@@ -67,31 +75,32 @@ class ReasonerInterface(ABC):
     # RACIOCÍNIO PRINCIPAL
     # ==================================================
 
+
     @abstractmethod
     def reason(
         self,
         context
     ):
+
         """
         Executa ciclo de raciocínio.
 
-        Parameters
-        ----------
-        context:
-            Contexto cognitivo atual.
+        O contexto pode conter:
 
-        Pode conter:
-
-        - entrada;
+        - entrada interpretada;
+        - plano;
         - memória;
         - conhecimento;
-        - objetivo;
-        - plano.
+        - objetivos.
 
-        Returns
-        -------
-        reasoning_result:
-            Resultado do raciocínio.
+
+        Returns:
+
+            Resultado cognitivo contendo:
+
+            - alternativas;
+            - decisão;
+            - confiança.
         """
 
         raise NotImplementedError()
@@ -99,31 +108,32 @@ class ReasonerInterface(ABC):
 
 
     # ==================================================
-    # AVALIAÇÃO DE OPÇÕES
+    # AVALIAÇÃO
     # ==================================================
+
 
     @abstractmethod
     def evaluate(
         self,
         option,
-        context
+        context=None
     ):
+
         """
         Avalia uma possibilidade.
 
         Considera:
 
-        - objetivo;
-        - contexto;
+        - objetivo atual;
+        - plano;
         - regras;
-        - conhecimento;
         - segurança;
-        - custo.
+        - conhecimento.
 
-        Returns
-        -------
-        evaluation:
-            Resultado da avaliação.
+
+        Returns:
+
+            avaliação da opção.
         """
 
         raise NotImplementedError()
@@ -134,23 +144,19 @@ class ReasonerInterface(ABC):
     # DECISÃO
     # ==================================================
 
+
     @abstractmethod
     def decide(
         self,
         possibilities
     ):
+
         """
-        Seleciona uma decisão.
+        Seleciona a melhor alternativa.
 
-        Parameters
-        ----------
-        possibilities:
-            Alternativas disponíveis.
-
-        Returns
-        -------
-        decision:
-            Decisão escolhida.
+        Recebe possibilidades
+        avaliadas e retorna
+        uma decisão cognitiva.
         """
 
         raise NotImplementedError()
@@ -161,25 +167,22 @@ class ReasonerInterface(ABC):
     # EXPLICAÇÃO
     # ==================================================
 
+
     @abstractmethod
     def explain(
         self,
         decision
     ):
+
         """
-        Explica o motivo de uma decisão.
+        Produz explicação da decisão.
 
         Usado para:
 
         - transparência;
-        - debugging;
+        - depuração;
         - aprendizado;
         - interação humana.
-
-        Returns
-        -------
-        explanation:
-            Justificativa.
         """
 
         raise NotImplementedError()
@@ -190,26 +193,28 @@ class ReasonerInterface(ABC):
     # CONFIANÇA
     # ==================================================
 
+
     @abstractmethod
     def confidence(
         self,
         decision
     ):
+
         """
-        Retorna confiança
-        da decisão tomada.
+        Calcula confiança da decisão.
 
-        Exemplo:
+        Valores esperados:
 
-        0.95
-        0.60
-        0.30
+        0.0 -> baixa confiança
 
-        Usado para decidir:
+        1.0 -> alta confiança
+
+
+        Pode ser utilizado para:
 
         - executar;
         - pedir confirmação;
-        - pesquisar mais.
+        - buscar conhecimento.
         """
 
         raise NotImplementedError()
@@ -220,10 +225,12 @@ class ReasonerInterface(ABC):
     # STATUS
     # ==================================================
 
+
     @abstractmethod
     def status(
         self
     ):
+
         """
         Retorna estado operacional
         do Reasoner.
@@ -237,18 +244,22 @@ class ReasonerInterface(ABC):
     # IDENTIDADE
     # ==================================================
 
+
     @abstractmethod
     def name(
         self
     ):
+
         """
         Nome lógico do Reasoner.
 
         Exemplos:
 
         reasoner.rule_based
-        reasoner.ai
+
         reasoner.hybrid
+
+        reasoner.ai
         """
 
         raise NotImplementedError()
