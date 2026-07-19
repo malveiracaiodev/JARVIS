@@ -86,5 +86,61 @@
         "source": "internal",
         "tags": [],
         "created_at": "2026-07-18T18:14:29.161664"
+    },
+    {
+        "id": "6d99ff25-718e-4594-b1e9-f3553aef4739",
+        "topic": "teste",
+        "information": "Thought Engine ativa",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-18T18:33:32.643315"
+    },
+    {
+        "id": "3041d94b-92f8-4cdb-85fa-9ecbf405481d",
+        "topic": "teste",
+        "information": "Thought Engine ativa",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-18T18:35:44.442010"
+    },
+    {
+        "id": "259995b0-fcc9-411d-a6c2-6e3f1bf2fb11",
+        "topic": "teste",
+        "information": "Thought Engine ativa",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-18T18:35:57.807463"
+    },
+    {
+        "id": "56721824-fb64-453a-99a3-44db8fe1a114",
+        "topic": "teste",
+        "information": "Thought Engine ativa",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-18T18:40:48.164443"
+    },
+    {
+        "id": "b0169683-3b9b-4024-b6bb-31576305ea25",
+        "topic": "teste",
+        "information": "Thought Engine ativa",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-18T18:52:14.256590"
+    },
+    {
+        "id": "b4636a02-1af4-4cd7-923e-4a6225f3bc43",
+        "topic": "teste",
+        "information": "Thought Engine ativa",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-18T18:56:27.900070"
+    },
+    {
+        "id": "e513fdc4-515f-4c1d-a71a-069b5a78a421",
+        "topic": "teste",
+        "information": "Thought Engine ativa",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-19T18:46:53.532582"
     }
 ]

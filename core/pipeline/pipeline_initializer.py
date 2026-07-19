@@ -27,18 +27,36 @@ Caio Vitor Malveira
 """
 
 
-from core.cognitive import (
-    Executor,
-    Parser,
-    Planner,
-    Reasoner,
+from core.cognitive.parser import (
+    Parser
+)
+
+
+from core.cognitive.planner import (
+    Planner
+)
+
+
+from core.cognitive.reasoner import (
+    Reasoner
+)
+
+
+from core.cognitive.executor import (
+    Executor
+)
+
+
+from core.cognitive.reflection import (
     Reflection
 )
+
 
 
 from core.pipeline.cognitive_pipeline import (
     CognitivePipeline
 )
+
 
 
 from core.tools import (
@@ -47,11 +65,12 @@ from core.tools import (
 
 
 
+
 class PipelineInitializer:
     """
-    Montador da inteligência cognitiva Genesis.
+    Montador da Pipeline Cognitiva Genesis.
 
-    Cria a cadeia:
+    Fluxo:
 
         Parser
           |
@@ -63,7 +82,7 @@ class PipelineInitializer:
           |
         Reflection
 
-    O Thought é o núcleo do fluxo.
+    Thought é o núcleo.
     """
 
 
@@ -79,7 +98,9 @@ class PipelineInitializer:
 
         self.tool_manager = tool_manager
 
+
         self.pipeline = None
+
 
         self.steps = []
 
@@ -108,7 +129,7 @@ class PipelineInitializer:
 
 
 
-        if not self.tool_manager:
+        if self.tool_manager is None:
 
 
             raise RuntimeError(
@@ -120,11 +141,8 @@ class PipelineInitializer:
 
 
         self._log(
-
             "info",
-
             "Construindo Thought Engine."
-
         )
 
 
@@ -145,17 +163,14 @@ class PipelineInitializer:
             ),
 
 
-
             Planner(
                 logger=self.logger
             ),
 
 
-
             Reasoner(
                 logger=self.logger
             ),
-
 
 
             Executor(
@@ -167,11 +182,8 @@ class PipelineInitializer:
             ),
 
 
-
             Reflection(
-
                 logger=self.logger
-
             )
 
         ]
@@ -190,7 +202,7 @@ class PipelineInitializer:
 
                 "info",
 
-                f"Etapa registrada: {step.name}"
+                f"Etapa registrada: {self._step_name(step)}"
 
             )
 
@@ -218,8 +230,49 @@ class PipelineInitializer:
 
 
 
+
     # ==================================================
-    # REGISTRO DE TOOLS
+    # NOME DE STEP
+    # ==================================================
+
+
+    def _step_name(
+        self,
+        step
+    ):
+
+
+        name = getattr(
+
+            step,
+
+            "name",
+
+            None
+
+        )
+
+
+
+        if callable(name):
+
+            return name()
+
+
+
+        if name:
+
+            return name
+
+
+
+        return step.__class__.__name__.lower()
+
+
+
+
+    # ==================================================
+    # TOOLS PADRÃO
     # ==================================================
 
 
@@ -228,7 +281,21 @@ class PipelineInitializer:
     ):
 
 
-        if "system_test" not in self.tool_manager.list_tools():
+        try:
+
+
+            existing = self.tool_manager.list_tools()
+
+
+
+        except Exception:
+
+
+            existing = []
+
+
+
+        if "system_test" not in existing:
 
 
             self.tool_manager.register(
@@ -262,6 +329,7 @@ class PipelineInitializer:
 
 
 
+
     def get_steps(
         self
     ):
@@ -269,11 +337,12 @@ class PipelineInitializer:
 
         return [
 
-            step.name
+            self._step_name(step)
 
             for step in self.steps
 
         ]
+
 
 
 
@@ -296,7 +365,9 @@ class PipelineInitializer:
 
         self.pipeline = None
 
+
         self.steps.clear()
+
 
 
 
@@ -326,12 +397,13 @@ class PipelineInitializer:
             )
 
 
-            if method:
+            if callable(method):
 
 
                 method(
                     message
                 )
+
 
                 return
 

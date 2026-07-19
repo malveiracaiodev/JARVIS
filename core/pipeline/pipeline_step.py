@@ -12,9 +12,6 @@ Cognitiva do Genesis Core.
 Cada etapa trabalha exclusivamente
 sobre o PipelineContext.
 
-O Thought é transportado pelo Context
-como unidade cognitiva central.
-
 Arquitetura:
 Genesis Core
 
@@ -33,6 +30,9 @@ from abc import (
 )
 
 
+from datetime import datetime
+
+
 from core.pipeline.pipeline_context import (
     PipelineContext
 )
@@ -44,37 +44,44 @@ class PipelineStep(
 ):
 
 
-    """
-    Classe base das etapas cognitivas.
-
-    Responsabilidade:
-
-    Receber Context.
-
-    Ler Thought.
-
-    Atualizar Thought.
-
-    Retornar Context.
-
-    Não cria fluxo.
-    Não controla outras etapas.
-    """
-
-
-
     def __init__(
         self,
         name: str
     ):
 
 
-        self.name = name
+        self._name = name
+
+
+        self.status = "created"
+
+
+        self.started_at = None
+
+
+        self.finished_at = None
+
+
+        self.execution_time = 0.0
 
 
 
     # ==================================================
-    # EXECUÇÃO PADRÃO MARK IV
+    # IDENTIDADE
+    # ==================================================
+
+
+    @property
+    def name(
+        self
+    ):
+
+        return self._name
+
+
+
+    # ==================================================
+    # EXECUÇÃO PADRÃO
     # ==================================================
 
 
@@ -84,9 +91,172 @@ class PipelineStep(
     ) -> PipelineContext:
 
 
-        return self.process(
+        return self.run(
             context
         )
+
+
+
+    def run(
+        self,
+        context: PipelineContext
+    ) -> PipelineContext:
+
+
+        if not isinstance(
+            context,
+            PipelineContext
+        ):
+
+
+            raise TypeError(
+
+                "PipelineStep precisa receber PipelineContext."
+
+            )
+
+
+
+        self.started_at = datetime.now()
+
+
+        self.status = "processing"
+
+
+
+        context.add_history(
+
+            {
+
+                "event":
+                    "step_started",
+
+                "step":
+                    self.name,
+
+                "timestamp":
+                    self.started_at.isoformat()
+
+            }
+
+        )
+
+
+
+        try:
+
+
+            result = self.process(
+                context
+            )
+
+
+
+            if not isinstance(
+                result,
+                PipelineContext
+            ):
+
+
+                raise TypeError(
+
+                    f"A etapa {self.name} "
+                    "não retornou PipelineContext."
+
+                )
+
+
+
+            self.finished_at = datetime.now()
+
+
+            self.status = "completed"
+
+
+
+            self.execution_time = (
+
+                self.finished_at
+                -
+                self.started_at
+
+            ).total_seconds()
+
+
+
+            result.add_history(
+
+                {
+
+                    "event":
+                        "step_completed",
+
+                    "step":
+                        self.name,
+
+                    "duration":
+                        self.execution_time,
+
+                    "timestamp":
+                        self.finished_at.isoformat()
+
+                }
+
+            )
+
+
+
+            return result
+
+
+
+        except Exception as error:
+
+
+            self.status = "failed"
+
+
+            self.finished_at = datetime.now()
+
+
+
+            context.add_error(
+
+                {
+
+                    "step":
+                        self.name,
+
+                    "error":
+                        str(error)
+
+                }
+
+            )
+
+
+            context.add_history(
+
+                {
+
+                    "event":
+                        "step_failed",
+
+                    "step":
+                        self.name,
+
+                    "error":
+                        str(error),
+
+                    "timestamp":
+                        datetime.now().isoformat()
+
+                }
+
+            )
+
+
+            return context
 
 
 
@@ -102,22 +272,12 @@ class PipelineStep(
     ) -> PipelineContext:
 
 
-        """
-        Processa uma etapa cognitiva.
-
-        Cada módulo deve:
-
-        - acessar context.thought;
-        - atualizar Thought;
-        - retornar Context.
-        """
-
         raise NotImplementedError()
 
 
 
     # ==================================================
-    # IDENTIDADE
+    # CONSULTA
     # ==================================================
 
 
@@ -125,8 +285,27 @@ class PipelineStep(
         self
     ):
 
-
         return self.name
+
+
+
+    def get_status(
+        self
+    ):
+
+
+        return {
+
+            "name":
+                self.name,
+
+            "status":
+                self.status,
+
+            "execution_time":
+                self.execution_time
+
+        }
 
 
 

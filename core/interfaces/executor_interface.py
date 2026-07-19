@@ -1,5 +1,6 @@
 """
 =========================================
+
 GENESIS CORE
 
 Arquivo:
@@ -33,6 +34,7 @@ IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
+
 =========================================
 """
 
@@ -44,7 +46,10 @@ from abc import (
 
 
 
-class ExecutorInterface(ABC):
+class ExecutorInterface(
+    ABC
+):
+
 
     """
     Contrato dos executores.
@@ -76,9 +81,11 @@ class ExecutorInterface(ABC):
 
         Parameters
         ----------
+
         action:
 
             Decisão produzida pelo Reasoner.
+
 
         context:
 
@@ -112,17 +119,12 @@ class ExecutorInterface(ABC):
         Verifica se uma ação
         pode ser executada.
 
-        Deve considerar:
+        Considera:
 
         - ferramenta disponível;
         - permissões;
         - segurança;
-        - dependências;
-        - recursos.
-
-        Returns:
-
-            bool
+        - dependências.
         """
 
         raise NotImplementedError()
@@ -142,63 +144,6 @@ class ExecutorInterface(ABC):
 
         """
         Tenta desfazer uma operação.
-
-        Utilizado em:
-
-        - falhas;
-        - recuperação;
-        - manutenção de estado.
-        """
-
-        raise NotImplementedError()
-
-
-
-    # ==================================================
-    # STATUS
-    # ==================================================
-
-
-    @abstractmethod
-    def status(
-        self
-    ):
-
-        """
-        Retorna estado operacional.
-
-        Consumido por:
-
-        - Kernel;
-        - Diagnostics;
-        - Dashboard;
-        - Monitoramento.
-        """
-
-        raise NotImplementedError()
-
-
-
-    # ==================================================
-    # IDENTIDADE
-    # ==================================================
-
-
-    @abstractmethod
-    def name(
-        self
-    ):
-
-        """
-        Nome lógico do executor.
-
-        Exemplos:
-
-        executor.system
-
-        executor.browser
-
-        executor.device
         """
 
         raise NotImplementedError()

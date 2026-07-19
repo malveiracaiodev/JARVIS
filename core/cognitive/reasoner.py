@@ -58,9 +58,9 @@ class Reasoner(
 
     Recebe planos.
 
-    Analisa possibilidades.
+    Avalia alternativas.
 
-    Produz decisões.
+    Produz decisão.
 
     Não executa.
     """
@@ -88,7 +88,6 @@ class Reasoner(
 
         self.errors = 0
 
-
         self.history = []
 
 
@@ -98,12 +97,11 @@ class Reasoner(
     # ==================================================
 
 
-    def name(
+    def module_name(
         self
     ):
 
-
-        return "reasoner"
+        return self.name
 
 
 
@@ -122,7 +120,7 @@ class Reasoner(
 
             "name":
 
-                self.name(),
+                self.name,
 
 
             "decisions":
@@ -139,34 +137,41 @@ class Reasoner(
 
 
     # ==================================================
-    # PIPELINE MARK IV
+    # PROCESSAMENTO
     # ==================================================
 
 
     def process(
         self,
         context: PipelineContext
-    ):
+    ) -> PipelineContext:
+
+
+        thought = context.thought
+
+
+
+        if thought is None:
+
+
+            context.add_error(
+
+                "Reasoner recebeu Context sem Thought."
+
+            )
+
+
+            self.errors += 1
+
+
+            return context
+
 
 
         try:
 
 
-            thought = context.thought
-
-
-
-            if thought is None:
-
-
-                context.add_error(
-
-                    "Reasoner recebeu Context sem Thought."
-
-                )
-
-
-                return context
+            thought.thinking()
 
 
 
@@ -226,6 +231,38 @@ class Reasoner(
 
 
 
+            decision = result.get(
+
+                "decision"
+
+            )
+
+
+
+            # ======================================
+            # ATUALIZA CONTEXT
+            # ======================================
+
+
+            context.set(
+
+                "reasoning",
+
+                result
+
+            )
+
+
+            context.set(
+
+                "decision",
+
+                decision
+
+            )
+
+
+
             # ======================================
             # ATUALIZA THOUGHT
             # ======================================
@@ -233,11 +270,7 @@ class Reasoner(
 
             thought.set_decision(
 
-                result.get(
-
-                    "decision"
-
-                )
+                decision
 
             )
 
@@ -249,7 +282,6 @@ class Reasoner(
                 result
 
             )
-
 
 
             thought.confidence = (
@@ -266,11 +298,27 @@ class Reasoner(
 
 
 
-            context.set(
+            thought.add_history(
 
-                "reasoning",
+                "reasoner_completed"
 
-                result
+            )
+
+
+
+            context.add_history(
+
+                {
+
+                    "event":
+
+                        "reasoner_completed",
+
+                    "timestamp":
+
+                        datetime.now().isoformat()
+
+                }
 
             )
 
@@ -283,7 +331,7 @@ class Reasoner(
 
 
 
-            result = {
+            error_data = {
 
 
                 "decision":
@@ -304,30 +352,20 @@ class Reasoner(
 
 
 
-            if context.thought:
+            context.add_error(
 
+                error_data
 
-                context.thought.set_metadata(
-
-                    "reasoning",
-
-                    result
-
-                )
-
-
-                context.thought.failed()
-
+            )
 
 
             context.set(
 
                 "reasoning",
 
-                result
+                error_data
 
             )
-
 
 
             self.log_error(
@@ -351,7 +389,6 @@ class Reasoner(
         self,
         context
     ):
-
 
 
         plan = context.get(
@@ -450,13 +487,11 @@ class Reasoner(
         self.decisions += 1
 
 
-
         self.history.append(
 
             result
 
         )
-
 
 
         return result
@@ -479,17 +514,14 @@ class Reasoner(
 
             {
 
-
                 "strategy":
 
                     "execute_plan",
 
 
-
                 "plan":
 
                     plan,
-
 
 
                 "score":
@@ -573,7 +605,6 @@ class Reasoner(
 
         if not possibilities:
 
-
             return None
 
 
@@ -611,7 +642,6 @@ class Reasoner(
 
         if not decision:
 
-
             return 0
 
 
@@ -638,7 +668,6 @@ class Reasoner(
 
 
         if not decision:
-
 
             return "Nenhuma decisão tomada."
 
@@ -667,15 +696,10 @@ class Reasoner(
 
         return [
 
-
             self.evaluate(
-
                 option,
-
                 context
-
             )
-
 
             for option in options
 
@@ -695,7 +719,6 @@ class Reasoner(
 
 
         if self.logger:
-
 
             self.logger.error(
 
@@ -720,7 +743,7 @@ class Reasoner(
 
             "name":
 
-                self.name(),
+                self.name,
 
 
             "decisions":

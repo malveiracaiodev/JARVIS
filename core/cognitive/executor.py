@@ -8,8 +8,8 @@ core/cognitive/executor.py
 Descrição:
 Executor Cognitivo do Genesis Core.
 
-Transforma decisões armazenadas no Thought
-em operações executáveis através do ToolManager.
+Transforma decisões produzidas pelo Reasoner
+em operações através do ToolManager.
 
 Arquitetura:
 Genesis Core
@@ -36,6 +36,11 @@ from core.pipeline.pipeline_step import (
 )
 
 
+from core.pipeline.pipeline_context import (
+    PipelineContext
+)
+
+
 
 class Executor(
     PipelineStep,
@@ -44,21 +49,13 @@ class Executor(
 
 
     """
-    Camada executora do ciclo cognitivo.
+    Executor da Pipeline Cognitiva.
 
-    Responsabilidades:
-
-    - receber Thought;
-    - extrair decisão;
-    - localizar ferramenta;
-    - executar operação;
-    - salvar resultado no Thought.
+    Apenas executa ações.
 
     Não decide.
-    Não planeja.
     Não interpreta.
-
-    Apenas executa.
+    Não planeja.
     """
 
 
@@ -91,7 +88,7 @@ class Executor(
     # ==================================================
 
 
-    def name(
+    def get_name(
         self
     ):
 
@@ -112,15 +109,22 @@ class Executor(
         return {
 
             "name":
-                self.name(),
+
+                "executor",
+
 
             "executions":
+
                 self.executions,
 
+
             "failures":
+
                 self.failures,
 
+
             "tool_manager":
+
                 self.tool_manager is not None
 
         }
@@ -128,36 +132,44 @@ class Executor(
 
 
     # ==================================================
-    # PIPELINE MARK IV
+    # PIPELINE
     # ==================================================
 
 
     def process(
         self,
-        context
+        context: PipelineContext
     ):
+
+
+        thought = context.get_thought()
+
+
+        if thought is None:
+
+
+            context.add_error(
+                "Executor recebeu Context sem Thought."
+            )
+
+
+            return context
+
 
 
         try:
 
 
-            thought = context.thought
-
-
-
-            if thought is None:
-
-
-                context.add_error(
-                    "Nenhum Thought disponível para execução."
-                )
-
-
-                return context
-
-
-
             decision = thought.decision
+
+
+
+            if decision is None:
+
+
+                decision = context.get(
+                    "decision"
+                )
 
 
 
@@ -180,22 +192,35 @@ class Executor(
             )
 
 
-
-            if result.get(
-                "success",
-                False
-            ):
-
-
-                thought.set_status(
-                    "executed"
-                )
+            thought.set_metadata(
+                "execution",
+                result
+            )
 
 
-            else:
+
+            context.set(
+                "result",
+                result
+            )
 
 
-                thought.failed()
+
+            context.add_history({
+
+                "step":
+                    "executor",
+
+                "success":
+                    result.get(
+                        "success",
+                        False
+                    ),
+
+                "timestamp":
+                    datetime.now().isoformat()
+
+            })
 
 
 
@@ -205,24 +230,30 @@ class Executor(
             self.failures += 1
 
 
-            self.log_error(
+            result = self.failure(
                 str(error)
             )
 
 
-            if context.thought:
+            thought.set_result(
+                result
+            )
 
 
-                context.thought.set_result(
-
-                    self.failure(
-                        str(error)
-                    )
-
-                )
+            context.set(
+                "result",
+                result
+            )
 
 
-                context.thought.failed()
+            context.add_error(
+                str(error)
+            )
+
+
+            self.log_error(
+                str(error)
+            )
 
 
 
@@ -231,7 +262,7 @@ class Executor(
 
 
     # ==================================================
-    # CONVERSÃO
+    # AÇÃO
     # ==================================================
 
 
@@ -243,7 +274,6 @@ class Executor(
 
 
         if not decision:
-
 
             return None
 
@@ -265,7 +295,10 @@ class Executor(
                             "goal"
                         )
 
-                        if thought.plan
+                        if isinstance(
+                            thought.plan,
+                            dict
+                        )
 
                         else None
                     ),
@@ -300,7 +333,7 @@ class Executor(
 
 
     # ==================================================
-    # EXECUÇÃO REAL
+    # EXECUÇÃO
     # ==================================================
 
 
@@ -332,58 +365,64 @@ class Executor(
         try:
 
 
-            tool = self.tool_manager.find(
-                action
-            )
+            if hasattr(
+                self.tool_manager,
+                "execute"
+            ):
 
 
-
-            if tool is None:
-
-
-                return self.failure(
-                    "Nenhuma ferramenta compatível encontrada."
+                result = self.tool_manager.execute(
+                    action
                 )
 
 
-
-            self.executions += 1
-
-
-
-            result = tool.execute(
-                action
-            )
+                self.executions += 1
 
 
 
-            return {
-
-
-                "success":
-
-                    True,
-
-
-
-                "tool":
-
-                    tool.name(),
-
-
-
-                "result":
-
+                if isinstance(
                     result,
+                    dict
+                ):
+
+
+                    success = result.get(
+                        "success",
+                        True
+                    )
+
+
+                else:
+
+                    success = True
 
 
 
-                "timestamp":
+                return {
 
-                    datetime.now()
-                    .isoformat()
 
-            }
+                    "success":
+
+                        success,
+
+
+                    "result":
+
+                        result,
+
+
+                    "timestamp":
+
+                        datetime.now()
+                        .isoformat()
+
+                }
+
+
+
+            return self.failure(
+                "ToolManager sem execute()."
+            )
 
 
 
@@ -391,11 +430,6 @@ class Executor(
 
 
             self.failures += 1
-
-
-            self.log_error(
-                str(error)
-            )
 
 
             return self.failure(
@@ -434,22 +468,7 @@ class Executor(
             return False
 
 
-
-        if self.tool_manager is None:
-
-            return False
-
-
-
-        return (
-
-            self.tool_manager.find(
-                action
-            )
-
-            is not None
-
-        )
+        return self.tool_manager is not None
 
 
 
@@ -461,16 +480,13 @@ class Executor(
 
         return {
 
-
             "success":
 
                 False,
 
-
             "message":
 
-                "Rollback ainda não implementado.",
-
+                "Rollback não implementado.",
 
             "action":
 
@@ -492,7 +508,6 @@ class Executor(
 
 
         return {
-
 
             "success":
 
@@ -526,7 +541,6 @@ class Executor(
 
         if self.logger:
 
-
             self.logger.error(
                 message
             )
@@ -534,13 +548,12 @@ class Executor(
 
 
     # ==================================================
-    # DIAGNÓSTICO
+    # INFO
     # ==================================================
 
 
     def info(
         self
     ):
-
 
         return self.status()

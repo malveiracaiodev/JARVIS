@@ -10,6 +10,7 @@ Teste completo da Pipeline Cognitiva.
 Arquitetura:
 Genesis Core Mark IV
 Thought Engine
+
 =========================================
 """
 
@@ -24,8 +25,8 @@ from core.pipeline.pipeline_initializer import (
 )
 
 
-from core.models.thought import (
-    Thought
+from core.cognitive.thought_engine import (
+    ThoughtEngine
 )
 
 
@@ -54,12 +55,12 @@ print(
 
 
 # ==================================================
-# PIPELINE
+# CONSTRUÇÃO DA PIPELINE
 # ==================================================
 
 
 print(
-    "\n[BOOT] Construindo Thought Engine..."
+    "\n[BOOT] Construindo Pipeline Cognitiva..."
 )
 
 
@@ -104,13 +105,38 @@ for step in pipeline.list_steps():
 
 
 # ==================================================
-# CRIAÇÃO DO THOUGHT
+# THOUGHT ENGINE
+# ==================================================
+
+
+print(
+    "\n[BOOT] Inicializando Thought Engine..."
+)
+
+
+
+engine = ThoughtEngine(
+
+    pipeline=pipeline
+
+)
+
+
+
+print(
+    "[OK] Thought Engine pronta."
+)
+
+
+
+# ==================================================
+# ENTRADA
 # ==================================================
 
 
 message = (
 
-    "Jarvis, teste seu sistema cognitivo"
+    "Jarvis, execute um teste do sistema cognitivo"
 
 )
 
@@ -128,81 +154,31 @@ print(
 
 
 
-thought = Thought(
+# ==================================================
+# EXECUÇÃO DO CICLO
+# ==================================================
 
-    message=message,
+
+thought = engine.think(
+
+    message,
 
     agent="jarvis",
 
-    source="test"
-
-)
-
-
-
-print(
-    "\nTHOUGHT CRIADO:"
-)
-
-
-
-print(
-    thought
-)
-
-
-
-# ==================================================
-# EXECUÇÃO COGNITIVA
-# ==================================================
-
-
-context = pipeline.process(
-
-    thought
+    source="test_pipeline"
 
 )
 
 
 
 # ==================================================
-# RESULTADO GERAL
+# RESULTADO FINAL
 # ==================================================
 
 
 print(
     "\n=============================="
 )
-
-
-
-print(
-    "RESUMO FINAL"
-)
-
-
-
-print(
-    "=============================="
-)
-
-
-
-print(
-    context.summary()
-)
-
-
-
-# ==================================================
-# THOUGHT FINAL
-# ==================================================
-
-
-print(
-    "\n=============================="
-)
-
 
 
 print(
@@ -210,7 +186,6 @@ print(
 )
 
 
-
 print(
     "=============================="
 )
@@ -218,13 +193,15 @@ print(
 
 
 print(
-    context.thought.to_dict()
+
+    thought.to_dict()
+
 )
 
 
 
 # ==================================================
-# DADOS INTERNOS
+# RESULTADO DA PIPELINE
 # ==================================================
 
 
@@ -233,11 +210,9 @@ print(
 )
 
 
-
 print(
-    "DADOS INTERNOS"
+    "RESULTADO PIPELINE"
 )
-
 
 
 print(
@@ -246,21 +221,19 @@ print(
 
 
 
-for key, value in context.data.items():
+if thought.result:
 
 
     print(
-        "\n----------------------"
+        thought.result
     )
 
 
-    print(
-        key.upper()
-    )
+else:
 
 
     print(
-        value
+        "Nenhum resultado."
     )
 
 
@@ -275,11 +248,9 @@ print(
 )
 
 
-
 print(
-    "HISTÓRICO DA PIPELINE"
+    "HISTÓRICO PIPELINE"
 )
-
 
 
 print(
@@ -288,7 +259,7 @@ print(
 
 
 
-for event in context.history:
+for event in pipeline.get_history():
 
 
     print(
@@ -298,7 +269,7 @@ for event in context.history:
 
 
 # ==================================================
-# STATUS FINAL
+# MÉTRICAS ENGINE
 # ==================================================
 
 
@@ -307,11 +278,9 @@ print(
 )
 
 
-
 print(
-    "STATUS"
+    "MÉTRICAS THOUGHT ENGINE"
 )
-
 
 
 print(
@@ -322,6 +291,70 @@ print(
 
 print(
 
-    pipeline.status
+    engine.metrics()
 
+)
+
+
+
+# ==================================================
+# STATUS PIPELINE
+# ==================================================
+
+
+print(
+    "\n=============================="
+)
+
+
+print(
+    "STATUS PIPELINE"
+)
+
+
+print(
+    "=============================="
+)
+
+
+
+print(
+
+    pipeline.status()
+
+)
+
+
+
+# ==================================================
+# STATUS ENGINE
+# ==================================================
+
+
+print(
+    "\n=============================="
+)
+
+
+print(
+    "STATUS ENGINE"
+)
+
+
+print(
+    "=============================="
+)
+
+
+
+print(
+
+    engine.status()
+
+)
+
+
+
+print(
+    "\n[FINALIZADO] Teste cognitivo concluído."
 )

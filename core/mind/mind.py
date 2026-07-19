@@ -6,19 +6,21 @@ Arquivo:
 core/mind/mind.py
 
 Descrição:
-Controlador superior da inteligência.
+Centro cognitivo principal do Genesis Core.
 
-Responsável por integrar:
-- Brain
-- Pipeline Cognitiva
-- Estado cognitivo
-- Agentes
+Responsável por:
+
+- Receber entradas do usuário
+- Criar Thoughts
+- Acionar Thought Engine
+- Coordenar Pipeline Cognitiva
+- Gerenciar estado mental
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -26,105 +28,78 @@ Caio Vitor Malveira
 """
 
 
-from core.base.module import (
-    Module,
-    ModuleStatus
-)
+from datetime import datetime
 
 
-from core.mind.brain import (
-    Brain
-)
+from core.base.module import Module
+
+from core.models.thought import Thought
 
 
 
 class Mind(Module):
-
     """
-    Camada superior cognitiva.
+    Controlador cognitivo principal.
 
-    O Mind coordena.
+    O Mind não raciocina.
 
-    O Brain processa.
-
-    A Pipeline executa o fluxo cognitivo.
-
-    O Mind não possui inteligência própria.
+    Ele cria Thoughts e entrega
+    para a Thought Engine.
     """
 
 
 
     def __init__(
         self,
+        tool_manager=None,
         logger=None,
         event_bus=None,
+        config=None,
+        identity=None,
+        service_manager=None,
+        runtime=None,
         engine=None,
-        pipeline=None
+        pipeline=None,
     ):
 
 
         super().__init__(
-            "core.mind.mind"
+            "mind"
         )
 
 
-        self.version = (
-            "Genesis Core Mark III"
-        )
 
+        # ==================================================
+        # DEPENDÊNCIAS
+        # ==================================================
+
+        self.tool_manager = tool_manager
 
         self.logger = logger
 
         self.event_bus = event_bus
 
-        self.engine = engine
+        self.config = config
+
+        self.identity = identity
+
+        self.service_manager = service_manager
+
+
+        self.runtime = runtime or engine
+
 
         self.pipeline = pipeline
 
 
 
-        self.brain = Brain(
-            logger=self.logger,
-            event_bus=self.event_bus
-        )
+        # ==================================================
+        # ESTADO
+        # ==================================================
 
+        self.last_thought = None
 
-
-    # ==================================================
-    # LOG
-    # ==================================================
-
-
-    def _log(
-        self,
-        level,
-        message
-    ):
-
-
-        if self.logger:
-
-
-            method = getattr(
-                self.logger,
-                level,
-                None
-            )
-
-
-            if callable(method):
-
-                method(
-                    message
-                )
-
-                return
-
-
-
-        print(
-            f"[MIND] {message}"
-        )
+        self.history = []
 
 
 
@@ -138,44 +113,32 @@ class Mind(Module):
     ):
 
 
-        self.set_status(
-            ModuleStatus.INITIALIZING
+        self.log(
+            "Mind iniciando."
         )
 
 
+        self.status = "ONLINE"
 
-        self.brain.connect(
-            pipeline=self.pipeline
+
+
+        if self.event_bus:
+
+            self.event_bus.emit(
+
+                "mind.started",
+
+                {
+                    "time":
+                    datetime.now().isoformat()
+                }
+
+            )
+
+
+        self.log(
+            "Mind ONLINE."
         )
-
-
-
-        self.brain.initialize()
-
-
-
-        self.set_status(
-            ModuleStatus.ONLINE
-        )
-
-
-
-        self._log(
-            "success",
-            "Mind Cognitivo ONLINE."
-        )
-
-
-
-        return True
-
-
-
-    def start(
-        self
-    ):
-
-        return self.initialize()
 
 
 
@@ -184,162 +147,231 @@ class Mind(Module):
     ):
 
 
-        self.brain.shutdown()
-
-
-
-        self.set_status(
-            ModuleStatus.OFFLINE
+        self.log(
+            "Mind OFFLINE."
         )
 
 
-
-        self._log(
-            "info",
-            "Mind desligado."
-        )
-
-
-
-        return True
+        self.status = "OFFLINE"
 
 
 
     # ==================================================
-    # COGNIÇÃO
+    # PROCESSAMENTO COGNITIVO
     # ==================================================
 
 
     def think(
         self,
-        message
+        text
     ):
 
 
-        if self.get_status() != ModuleStatus.ONLINE:
+        try:
 
 
-            return {
+            if not self.pipeline:
 
-                "error":
-                "Mind offline."
-
-            }
-
+                return (
+                    "Pipeline cognitiva indisponível."
+                )
 
 
-        return self.brain.process(
-            message
-        )
+
+            #
+            # Criação do Thought
+            #
+
+            thought = Thought(
+
+                message=text,
+
+                metadata={
+
+                    "identity":
+                        self.identity,
+
+                    "history_size":
+                        len(self.history),
+
+                    "created_by":
+                        "mind",
+
+                    "received_at":
+                        datetime.now().isoformat()
+
+                }
+
+            )
+
+
+
+            self.last_thought = thought
+
+
+
+            thought.processing()
+
+
+
+            thought.add_history(
+                "thought_created"
+            )
+
+
+
+            #
+            # Execução da Thought Engine
+            #
+
+            if hasattr(
+                self.pipeline,
+                "process"
+            ):
+
+
+                result = self.pipeline.process(
+                    thought
+                )
+
+
+            elif hasattr(
+                self.pipeline,
+                "run"
+            ):
+
+
+                result = self.pipeline.run(
+                    thought
+                )
+
+
+            elif hasattr(
+                self.pipeline,
+                "execute"
+            ):
+
+
+                result = self.pipeline.execute(
+                    thought
+                )
+
+
+            else:
+
+
+                raise RuntimeError(
+
+                    "Pipeline sem método de execução."
+
+                )
+
+
+
+            #
+            # Guarda resultado
+            #
+
+            thought.set_result(
+                result
+            )
+
+
+
+            if not thought.is_finished():
+
+                thought.completed()
+
+
+
+            thought.add_history(
+                "thought_finished"
+            )
+
+
+
+            self.history.append(
+
+                {
+
+                    "thought_id":
+                        thought.id,
+
+                    "input":
+                        text,
+
+                    "status":
+                        thought.status,
+
+                    "confidence":
+                        thought.confidence,
+
+                    "execution_time":
+                        thought.execution_time,
+
+                    "time":
+                        datetime.now().isoformat()
+
+                }
+
+            )
+
+
+
+            return result
+
+
+
+        except Exception as error:
+
+
+
+            if self.last_thought:
+
+
+                try:
+
+                    self.last_thought.failed()
+
+                    self.last_thought.set_metadata(
+
+                        "exception",
+
+                        str(error)
+
+                    )
+
+
+                except Exception:
+
+                    pass
+
+
+
+            if self.logger:
+
+                self.logger.error(
+
+                    f"Erro cognitivo: {error}"
+
+                )
+
+
+
+            return (
+
+                f"[FALHA COGNITIVA]: {error}"
+
+            )
 
 
 
     # ==================================================
-    # MEMÓRIA
+    # STATUS
     # ==================================================
 
 
-    def remember(
-        self,
-        data,
-        memory_type="general",
-        importance=1
-    ):
-
-
-        return self.brain.remember(
-            data,
-            memory_type,
-            importance
-        )
-
-
-
-    def recall(
-        self,
-        query
-    ):
-
-
-        return self.brain.recall(
-            query
-        )
-
-
-
-    def forget(
-        self
-    ):
-
-
-        return self.brain.state.memory.clear()
-
-
-
-    # ==================================================
-    # CONHECIMENTO
-    # ==================================================
-
-
-    def learn(
-        self,
-        topic,
-        information,
-        source="user",
-        tags=None
-    ):
-
-
-        return self.brain.learn(
-            topic,
-            information,
-            source,
-            tags
-        )
-
-
-
-    def search(
-        self,
-        query
-    ):
-
-
-        return self.brain.search(
-            query
-        )
-
-
-
-    # ==================================================
-    # ESTADO
-    # ==================================================
-
-
-    def get_state(
-        self
-    ):
-
-
-        return self.brain.state.snapshot()
-
-
-
-    def reset(
-        self
-    ):
-
-
-        return self.brain.reset()
-
-
-
-    # ==================================================
-    # DIAGNÓSTICO
-    # ==================================================
-
-
-    def status_report(
+    def get_brain_status(
         self
     ):
 
@@ -348,23 +380,99 @@ class Mind(Module):
 
 
             "name":
-            self.name,
-
-
-            "version":
-            self.version,
+                "Genesis Mind",
 
 
             "status":
-            self.get_status()
-            .value,
-
-
-            "brain":
-            self.brain.get_brain_info(),
+                self.status,
 
 
             "pipeline":
-            self.pipeline is not None
+                self.pipeline is not None,
+
+
+            "thoughts":
+                len(self.history),
+
+
+            "last_thought":
+
+                (
+
+                    self.last_thought.id
+
+                    if self.last_thought
+
+                    else None
+
+                )
 
         }
+
+
+
+    # ==================================================
+    # APRENDIZADO
+    # ==================================================
+
+
+    def learn(
+        self,
+        data
+    ):
+
+
+        self.log(
+            "Novo conhecimento recebido."
+        )
+
+
+        return True
+
+
+
+    # ==================================================
+    # RESET
+    # ==================================================
+
+
+    def reset(
+        self
+    ):
+
+
+        self.last_thought = None
+
+        self.history.clear()
+
+
+        return True
+
+
+
+    # ==================================================
+    # LOG
+    # ==================================================
+
+
+    def log(
+        self,
+        message
+    ):
+
+
+        if self.logger:
+
+
+            self.logger.info(
+                message
+            )
+
+
+        else:
+
+
+            print(
+                "[MIND]",
+                message
+            )

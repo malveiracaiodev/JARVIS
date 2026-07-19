@@ -1,19 +1,18 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Pacote:
-pipeline
+core.pipeline
 
 Descrição:
-Exposição dos componentes responsáveis
-pela Pipeline Cognitiva do Genesis Core.
+Exposição dos componentes da Pipeline Cognitiva.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -21,24 +20,32 @@ Caio Vitor Malveira
 """
 
 
-from .pipeline_step import PipelineStep
+"""
+IMPORTANTE:
 
-from .pipeline_context import PipelineContext
+Este arquivo NÃO deve importar:
 
-from .cognitive_pipeline import CognitivePipeline
+- PipelineInitializer
+- CognitivePipeline
 
-from .pipeline_initializer import PipelineInitializer
+automaticamente.
+
+Motivo:
+
+Evita ciclo:
+
+cognitive
+   |
+ parser
+   |
+ pipeline
+   |
+ initializer
+   |
+ cognitive
+
+A inicialização deve ser explícita.
+"""
 
 
-
-__all__ = [
-
-    "PipelineStep",
-
-    "PipelineContext",
-
-    "CognitivePipeline",
-
-    "PipelineInitializer"
-
-]
+__all__ = []

@@ -29,6 +29,7 @@ Caio Vitor Malveira
 
 import uuid
 
+
 from datetime import datetime
 
 
@@ -57,9 +58,17 @@ class Planner(
     """
     Criador de planos cognitivos.
 
-    O Planner prepara caminhos.
+    Entrada:
+        Dados interpretados pelo Parser.
 
-    O Reasoner escolhe o melhor.
+    Saída:
+        Plano cognitivo estruturado.
+
+    Responsabilidade:
+        Organizar intenção.
+
+    Não executa.
+    Não decide.
     """
 
 
@@ -80,6 +89,7 @@ class Planner(
 
         self.plans_created = 0
 
+
         self.errors = 0
 
 
@@ -89,75 +99,50 @@ class Planner(
     # ==================================================
 
 
-    def name(
+    def module_name(
         self
     ):
 
-
-        return "planner"
-
-
-
-    # ==================================================
-    # STATUS
-    # ==================================================
-
-
-    def status(
-        self
-    ):
-
-
-        return {
-
-
-            "name":
-
-                self.name(),
-
-
-            "plans_created":
-
-                self.plans_created,
-
-
-            "errors":
-
-                self.errors
-
-        }
+        return self.name
 
 
 
     # ==================================================
-    # PIPELINE MARK IV
+    # PROCESSAMENTO
     # ==================================================
 
 
     def process(
         self,
         context: PipelineContext
-    ):
+    ) -> PipelineContext:
+
+
+        thought = context.thought
+
+
+
+        if thought is None:
+
+
+            context.add_error(
+
+                "Planner recebeu Context sem Thought."
+
+            )
+
+
+            self.errors += 1
+
+
+            return context
+
 
 
         try:
 
 
-            thought = context.thought
-
-
-
-            if thought is None:
-
-
-                context.add_error(
-
-                    "Planner recebeu Context sem Thought."
-
-                )
-
-
-                return context
+            thought.thinking()
 
 
 
@@ -190,6 +175,17 @@ class Planner(
 
 
 
+            if not intention:
+
+
+                intention = parsed.get(
+
+                    "intent"
+
+                )
+
+
+
             plan = self.create_plan(
 
                 intention
@@ -198,9 +194,35 @@ class Planner(
 
 
 
-            # ======================================
-            # THOUGHT CENTRAL
-            # ======================================
+            if not self.validate_plan(
+
+                plan
+
+            ):
+
+
+                context.add_error(
+
+                    "Plano inválido criado pelo Planner."
+
+                )
+
+
+                self.errors += 1
+
+
+                return context
+
+
+
+            context.set(
+
+                "plan",
+
+                plan
+
+            )
+
 
 
             thought.set_plan(
@@ -210,11 +232,39 @@ class Planner(
             )
 
 
+
             thought.set_metadata(
 
                 "plan",
 
                 plan
+
+            )
+
+
+
+            thought.add_history(
+
+                "planner_completed"
+
+            )
+
+
+
+            context.add_history(
+
+                {
+
+                    "event":
+
+                        "planner_completed",
+
+
+                    "timestamp":
+
+                        datetime.now().isoformat()
+
+                }
 
             )
 
@@ -231,16 +281,20 @@ class Planner(
 
 
 
-            if context.thought:
-
-
-                context.thought.failed()
-
-
-
             context.add_error(
 
-                str(error)
+                {
+
+                    "step":
+
+                        "planner",
+
+
+                    "error":
+
+                        str(error)
+
+                }
 
             )
 
@@ -258,7 +312,7 @@ class Planner(
 
 
     # ==================================================
-    # CRIAÇÃO
+    # CRIAÇÃO DE PLANO
     # ==================================================
 
 
@@ -269,6 +323,14 @@ class Planner(
     ):
 
 
+        plan_id = str(
+
+            uuid.uuid4()
+
+        )
+
+
+
         if not intention:
 
 
@@ -277,7 +339,7 @@ class Planner(
 
                 "id":
 
-                    str(uuid.uuid4()),
+                    plan_id,
 
 
                 "goal":
@@ -303,14 +365,13 @@ class Planner(
 
             "id":
 
-                str(uuid.uuid4()),
+                plan_id,
 
 
 
             "created":
 
-                datetime.now()
-                .isoformat(),
+                datetime.now().isoformat(),
 
 
 
@@ -335,7 +396,6 @@ class Planner(
             "steps":
 
             [
-
 
                 {
 
@@ -412,7 +472,7 @@ class Planner(
 
                     "description":
 
-                        "Avaliar resultado obtido."
+                        "Avaliar resultado."
 
                 }
 
@@ -435,13 +495,11 @@ class Planner(
 
         if not goal:
 
-
             return []
 
 
 
         return [
-
 
             {
 
@@ -449,11 +507,9 @@ class Planner(
 
                     1,
 
-
                 "action":
 
                     "analyze",
-
 
                 "goal":
 
@@ -468,11 +524,9 @@ class Planner(
 
                     2,
 
-
                 "action":
 
                     "execute",
-
 
                 "goal":
 
@@ -530,13 +584,11 @@ class Planner(
 
         ):
 
-
             return False
 
 
 
         required = [
-
 
             "id",
 
@@ -553,16 +605,17 @@ class Planner(
 
             if field not in plan:
 
-
                 return False
 
 
 
-        return len(
+        return isinstance(
 
-            plan["steps"]
+            plan["steps"],
 
-        ) > 0
+            list
+
+        )
 
 
 
@@ -579,7 +632,6 @@ class Planner(
 
         if not plan:
 
-
             return plan
 
 
@@ -588,6 +640,51 @@ class Planner(
 
 
         return plan
+
+
+
+    # ==================================================
+    # DIAGNÓSTICO
+    # ==================================================
+
+
+    def diagnostics(
+        self
+    ):
+
+
+        return {
+
+
+            "name":
+
+                self.name,
+
+
+            "plans_created":
+
+                self.plans_created,
+
+
+            "errors":
+
+                self.errors,
+
+
+            "pipeline_status":
+
+                self.status
+
+        }
+
+
+
+    def info(
+        self
+    ):
+
+
+        return self.diagnostics()
 
 
 
@@ -610,34 +707,3 @@ class Planner(
                 message
 
             )
-
-
-
-    # ==================================================
-    # DIAGNÓSTICO
-    # ==================================================
-
-
-    def info(
-        self
-    ):
-
-
-        return {
-
-
-            "name":
-
-                self.name(),
-
-
-            "plans_created":
-
-                self.plans_created,
-
-
-            "errors":
-
-                self.errors
-
-        }

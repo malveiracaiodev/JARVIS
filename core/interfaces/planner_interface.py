@@ -1,5 +1,6 @@
 """
 =========================================
+
 GENESIS CORE
 
 Arquivo:
@@ -35,6 +36,7 @@ IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
+
 =========================================
 """
 
@@ -46,7 +48,10 @@ from abc import (
 
 
 
-class PlannerInterface(ABC):
+class PlannerInterface(
+    ABC
+):
+
 
     """
     Contrato dos Planners.
@@ -79,31 +84,6 @@ class PlannerInterface(ABC):
         context=None
     ):
 
-        """
-        Cria uma estrutura de plano.
-
-        Parameters
-        ----------
-
-        intention:
-
-            Objetivo identificado
-            pelo sistema.
-
-
-        context:
-
-            PipelineContext atual.
-
-
-        Returns
-        -------
-
-        plan:
-
-            Estrutura planejável.
-        """
-
         raise NotImplementedError()
 
 
@@ -118,22 +98,6 @@ class PlannerInterface(ABC):
         self,
         plan
     ):
-
-        """
-        Verifica consistência
-        de um plano.
-
-        Deve avaliar:
-
-        - estrutura;
-        - dependências;
-        - recursos;
-        - segurança.
-
-        Returns:
-
-            bool
-        """
 
         raise NotImplementedError()
 
@@ -150,17 +114,6 @@ class PlannerInterface(ABC):
         plan
     ):
 
-        """
-        Melhora um plano existente.
-
-        Pode alterar:
-
-        - ordem dos passos;
-        - quantidade de etapas;
-        - eficiência;
-        - custo.
-        """
-
         raise NotImplementedError()
 
 
@@ -176,22 +129,6 @@ class PlannerInterface(ABC):
         goal
     ):
 
-        """
-        Divide objetivos complexos.
-
-        Exemplo:
-
-        "Configurar ambiente"
-
-        torna-se:
-
-        [
-            instalar recursos,
-            configurar sistema,
-            validar execução
-        ]
-        """
-
         raise NotImplementedError()
 
 
@@ -206,60 +143,5 @@ class PlannerInterface(ABC):
         self,
         plan_id
     ):
-
-        """
-        Cancela um plano existente.
-
-        Usado em:
-
-        - interrupção humana;
-        - falha;
-        - segurança.
-        """
-
-        raise NotImplementedError()
-
-
-
-    # ==================================================
-    # STATUS
-    # ==================================================
-
-
-    @abstractmethod
-    def status(
-        self
-    ):
-
-        """
-        Retorna estado operacional
-        do Planner.
-        """
-
-        raise NotImplementedError()
-
-
-
-    # ==================================================
-    # IDENTIDADE
-    # ==================================================
-
-
-    @abstractmethod
-    def name(
-        self
-    ):
-
-        """
-        Nome lógico do Planner.
-
-        Exemplos:
-
-        planner.basic
-
-        planner.strategy
-
-        planner.ai
-        """
 
         raise NotImplementedError()

@@ -47,7 +47,10 @@ from abc import (
 
 
 
-class ParserInterface(ABC):
+class ParserInterface(
+    ABC
+):
+
 
     """
     Contrato dos Parsers.
@@ -80,27 +83,6 @@ class ParserInterface(ABC):
         """
         Converte entrada bruta em
         estrutura cognitiva.
-
-        Parameters
-        ----------
-
-        input_data:
-
-            Informação recebida
-            pelo sistema.
-
-
-        context:
-
-            Contexto atual da execução.
-
-
-        Returns
-        -------
-
-        parsed_data:
-
-            Estrutura interpretada.
         """
 
         raise NotImplementedError()
@@ -157,56 +139,7 @@ class ParserInterface(ABC):
         interpretação realizada.
 
         Usado futuramente pelo
-        Reasoner para decidir:
-
-        - continuar;
-        - solicitar confirmação;
-        - buscar informação.
-        """
-
-        raise NotImplementedError()
-
-
-
-    # ==================================================
-    # IDENTIDADE
-    # ==================================================
-
-
-    @abstractmethod
-    def name(
-        self
-    ):
-
-        """
-        Nome lógico do Parser.
-
-        Exemplos:
-
-        parser.text
-
-        parser.voice
-
-        parser.image
-        """
-
-        raise NotImplementedError()
-
-
-
-    # ==================================================
-    # STATUS
-    # ==================================================
-
-
-    @abstractmethod
-    def status(
-        self
-    ):
-
-        """
-        Retorna estado operacional
-        do Parser.
+        Reasoner.
         """
 
         raise NotImplementedError()

@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/models/thought.py
@@ -9,13 +9,25 @@ Descrição:
 Modelo central de pensamento cognitivo.
 
 Representa um ciclo completo de raciocínio
-do JARVIS, desde a entrada até a conclusão.
+do Genesis Core Mark IV.
+
+Responsável por armazenar:
+
+- Entrada
+- Intenção
+- Plano
+- Decisão
+- Resultado
+- Estado cognitivo
+- Histórico cognitivo
+- Métricas de execução
+- Metadados temporários
 
 Arquitetura:
 Genesis Core
 
 Mark:
-IV - Intelligence
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -28,7 +40,9 @@ from datetime import datetime
 from uuid import uuid4
 
 
-from core.models.intention import Intention
+from core.models.intention import (
+    Intention
+)
 
 
 
@@ -37,24 +51,27 @@ class Thought:
     """
     Unidade central de processamento cognitivo.
 
-    O Thought acompanha toda a jornada:
+    Ciclo:
 
     Entrada
        |
        v
-    Interpretação
+    Intention
        |
        v
-    Planejamento
+    Plan
        |
        v
-    Decisão
+    Decision
        |
        v
-    Execução
+    Execution
        |
        v
-    Resultado
+    Reflection
+       |
+       v
+    Result
     """
 
 
@@ -79,6 +96,12 @@ class Thought:
     )
 
 
+    started_at: datetime | None = None
+
+
+    finished_at: datetime | None = None
+
+
 
     # =====================================================
     # ORIGEM
@@ -96,6 +119,17 @@ class Thought:
 
 
     # =====================================================
+    # CONTEXTO DE ENTRADA
+    # =====================================================
+
+
+    context: dict = field(
+        default_factory=dict
+    )
+
+
+
+    # =====================================================
     # ESTADO COGNITIVO
     # =====================================================
 
@@ -107,6 +141,9 @@ class Thought:
 
 
     decision: object = None
+
+
+    action: object = None
 
 
     result: object = None
@@ -148,13 +185,15 @@ class Thought:
     )
 
 
+    history: list = field(
+        default_factory=list
+    )
+
+
 
     # =====================================================
-    # FINALIZAÇÃO
+    # MÉTRICAS
     # =====================================================
-
-
-    finished_at: datetime | None = None
 
 
     execution_time: float = 0.0
@@ -194,17 +233,44 @@ class Thought:
         self
     ):
 
+        if self.started_at is None:
+
+            self.started_at = datetime.now()
+
+
         self.set_status(
             "processing"
         )
 
 
 
-    def completed(
+    def thinking(
         self
     ):
 
-        self.finish()
+        self.set_status(
+            "thinking"
+        )
+
+
+
+    def executing(
+        self
+    ):
+
+        self.set_status(
+            "executing"
+        )
+
+
+
+    def reflecting(
+        self
+    ):
+
+        self.set_status(
+            "reflecting"
+        )
 
 
 
@@ -246,12 +312,49 @@ class Thought:
 
 
 
+    def set_action(
+        self,
+        action
+    ):
+
+        self.action = action
+
+        self.touch()
+
+
+
     def set_result(
         self,
         result
     ):
 
         self.result = result
+
+        self.touch()
+
+
+
+    # =====================================================
+    # HISTÓRICO
+    # =====================================================
+
+
+    def add_history(
+        self,
+        event
+    ):
+
+        self.history.append(
+
+            {
+                "event":
+                    event,
+
+                "timestamp":
+                    datetime.now().isoformat()
+            }
+
+        )
 
         self.touch()
 
@@ -279,10 +382,6 @@ class Thought:
         key: str,
         value
     ):
-        """
-        Alias para compatibilidade
-        com módulos cognitivos.
-        """
 
         self.set_metadata(
             key,
@@ -338,8 +437,16 @@ class Thought:
 
 
     # =====================================================
-    # CICLO DE VIDA
+    # FINALIZAÇÃO
     # =====================================================
+
+
+    def completed(
+        self
+    ):
+
+        self.finish()
+
 
 
     def finish(
@@ -348,21 +455,14 @@ class Thought:
 
         self.finished_at = datetime.now()
 
+
         self.status = "completed"
 
+
+        self._calculate_execution_time()
+
+
         self.touch()
-
-
-        delta = (
-            self.finished_at
-            -
-            self.created_at
-        )
-
-
-        self.execution_time = (
-            delta.total_seconds()
-        )
 
 
 
@@ -370,9 +470,49 @@ class Thought:
         self
     ):
 
+        self.finished_at = datetime.now()
+
+
         self.status = "failed"
 
+
+        self._calculate_execution_time()
+
+
         self.touch()
+
+
+
+    def _calculate_execution_time(
+        self
+    ):
+
+        if (
+
+            self.started_at
+
+            and
+
+            self.finished_at
+
+        ):
+
+            delta = (
+
+                self.finished_at
+
+                -
+
+                self.started_at
+
+            )
+
+
+            self.execution_time = (
+
+                delta.total_seconds()
+
+            )
 
 
 
@@ -381,7 +521,9 @@ class Thought:
     ):
 
         return (
+
             self.finished_at is not None
+
         )
 
 
@@ -430,8 +572,20 @@ class Thought:
                 self.execution_time,
 
 
+            "context":
+                self.context,
+
+
             "created_at":
                 self.created_at.isoformat(),
+
+
+            "started_at":
+                (
+                    self.started_at.isoformat()
+                    if self.started_at
+                    else None
+                ),
 
 
             "updated_at":
@@ -462,12 +616,20 @@ class Thought:
                 self.decision,
 
 
+            "action":
+                self.action,
+
+
             "result":
                 self.result,
 
 
             "metadata":
                 self.metadata,
+
+
+            "history":
+                self.history,
 
 
             "tags":

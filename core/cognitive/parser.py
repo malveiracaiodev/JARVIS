@@ -49,16 +49,16 @@ class Parser(
 
 
     """
-    Entrada inicial da inteligência.
+    Primeira etapa cognitiva.
 
-    Responsável por:
+    Responsabilidades:
 
-    - estruturar entrada;
+    - interpretar entrada;
     - identificar tipo;
-    - registrar interpretação inicial.
+    - estruturar dados.
 
-    Não interpreta profundamente.
     Não raciocina.
+    Não planeja.
     Não executa.
     """
 
@@ -80,6 +80,7 @@ class Parser(
 
         self.processed = 0
 
+
         self.errors = 0
 
 
@@ -89,42 +90,11 @@ class Parser(
     # ==================================================
 
 
-    def name(
+    def module_name(
         self
     ):
 
-        return "parser"
-
-
-
-    # ==================================================
-    # STATUS
-    # ==================================================
-
-
-    def status(
-        self
-    ):
-
-
-        return {
-
-
-            "name":
-
-                self.name(),
-
-
-            "processed":
-
-                self.processed,
-
-
-            "errors":
-
-                self.errors
-
-        }
+        return self.name
 
 
 
@@ -156,7 +126,7 @@ class Parser(
 
 
     # ==================================================
-    # PIPELINE MARK IV
+    # PROCESSAMENTO
     # ==================================================
 
 
@@ -166,24 +136,31 @@ class Parser(
     ) -> PipelineContext:
 
 
+        thought = context.thought
+
+
+
+        if thought is None:
+
+
+            context.add_error(
+
+                "Parser recebeu Context sem Thought."
+
+            )
+
+
+            self.errors += 1
+
+
+            return context
+
+
+
         try:
 
 
-            thought = context.thought
-
-
-
-            if thought is None:
-
-
-                context.add_error(
-
-                    "Parser recebeu Context sem Thought."
-
-                )
-
-
-                return context
+            thought.thinking()
 
 
 
@@ -193,11 +170,6 @@ class Parser(
 
             )
 
-
-
-            # ======================================
-            # CONTEXTO AUXILIAR
-            # ======================================
 
 
             context.set(
@@ -210,16 +182,38 @@ class Parser(
 
 
 
-            # ======================================
-            # THOUGHT CENTRAL
-            # ======================================
-
-
             thought.set_metadata(
 
                 "parsed",
 
                 parsed
+
+            )
+
+
+
+            thought.add_history(
+
+                "parser_completed"
+
+            )
+
+
+
+            context.add_history(
+
+                {
+
+                    "event":
+
+                        "parser_completed",
+
+
+                    "timestamp":
+
+                        datetime.now().isoformat()
+
+                }
 
             )
 
@@ -257,6 +251,13 @@ class Parser(
 
 
 
+            context.add_error(
+
+                error_data
+
+            )
+
+
             context.set(
 
                 "parsed",
@@ -264,23 +265,6 @@ class Parser(
                 error_data
 
             )
-
-
-
-            if context.thought:
-
-
-                context.thought.set_metadata(
-
-                    "parsed",
-
-                    error_data
-
-                )
-
-
-                context.thought.failed()
-
 
 
             self.log_error(
@@ -296,7 +280,7 @@ class Parser(
 
 
     # ==================================================
-    # PARSER
+    # INTERPRETAÇÃO
     # ==================================================
 
 
@@ -322,22 +306,23 @@ class Parser(
                     "empty",
 
 
-
                 "content":
 
                     None,
 
+
+                "intent":
+
+                    "empty",
 
 
                 "metadata":
 
                 {
 
-
                     "source":
 
                         "unknown",
-
 
 
                     "timestamp":
@@ -377,21 +362,38 @@ class Parser(
 
 
 
+            "intent":
+
+                self.detect_intent(
+
+                    content
+
+                ),
+
+
+
+            "confidence":
+
+                self.confidence(
+
+                    input_data
+
+                ),
+
+
+
             "metadata":
 
             {
-
 
                 "source":
 
                     "user",
 
 
-
                 "timestamp":
 
                     timestamp,
-
 
 
                 "length":
@@ -423,6 +425,7 @@ class Parser(
 
         ):
 
+
             return "text"
 
 
@@ -432,6 +435,51 @@ class Parser(
             data
 
         ).__name__
+
+
+
+
+    def detect_intent(
+        self,
+        text
+    ):
+
+
+        text = text.lower()
+
+
+
+        if "teste" in text:
+
+            return "system_test"
+
+
+
+        if (
+
+            "olá" in text
+
+            or
+
+            "ola" in text
+
+            or
+
+            "oi" in text
+
+        ):
+
+            return "greeting"
+
+
+
+        if "jarvis" in text:
+
+            return "jarvis_command"
+
+
+
+        return "unknown"
 
 
 
@@ -448,7 +496,6 @@ class Parser(
 
         return input_type in [
 
-
             "text",
 
             "command",
@@ -460,6 +507,51 @@ class Parser(
             "file"
 
         ]
+
+
+
+    # ==================================================
+    # DIAGNÓSTICO
+    # ==================================================
+
+
+    def diagnostics(
+        self
+    ):
+
+
+        return {
+
+
+            "name":
+
+                self.name,
+
+
+            "processed":
+
+                self.processed,
+
+
+            "errors":
+
+                self.errors,
+
+
+            "pipeline_status":
+
+                self.status
+
+        }
+
+
+
+    def info(
+        self
+    ):
+
+
+        return self.diagnostics()
 
 
 
@@ -482,46 +574,3 @@ class Parser(
                 message
 
             )
-
-
-
-    # ==================================================
-    # DIAGNÓSTICO
-    # ==================================================
-
-
-    def info(
-        self
-    ):
-
-
-        return {
-
-
-            "name":
-
-                self.name(),
-
-
-
-            "processed":
-
-                self.processed,
-
-
-
-            "errors":
-
-                self.errors,
-
-
-
-            "confidence":
-
-                self.confidence(
-
-                    None
-
-                )
-
-        }

@@ -1,5 +1,6 @@
 """
 =========================================
+
 GENESIS CORE
 
 Arquivo:
@@ -35,6 +36,7 @@ IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
+
 =========================================
 """
 
@@ -46,7 +48,10 @@ from abc import (
 
 
 
-class ReasonerInterface(ABC):
+class ReasonerInterface(
+    ABC
+):
+
 
     """
     Contrato dos Reasoners.
@@ -84,23 +89,6 @@ class ReasonerInterface(ABC):
 
         """
         Executa ciclo de raciocínio.
-
-        O contexto pode conter:
-
-        - entrada interpretada;
-        - plano;
-        - memória;
-        - conhecimento;
-        - objetivos.
-
-
-        Returns:
-
-            Resultado cognitivo contendo:
-
-            - alternativas;
-            - decisão;
-            - confiança.
         """
 
         raise NotImplementedError()
@@ -121,19 +109,6 @@ class ReasonerInterface(ABC):
 
         """
         Avalia uma possibilidade.
-
-        Considera:
-
-        - objetivo atual;
-        - plano;
-        - regras;
-        - segurança;
-        - conhecimento.
-
-
-        Returns:
-
-            avaliação da opção.
         """
 
         raise NotImplementedError()
@@ -152,11 +127,7 @@ class ReasonerInterface(ABC):
     ):
 
         """
-        Seleciona a melhor alternativa.
-
-        Recebe possibilidades
-        avaliadas e retorna
-        uma decisão cognitiva.
+        Seleciona melhor alternativa.
         """
 
         raise NotImplementedError()
@@ -176,13 +147,6 @@ class ReasonerInterface(ABC):
 
         """
         Produz explicação da decisão.
-
-        Usado para:
-
-        - transparência;
-        - depuração;
-        - aprendizado;
-        - interação humana.
         """
 
         raise NotImplementedError()
@@ -203,63 +167,11 @@ class ReasonerInterface(ABC):
         """
         Calcula confiança da decisão.
 
-        Valores esperados:
+        Retorno:
 
-        0.0 -> baixa confiança
+        0.0 -> baixa
 
-        1.0 -> alta confiança
-
-
-        Pode ser utilizado para:
-
-        - executar;
-        - pedir confirmação;
-        - buscar conhecimento.
-        """
-
-        raise NotImplementedError()
-
-
-
-    # ==================================================
-    # STATUS
-    # ==================================================
-
-
-    @abstractmethod
-    def status(
-        self
-    ):
-
-        """
-        Retorna estado operacional
-        do Reasoner.
-        """
-
-        raise NotImplementedError()
-
-
-
-    # ==================================================
-    # IDENTIDADE
-    # ==================================================
-
-
-    @abstractmethod
-    def name(
-        self
-    ):
-
-        """
-        Nome lógico do Reasoner.
-
-        Exemplos:
-
-        reasoner.rule_based
-
-        reasoner.hybrid
-
-        reasoner.ai
+        1.0 -> alta
         """
 
         raise NotImplementedError()
