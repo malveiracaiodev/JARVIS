@@ -6,7 +6,7 @@ Arquivo:
 core/cognitive/parser.py
 
 Descrição:
-Primeira etapa da Pipeline Cognitiva do Genesis Core (Mark IV - Neural Lattice).
+Primeira etapa da Pipeline Cognitiva do Genesis Core (Mark V - Evolution).
 
 Responsável por transformar entradas
 brutas em estruturas cognitivas dentro da malha neural.
@@ -15,7 +15,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-IV - Neural Lattice / Thought Engine
+V - Evolution / Thought Engine
 
 Autor:
 Caio Vitor Malveira

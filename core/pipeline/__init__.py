@@ -4,7 +4,7 @@ GENESIS CORE - COGNITIVE PIPELINE PACKAGE
 
 Arquivo: core/pipeline/__init__.py
 Descrição: Exposição dos componentes da Pipeline Cognitiva.
-Mark: IV - Thought Engine
+Mark: V - Evolution / Thought Engine
 Autor: Caio Vitor Malveira
 =========================================
 """

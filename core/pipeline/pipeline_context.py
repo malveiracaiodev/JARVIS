@@ -4,7 +4,7 @@ GENESIS CORE - PIPELINE CONTEXT
 
 Arquivo: core/pipeline/pipeline_context.py
 Descrição: Contexto compartilhado da Pipeline Cognitiva.
-Mark: IV - Thought Engine
+Mark: V - Evolution / Thought Engine
 Autor: Caio Vitor Malveira
 =========================================
 """
@@ -13,9 +13,10 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional, Union
 from core.models.thought import Thought
 
+
 class PipelineContext:
     """
-    Ambiente temporário da Pipeline. Transporta o estado de uma execução cognitiva.
+    Ambiente temporário da Pipeline (Mark V). Transporta o estado de uma execução cognitiva.
     """
     def __init__(self, thought: Optional[Thought] = None):
         self.thought: Optional[Thought] = thought

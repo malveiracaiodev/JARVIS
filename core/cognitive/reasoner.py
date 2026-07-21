@@ -6,10 +6,11 @@ Arquivo:
 core/cognitive/reasoner.py
 
 Descrição:
-Motor de raciocínio cognitivo do Genesis (Mark IV - Neural Lattice).
+Motor de raciocínio cognitivo do Genesis (Mark V - Evolution).
 
 Responsável por analisar contexto,
-avaliar alternativas e produzir decisões dentro da malha neural.
+avaliar alternativas (consultando a memória de longo prazo)
+e produzir decisões dentro da malha neural.
 
 Não executa ações.
 
@@ -17,7 +18,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-IV - Neural Lattice / Thought Engine
+V - Evolution / Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -47,9 +48,8 @@ class Reasoner(
     Núcleo de decisão cognitiva na Neural Lattice.
 
     Recebe planos.
-
+    Consulta memória de longo prazo (Mark V).
     Avalia alternativas na malha.
-
     Produz decisão estruturada.
 
     Não executa.
@@ -65,7 +65,7 @@ class Reasoner(
         )
 
         self.logger = logger
-        self.memory = memory
+        self.memory = memory  # Injeção da memória de longo prazo
         self.decisions: int = 0
         self.errors: int = 0
         self.history: List[Dict[str, Any]] = []
@@ -85,7 +85,8 @@ class Reasoner(
         return {
             "name": self.name,
             "decisions": self.decisions,
-            "errors": self.errors
+            "errors": self.errors,
+            "memory_connected": self.memory is not None
         }
 
     # ==================================================
@@ -224,8 +225,20 @@ class Reasoner(
                 "analysis": "Nenhum plano disponível na Neural Lattice."
             }
 
+        # ==========================================
+        # INTEGRAÇÃO COM A MEMÓRIA DE LONGO PRAZO (MARK V)
+        # ==========================================
+        historical_insights = []
+        if self.memory and hasattr(self.memory, "search"):
+            try:
+                query = plan.get("goal") or str(context.get("input", ""))
+                historical_insights = self.memory.search(query=query, limit=3)
+            except Exception as mem_error:
+                self.log_error(f"Falha ao consultar memória no Reasoner: {mem_error}")
+
         options = self.generate_options(
-            plan
+            plan,
+            insights=historical_insights
         )
 
         decision = self.decide(
@@ -241,7 +254,8 @@ class Reasoner(
             "decision": decision,
             "confidence": self.confidence(
                 decision
-            )
+            ),
+            "insights_used": len(historical_insights)
         }
 
         self.decisions += 1
@@ -257,13 +271,21 @@ class Reasoner(
 
     def generate_options(
         self,
-        plan: Any
+        plan: Any,
+        insights: Optional[List[Any]] = None
     ) -> List[Dict[str, Any]]:
+        base_score = 1.0
+        
+        # Se houver insights de experiências passadas bem-sucedidas, podemos ponderar
+        if insights:
+            base_score = 1.2
+
         return [
             {
                 "strategy": "execute_lattice_plan",
                 "plan": plan,
-                "score": 1.0
+                "score": base_score,
+                "insights_applied": len(insights) if insights else 0
             }
         ]
 
@@ -340,7 +362,7 @@ class Reasoner(
 
         return (
             "Decisão selecionada baseada "
-            "na maior pontuação disponível na Neural Lattice."
+            "na maior pontuação e histórico da Neural Lattice."
         )
 
     # ==================================================
@@ -382,6 +404,7 @@ class Reasoner(
             "name": self.name,
             "decisions": self.decisions,
             "errors": self.errors,
+            "memory_connected": self.memory is not None,
             "history": len(
                 self.history
             )

@@ -182,5 +182,13 @@
         "source": "internal",
         "tags": [],
         "created_at": "2026-07-21T14:57:25.049882"
+    },
+    {
+        "id": "4798a0e2-0597-4d71-8eed-fe9978853f32",
+        "topic": "teste",
+        "information": "Thought Engine ativa",
+        "source": "internal",
+        "tags": [],
+        "created_at": "2026-07-21T15:57:36.251956"
     }
 ]

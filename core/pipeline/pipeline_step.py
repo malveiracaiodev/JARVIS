@@ -4,7 +4,7 @@ GENESIS CORE - PIPELINE STEP BASE
 
 Arquivo: core/pipeline/pipeline_step.py
 Descrição: Classe base para as etapas da Pipeline Cognitiva.
-Mark: IV - Thought Engine
+Mark: V - Evolution / Thought Engine
 Autor: Caio Vitor Malveira
 =========================================
 """
@@ -14,9 +14,10 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 from core.pipeline.pipeline_context import PipelineContext
 
+
 class PipelineStep(ABC):
     """
-    Classe abstrata base para as etapas da Pipeline Cognitiva.
+    Classe abstrata base para as etapas da Pipeline Cognitiva (Mark V).
     """
     def __init__(self, name: str):
         self._name: str = name

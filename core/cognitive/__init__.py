@@ -7,11 +7,12 @@ core.cognitive
 
 Descrição:
 Exposição centralizada dos módulos
-cognitivos do Genesis Core.
+cognitivos do Genesis Core (Mark V - Evolution).
 
 Esta camada reúne os componentes
 especializados responsáveis pelo
-processamento inteligente do sistema.
+processamento inteligente do sistema
+integrado à memória de longo prazo.
 
 Arquitetura:
 
@@ -22,16 +23,18 @@ Arquitetura:
     ┌─────────────┼─────────────┐
     │             │             │
 Parser         Planner       Reasoner
-                                │
-                             Executor
-                                │
-                            Reflection
+                  │
+               Executor
+                  │
+             Reflection
+                  │
+               Memória
 
 Arquitetura:
 Genesis Core
 
 Mark:
-IV - Neural Lattice / Thought Engine
+V - Evolution / Thought Engine
 
 Autor:
 Caio Vitor Malveira

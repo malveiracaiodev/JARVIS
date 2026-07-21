@@ -6,25 +6,17 @@ Arquivo:
 core/cognitive/reflection.py
 
 Descrição:
-Módulo final de reflexão cognitiva (Mark IV - Neural Lattice).
+Módulo final de reflexão cognitiva (Mark V - Evolution).
 
 Responsável por avaliar o ciclo completo
-de um Thought após execução dentro da malha neural.
-
-Analisa:
-
-- intenção;
-- plano;
-- decisão;
-- execução;
-- resultado;
-- aprendizado integrado à Lattice.
+de um Thought e persistir o aprendizado
+diretamente na memória de longo prazo.
 
 Arquitetura:
 Genesis Core
 
 Mark:
-IV - Neural Lattice / Thought Engine
+V - Evolution / Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -47,15 +39,8 @@ class Reflection(
     PipelineStep
 ):
     """
-    Última etapa da Thought Engine na Neural Lattice.
-
-    Responsável por transformar uma
-    execução em experiência cognitiva na malha neural.
-
-    Não executa.
-    Não decide.
-
-    Aprende com o resultado.
+    Última etapa da Thought Engine na Mark V.
+    Transforma execuções em experiências cognitivas persistentes.
     """
 
     def __init__(
@@ -68,14 +53,10 @@ class Reflection(
         )
 
         self.logger = logger
-        self.memory = memory
+        self.memory = memory  # Injeção do coordenador de memória de longo prazo
         self.reflections: int = 0
         self.failures: int = 0
         self.history: List[Dict[str, Any]] = []
-
-    # ==================================================
-    # PIPELINE
-    # ==================================================
 
     def process(
         self,
@@ -86,7 +67,7 @@ class Reflection(
 
             if thought is None:
                 context.add_error(
-                    "Reflection recebeu Context sem Thought na Neural Lattice."
+                    "Reflection recebeu Context sem Thought na malha neural."
                 )
                 return context
 
@@ -108,6 +89,18 @@ class Reflection(
                 lesson
             )
 
+            # ==========================================
+            # INTEGRAÇÃO COM A MEMÓRIA DE LONGO PRAZO (MARK V)
+            # ==========================================
+            if self.memory and hasattr(self.memory, "store"):
+                try:
+                    self.memory.store(
+                        data=lesson,
+                        memory_type="episodic"
+                    )
+                except Exception as mem_error:
+                    self.log_error(f"Falha ao persistir lição na memória: {mem_error}")
+
             context.set(
                 "reflection",
                 reflection
@@ -125,10 +118,6 @@ class Reflection(
             self.history.append(
                 reflection
             )
-
-            # ==========================================
-            # FINALIZA THOUGHT
-            # ==========================================
 
             if reflection.get("success", False):
                 thought.confidence = reflection.get("quality", 1.0)
@@ -158,10 +147,6 @@ class Reflection(
 
             return context
 
-    # ==================================================
-    # ANÁLISE
-    # ==================================================
-
     def analyze(
         self,
         thought: Any
@@ -188,18 +173,17 @@ class Reflection(
 
         if success:
             evaluation = (
-                "Execução cognitiva concluída na Neural Lattice."
+                "Execução cognitiva concluída com sucesso na Mark V."
             )
             improvement = (
-                "Estratégia registrada como eficiente na malha."
+                "Estratégia registrada e validada no sistema de memória."
             )
         else:
             evaluation = (
-                "Execução apresentou falhas na Lattice."
+                "Execução apresentou falhas no ciclo cognitivo."
             )
             improvement = (
-                "Reavaliar intenção, "
-                "planejamento ou ferramentas no espaço de estados."
+                "Reavaliar intenção, planejamento ou ferramentas utilizadas."
             )
 
         return {
@@ -220,10 +204,6 @@ class Reflection(
             "execution": result
         }
 
-    # ==================================================
-    # APRENDIZADO
-    # ==================================================
-
     def extract_lesson(
         self,
         reflection: Dict[str, Any]
@@ -232,7 +212,7 @@ class Reflection(
             "id": str(
                 uuid.uuid4()
             ),
-            "type": "lattice_experience",
+            "type": "cognitive_experience",
             "success": reflection.get(
                 "success"
             ),
@@ -245,52 +225,6 @@ class Reflection(
             "created_at": datetime.now().isoformat()
         }
 
-    # ==================================================
-    # COMPARAÇÃO
-    # ==================================================
-
-    def compare(
-        self,
-        expected: Any,
-        actual: Any
-    ) -> Dict[str, Any]:
-        return {
-            "expected": expected,
-            "actual": actual,
-            "match": expected == actual,
-            "timestamp": datetime.now().isoformat()
-        }
-
-    # ==================================================
-    # MELHORIAS
-    # ==================================================
-
-    def suggest_improvement(
-        self,
-        reflection: Optional[Dict[str, Any]]
-    ) -> List[str]:
-        if not reflection:
-            return []
-
-        if not reflection.get(
-            "success",
-            False
-        ):
-            return [
-                "Reavaliar intenção na Lattice.",
-                "Criar novo plano estruturado.",
-                "Buscar outra estratégia ou ferramenta."
-            ]
-
-        return [
-            "Registrar padrão eficiente na malha.",
-            "Reutilizar estratégia cognitiva."
-        ]
-
-    # ==================================================
-    # LOG
-    # ==================================================
-
     def log_error(
         self,
         message: str
@@ -300,15 +234,12 @@ class Reflection(
                 message
             )
 
-    # ==================================================
-    # STATUS
-    # ==================================================
-
     def info(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "reflections": self.reflections,
             "failures": self.failures,
+            "memory_connected": self.memory is not None,
             "history": len(
                 self.history
             )

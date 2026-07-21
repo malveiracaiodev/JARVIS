@@ -6,7 +6,7 @@ Arquivo:
 core/cognitive/thought_engine.py
 
 Descrição:
-Motor central do ciclo cognitivo Mark IV (Neural Lattice).
+Motor central do ciclo cognitivo Mark V - Evolution (Neural Lattice).
 
 Responsável por:
 
@@ -28,7 +28,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-IV - Neural Lattice / Thought Engine
+V - Evolution / Thought Engine
 
 Autor:
 Caio Vitor Malveira
@@ -38,30 +38,28 @@ Caio Vitor Malveira
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from core.models.thought import (
-    Thought
-)
+from core.models.thought import Thought
 
 
 class ThoughtEngine:
     """
-    Controlador do ciclo cognitivo na Neural Lattice.
+    Controlador do ciclo cognitivo na Neural Lattice (Mark V).
 
     Fluxo:
 
         Entrada
-           |
-           v
+            |
+            v
         Thought
-           |
-           v
+            |
+            v
         Pipeline (Neural Lattice)
-           |
-           v
+            |
+            v
         Reflection
-           |
-           v
-        Memória
+            |
+            v
+        Memória (Longo Prazo)
     """
 
     def __init__(
@@ -75,7 +73,7 @@ class ThoughtEngine:
         self.pipeline = pipeline
 
         self.version: str = (
-            "Genesis Core Mark IV - Neural Lattice Thought Engine"
+            "Genesis Core Mark V - Evolution Thought Engine"
         )
 
         self.active_thoughts: Dict[str, Thought] = {}
@@ -151,7 +149,7 @@ class ThoughtEngine:
 
         self._log(
             "info",
-            "Pipeline Cognitiva conectada à Neural Lattice."
+            "Pipeline Cognitiva conectada à Neural Lattice (Mark V)."
         )
 
     # ==================================================
@@ -297,7 +295,7 @@ class ThoughtEngine:
 
         self._log(
             "info",
-            f"Thought concluído na Neural Lattice {thought.id[:8]}"
+            f"Thought concluído na Neural Lattice (Mark V) {thought.id[:8]}"
         )
 
         return thought
@@ -328,7 +326,7 @@ class ThoughtEngine:
 
         self._log(
             "error",
-            f"Thought falhou na Neural Lattice {thought.id[:8]}"
+            f"Thought falhou na Neural Lattice (Mark V) {thought.id[:8]}"
         )
 
         return thought

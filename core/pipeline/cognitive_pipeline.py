@@ -4,7 +4,7 @@ GENESIS CORE - COGNITIVE PIPELINE ENGINE
 
 Arquivo: core/pipeline/cognitive_pipeline.py
 Descrição: Motor principal da Pipeline Cognitiva.
-Mark: IV - Thought Engine
+Mark: V - Evolution / Thought Engine
 Autor: Caio Vitor Malveira
 =========================================
 """
@@ -17,9 +17,10 @@ from core.models.thought import Thought
 from core.pipeline.pipeline_context import PipelineContext
 from core.pipeline.pipeline_step import PipelineStep
 
+
 class CognitivePipeline(Module, PipelineInterface):
     """
-    Gerencia e executa a sequência linear ordenada de etapas sobre um Thought.
+    Gerencia e executa a sequência linear ordenada de etapas sobre um Thought (Mark V).
     """
     def __init__(self, name: str = "core.cognitive_pipeline"):
         self.steps_list: List[PipelineStep] = []

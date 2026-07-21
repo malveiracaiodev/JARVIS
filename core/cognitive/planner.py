@@ -6,7 +6,7 @@ Arquivo:
 core/cognitive/planner.py
 
 Descrição:
-Planejador Cognitivo do Genesis Core (Mark IV - Neural Lattice).
+Planejador Cognitivo do Genesis Core (Mark V - Evolution).
 
 Responsável por transformar intenções
 em estruturas planejáveis dentro da malha neural.
@@ -19,7 +19,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-IV - Neural Lattice / Thought Engine
+V - Evolution / Thought Engine
 
 Autor:
 Caio Vitor Malveira

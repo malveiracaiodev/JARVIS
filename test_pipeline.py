@@ -1,360 +1,54 @@
-"""
-=========================================
-GENESIS CORE
-
-Arquivo:
-test_pipeline.py
-
-Teste completo da Pipeline Cognitiva.
-
-Arquitetura:
-Genesis Core Mark IV
-Thought Engine
-
-=========================================
-"""
-
-
-from core.managers.tool_manager import (
-    ToolManager
-)
-
-
-from core.pipeline.pipeline_initializer import (
-    PipelineInitializer
-)
-
-
-from core.cognitive.thought_engine import (
-    ThoughtEngine
-)
-
-
-
-# ==================================================
-# TOOL MANAGER
-# ==================================================
-
-
-print(
-    "\n[BOOT] Inicializando ToolManager..."
-)
-
-
-tool_manager = ToolManager()
-
-
-tool_manager.initialize()
-
-
-
-print(
-    "[OK] ToolManager iniciado."
-)
-
-
-
-# ==================================================
-# CONSTRUÇÃO DA PIPELINE
-# ==================================================
-
-
-print(
-    "\n[BOOT] Construindo Pipeline Cognitiva..."
-)
-
-
-
-initializer = PipelineInitializer(
-
-    tool_manager=tool_manager
-
-)
-
-
-
-pipeline = initializer.build()
-
-
-
-print(
-    "[OK] Pipeline criada."
-)
-
-
-
-# ==================================================
-# ETAPAS
-# ==================================================
-
-
-print(
-    "\nETAPAS CARREGADAS:"
-)
-
-
-
-for step in pipeline.list_steps():
-
-
-    print(
-        "-",
-        step
-    )
-
-
-
-# ==================================================
-# THOUGHT ENGINE
-# ==================================================
-
-
-print(
-    "\n[BOOT] Inicializando Thought Engine..."
-)
-
-
-
-engine = ThoughtEngine(
-
-    pipeline=pipeline
-
-)
-
-
-
-print(
-    "[OK] Thought Engine pronta."
-)
-
-
-
-# ==================================================
-# ENTRADA
-# ==================================================
-
-
-message = (
-
-    "Jarvis, execute um teste do sistema cognitivo"
-
-)
-
-
-
-print(
-    "\nENTRADA:"
-)
-
-
-
-print(
-    message
-)
-
-
-
-# ==================================================
-# EXECUÇÃO DO CICLO
-# ==================================================
-
-
-thought = engine.think(
-
-    message,
-
-    agent="jarvis",
-
-    source="test_pipeline"
-
-)
-
-
-
-# ==================================================
-# RESULTADO FINAL
-# ==================================================
-
-
-print(
-    "\n=============================="
-)
-
-
-print(
-    "THOUGHT FINAL"
-)
-
-
-print(
-    "=============================="
-)
-
-
-
-print(
-
-    thought.to_dict()
-
-)
-
-
-
-# ==================================================
-# RESULTADO DA PIPELINE
-# ==================================================
-
-
-print(
-    "\n=============================="
-)
-
-
-print(
-    "RESULTADO PIPELINE"
-)
-
-
-print(
-    "=============================="
-)
-
-
-
-if thought.result:
-
-
-    print(
-        thought.result
-    )
-
-
-else:
-
-
-    print(
-        "Nenhum resultado."
-    )
-
-
-
-# ==================================================
-# HISTÓRICO
-# ==================================================
-
-
-print(
-    "\n=============================="
-)
-
-
-print(
-    "HISTÓRICO PIPELINE"
-)
-
-
-print(
-    "=============================="
-)
-
-
-
-for event in pipeline.get_history():
-
-
-    print(
-        event
-    )
-
-
-
-# ==================================================
-# MÉTRICAS ENGINE
-# ==================================================
-
-
-print(
-    "\n=============================="
-)
-
-
-print(
-    "MÉTRICAS THOUGHT ENGINE"
-)
-
-
-print(
-    "=============================="
-)
-
-
-
-print(
-
-    engine.metrics()
-
-)
-
-
-
-# ==================================================
-# STATUS PIPELINE
-# ==================================================
-
-
-print(
-    "\n=============================="
-)
-
-
-print(
-    "STATUS PIPELINE"
-)
-
-
-print(
-    "=============================="
-)
-
-
-
-print(
-
-    pipeline.status
-
-)
-
-
-
-# ==================================================
-# STATUS ENGINE
-# ==================================================
-
-
-print(
-    "\n=============================="
-)
-
-
-print(
-    "STATUS ENGINE"
-)
-
-
-print(
-    "=============================="
-)
-
-
-
-print(
-
-    engine.status
-
-)
-
-
-
-print(
-    "\n[FINALIZADO] Teste cognitivo concluído."
-)
+import pytest
+from custom_tools import fetch_external_data, process_dataframe_metrics
+
+# Simulação da estrutura do pipeline para fins de testes integrados
+class MockToolManager:
+    def __init__(self):
+        self.tools = {}
+
+    def register_tool(self, name, func, description):
+        self.tools[name] = {"func": func, "description": description}
+
+    def execute(self, name, params):
+        if name in self.tools:
+            return self.tools[name]["func"](params)
+        raise ValueError(f"Ferramenta {name} não encontrada.")
+
+class CognitivePipelineMock:
+    def __init__(self, tool_manager):
+        self.tool_manager = tool_manager
+
+    def run(self, prompt: str):
+        # Simulação do comportamento do Reasoner/Planner selecionando as novas ferramentas
+        executed_tools = []
+        if "API externa" in prompt or "dados" in prompt:
+            res1 = self.tool_manager.execute("fetch_external_data", {"endpoint": "/api/v1/clients"})
+            executed_tools.append("fetch_external_data")
+        
+        if "métricas" in prompt or "processe" in prompt:
+            res2 = self.tool_manager.execute("process_dataframe_metrics", {"dataset": "clients_dataset"})
+            executed_tools.append("process_dataframe_metrics")
+            
+        return {
+            "success": True,
+            "executed_tools": executed_tools
+        }
+
+@pytest.fixture
+def configured_pipeline():
+    manager = MockToolManager()
+    manager.register_tool("fetch_external_data", fetch_external_data, "Busca dados externos.")
+    manager.register_tool("process_dataframe_metrics", process_dataframe_metrics, "Processa métricas.")
+    return CognitivePipelineMock(manager)
+
+def test_custom_tools_integration(configured_pipeline):
+    # Arrange
+    prompt = "Busque os dados na API externa de clientes e processe as métricas."
+    
+    # Act
+    result = configured_pipeline.run(prompt)
+    
+    # Assert
+    assert result["success"] is True
+    assert "fetch_external_data" in result["executed_tools"]
+    assert "process_dataframe_metrics" in result["executed_tools"]

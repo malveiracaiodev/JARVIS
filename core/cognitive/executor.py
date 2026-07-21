@@ -6,7 +6,7 @@ Arquivo:
 core/cognitive/executor.py
 
 Descrição:
-Executor Cognitivo do Genesis Core (Mark IV - Thought Engine).
+Executor Cognitivo do Genesis Core (Mark V - Evolution).
 
 Transforma decisões produzidas pelo Reasoner
 em operações através do ToolManager dentro da malha neural.
@@ -15,7 +15,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-IV - Thought Engine
+V - Evolution / Thought Engine
 
 Autor:
 Caio Vitor Malveira
