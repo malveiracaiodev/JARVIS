@@ -18,7 +18,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-II.1 - Evolution (Patch 2.2 - Robust Storage)
+3 - Evolution (Patch 2.2 - Robust Storage)
 
 Autor:
 Caio Vitor Malveira
@@ -28,20 +28,17 @@ Caio Vitor Malveira
 import json
 import shutil
 import threading
+import os
+import copy
 from pathlib import Path
-from core.base.module import (
-    Module,
-    ModuleStatus
-)
+from core.base.module import Module, ModuleStatus
 
 
 class ConfigManager(Module):
     """
-    Serviço central de configuração com persistência atômica e segura do JARVIS.
+    Serviço central de configuração com persistência atômica e segura (Mark III).
     """
-
     CONFIG_VERSION = 1
-
     ROOT_DIR = Path(__file__).resolve().parent.parent.parent
     CONFIG_FOLDER = ROOT_DIR / "config"
     CONFIG_FILE = CONFIG_FOLDER / "settings.json"
@@ -50,109 +47,94 @@ class ConfigManager(Module):
 
     def __init__(self, logger=None):
         super().__init__("core.config_manager")
-        self.version = "2.2"
+        self.version = "3.0"
         self.logger = logger
         self.data = {}
-        
-        # Lock de exclusão mútua para sincronizar E/S em disco e acessos em memória
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
 
-    # ==========================================================
-    # Ciclo de Vida
-    # ==========================================================
+    # ==================================================
+    # CICLO DE VIDA (CONTRATOS OBRIGATÓRIOS)
+    # ==================================================
 
     def initialize(self):
-        self.set_status(ModuleStatus.INITIALIZING)
-        try:
-            with self._lock:
-                self.CONFIG_FOLDER.mkdir(parents=True, exist_ok=True)
-                self.create_default()
-                self._load_internal()
+        """Inicializa o gerenciador e carrega as configurações persistidas."""
+        with self._lock:
+            if self.is_online():
+                return
 
-            self.set_status(ModuleStatus.ONLINE)
-            self.success("Config Manager iniciado com persistência isolada")
-        except Exception as error:
-            # Compatibilidade com a assinatura set_error do core base se aplicável
-            if hasattr(self, "set_error"):
-                self.set_error(str(error))
-            self.error(f"Erro fatal na inicialização do ConfigManager: {str(error)}")
+            self.set_status(ModuleStatus.INITIALIZING)
+            
+            try:
+                self.load()
+                self.set_status(ModuleStatus.ONLINE)
+                if self.logger:
+                    self.logger.info("ConfigManager online e configurações carregadas.")
+            except Exception as error:
+                self.set_error(f"Falha na inicialização do ConfigManager: {str(error)}")
+                if self.logger:
+                    self.logger.error(self.error_message)
 
     def shutdown(self):
-        self.save()
-        self.set_status(ModuleStatus.OFFLINE)
-        self.info("Config Manager encerrado e dados descarregados em disco")
+        """Encerra o gerenciador salvando o estado atual se necessário."""
+        with self._lock:
+            self.set_status(ModuleStatus.OFFLINE)
+            try:
+                self.save()
+            except Exception:
+                pass
+            if self.logger:
+                self.logger.info("ConfigManager encerrado.")
 
-    # ==========================================================
-    # Arquivo e Persistência Atômica
-    # ==========================================================
-
-    def _load_internal(self):
-        """Método privado para carregamento interno (deve rodar sob escopo de lock)."""
-        if not self.CONFIG_FILE.exists():
-            self._restore_default_internal()
-
-        try:
-            with self.CONFIG_FILE.open("r", encoding="utf-8") as file:
-                self.data = json.load(file)
-            self.check_version()
-        except (json.JSONDecodeError, ValueError):
-            self.error("Arquivo de configuração corrompido. Tentando restaurar do backup...")
-            self._recover_from_backup()
+    # ==================================================
+    # CARREGAMENTO E PERSISTÊNCIA
+    # ==================================================
 
     def load(self):
+        """Carrega as configurações do disco de forma segura."""
         with self._lock:
-            self._load_internal()
+            self.CONFIG_FOLDER.mkdir(parents=True, exist_ok=True)
+            
+            target_file = self.CONFIG_FILE
+            if not target_file.exists() and self.BACKUP_FILE.exists():
+                target_file = self.BACKUP_FILE
+
+            if target_file.exists():
+                try:
+                    with target_file.open("r", encoding="utf-8") as file:
+                        self.data = json.load(file)
+                except Exception as error:
+                    if self.logger:
+                        self.logger.error(f"Erro ao ler configurações: {str(error)}. Tentando restaurar backup.")
+                    self.restore_backup()
+            else:
+                self.data = {}
+                self.save()
 
     def save(self):
-        """Salva as configurações de forma atômica para evitar arquivos corrompidos por interrupções."""
+        """Salva as configurações com descarga física (fsync) e substituição atômica."""
         with self._lock:
             try:
                 self.CONFIG_FOLDER.mkdir(parents=True, exist_ok=True)
-                
-                # Gera primeiro um backup rápido do arquivo íntegro atual
                 self.backup()
 
-                # Escreve no arquivo temporário primeiro
+                # Escreve no arquivo temporário com flush e sincronização física
                 with self.TEMP_FILE.open("w", encoding="utf-8") as file:
                     json.dump(self.data, file, indent=4, ensure_ascii=False)
+                    file.flush()
+                    os.fsync(file.fileno())  # Garante que os dados atingiram o hardware
                 
-                # Substituição atômica no sistema de arquivos (evita zerar se a energia cair no dump)
+                # Substituição atômica
                 self.TEMP_FILE.replace(self.CONFIG_FILE)
             except Exception as error:
-                self.error(f"Falha ao descarregar configurações em disco: {str(error)}")
-
-    def reload(self):
-        with self._lock:
-            self._load_internal()
-            self.info("Configurações recarregadas com sucesso")
-
-    def _recover_from_backup(self):
-        """Tenta recuperar dados do arquivo de backup. Em último caso, recria o padrão."""
-        if self.BACKUP_FILE.exists():
-            try:
-                with self.BACKUP_FILE.open("r", encoding="utf-8") as file:
-                    self.data = json.load(file)
-                self.check_version()
-                # Salva a versão recuperada de volta na trilha principal
-                with self.CONFIG_FILE.open("w", encoding="utf-8") as file:
-                    json.dump(self.data, file, indent=4, ensure_ascii=False)
-                self.success("Configuração recuperada com sucesso através do Backup local")
-                return
-            except Exception:
-                self.error("Arquivo de backup também está corrompido.")
-        
-        self.error("Restaurando configurações para o padrão de fábrica.")
-        self._restore_default_internal()
-
-    # ==========================================================
-    # Interface de API Externa
-    # ==========================================================
+                error_msg = f"Falha crítica ao descarregar configurações: {str(error)}"
+                if self.logger:
+                    self.logger.error(error_msg)
+                raise RuntimeError(error_msg)
 
     def get(self, section, key=None, default=None):
         with self._lock:
-            if key is None:
-                return self.data.get(section, default)
-            return self.data.get(section, {}).get(key, default)
+            value = self.data.get(section, {}) if key is None else self.data.get(section, {}).get(key, default)
+            return copy.deepcopy(value) if isinstance(value, (dict, list)) else value
 
     def get_path(self, path, default=None):
         with self._lock:
@@ -164,126 +146,37 @@ class ConfigManager(Module):
                     return default
                 if value is None:
                     return default
-            return value
+            return copy.deepcopy(value) if isinstance(value, (dict, list)) else value
 
-    def set(self, section, key, value, save=False):
+    def get_all(self):
+        with self._lock:
+            return copy.deepcopy(self.data)
+
+    def set(self, section, key, value):
         with self._lock:
             if section not in self.data:
                 self.data[section] = {}
             self.data[section][key] = value
-            if save:
-                self.save()
-
-    def update(self, section, key, value):
-        self.set(section, key, value, save=True)
-
-    def get_all(self):
-        with self._lock:
-            return dict(self.data)
-
-    # ==========================================================
-    # Versionamento e Migrações
-    # ==========================================================
-
-    def check_version(self):
-        version = self.data.get("config_version", 0)
-        if version < self.CONFIG_VERSION:
-            self.migrate(version)
-
-    def migrate(self, old_version):
-        self.data["config_version"] = self.CONFIG_VERSION
-        self.save()
-        self.info(f"Esquema de configuração migrado da v{old_version} para a v{self.CONFIG_VERSION}")
-
-    # ==========================================================
-    # Inicialização Padrão
-    # ==========================================================
-
-    def create_default(self):
-        if self.CONFIG_FILE.exists():
-            return
-        self._restore_default_internal()
-
-    def _restore_default_internal(self):
-        """Implementação privada de restauração de fábrica padrão."""
-        default = {
-            "config_version": self.CONFIG_VERSION,
-            "system": {
-                "name": "JARVIS",
-                "version": "Mark II - Genesis",
-                "language": "pt-BR",
-                "debug": True
-            },
-            "user": {
-                "name": "Caio"
-            },
-            "mind": {
-                "enabled": True,
-                "memory": True,
-                "reasoning": True
-            },
-            "memory": {
-                "enabled": True,
-                "path": "data/memory"
-            },
-            "knowledge": {
-                "enabled": True,
-                "path": "data/knowledge"
-            },
-            "voice": {
-                "enabled": False
-            },
-            "ai": {
-                "enabled": False,
-                "provider": "none"
-            },
-            "plugins": {
-                "enabled": True,
-                "path": "plugins"
-            },
-            "runtime": {
-                "workers": 1
-            },
-            "personality": {
-                "name": "Rafiki",
-                "mode": "advisor"
-            }
-        }
-        self.data = default
-        
-        # Garante a escrita imediata
-        self.CONFIG_FOLDER.mkdir(parents=True, exist_ok=True)
-        with self.CONFIG_FILE.open("w", encoding="utf-8") as file:
-            json.dump(self.data, file, indent=4, ensure_ascii=False)
-
-    def restore_default(self):
-        with self._lock:
-            self._restore_default_internal()
-
-    # ==========================================================
-    # Rotinas de Backup Manual/Automático
-    # ==========================================================
+            self.save()
 
     def backup(self):
-        """Duplica o arquivo ativo para o destino de backup se ele existir em estado íntegro."""
+        """Cópia segura utilizando flush para garantir integridade."""
         if self.CONFIG_FILE.exists():
             try:
                 shutil.copy2(self.CONFIG_FILE, self.BACKUP_FILE)
             except Exception as error:
-                self.error(f"Não foi possível criar o arquivo de backup: {str(error)}")
+                if self.logger:
+                    self.logger.error(f"Erro no backup: {str(error)}")
 
-    # ==========================================================
-    # Logs Redirecionados
-    # ==========================================================
-
-    def info(self, message):
-        if self.logger:
-            self.logger.info(message)
-
-    def success(self, message):
-        if self.logger:
-            self.logger.success(message)
-
-    def error(self, message):
-        if self.logger:
-            self.logger.error(message)
+    def restore_backup(self):
+        """Restaura o arquivo de configurações a partir do backup."""
+        with self._lock:
+            if self.BACKUP_FILE.exists():
+                try:
+                    shutil.copy2(self.BACKUP_FILE, self.CONFIG_FILE)
+                    with self.CONFIG_FILE.open("r", encoding="utf-8") as file:
+                        self.data = json.load(file)
+                except Exception as error:
+                    if self.logger:
+                        self.logger.error(f"Falha ao restaurar backup: {str(error)}")
+                    self.data = {}

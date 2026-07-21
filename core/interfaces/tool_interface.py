@@ -1,25 +1,26 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/interfaces/tool_interface.py
 
 Descrição:
 Contrato base para ferramentas
-executáveis do Genesis Core.
+executáveis do Genesis Core (Mark IV - Neural Lattice).
 
 Tools representam capacidades
-externas utilizadas pelo Executor.
+externas utilizadas pelo Executor, agora 
+integradas à malha neural (Lattice).
 
 Fluxo:
 
 Reasoner
-   |
+    |
 Executor
-   |
+    |
 Tool
-   |
+    |
 Ambiente
 
 
@@ -27,19 +28,17 @@ Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+IV - Neural Lattice
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
-
 from abc import (
     ABC,
     abstractmethod
 )
-
 
 
 class ToolInterface(
@@ -58,12 +57,10 @@ class ToolInterface(
     - controlar dispositivos;
     - consultar APIs.
 
-    A Tool executa.
+    A Tool executa dentro da malha neural (Lattice).
 
     Ela não decide quando executar.
     """
-
-
 
     # ==================================================
     # IDENTIDADE
@@ -83,10 +80,7 @@ class ToolInterface(
         filesystem.read
         bluetooth.connect
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # DESCRIÇÃO
@@ -104,12 +98,10 @@ class ToolInterface(
 
         - Planner;
         - Reasoner;
-        - Plugin Manager.
+        - Plugin Manager;
+        - Neural Lattice Orchestrator.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # COMPATIBILIDADE
@@ -134,10 +126,7 @@ class ToolInterface(
         bool
             True se suportado.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # EXECUÇÃO
@@ -158,17 +147,14 @@ class ToolInterface(
             Ação recebida.
 
         context:
-            Contexto cognitivo atual.
+            Contexto cognitivo atual (Neural Lattice Context).
 
         Returns
         -------
         result:
             Resultado da operação.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # PERMISSÕES
@@ -187,10 +173,7 @@ class ToolInterface(
         network.access
         device.control
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # STATUS
@@ -202,7 +185,6 @@ class ToolInterface(
     ):
         """
         Retorna estado operacional
-        da ferramenta.
+        da ferramenta (incluindo estados da Neural Lattice).
         """
-
         raise NotImplementedError()

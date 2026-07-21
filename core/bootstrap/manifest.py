@@ -26,21 +26,19 @@ Caio Vitor Malveira
 =========================================
 """
 
+from typing import Any, Dict, List
 
 from core.services.event_bus import EventBus
 from core.services.config_manager import ConfigManager
 from core.services.diagnostics import Diagnostics
-
 from core.agents.agent_manager import AgentManager
 
-
-# Futuramente substituir pelos reais
+# Módulos principais do ecossistema
 from core.services.logger import Logger
 from core.managers.registry import Registry
 
 
-
-BOOT_COMPONENTS = [
+BOOT_COMPONENTS: List[Dict[str, Any]] = [
 
     # ======================================================
     # FUNDAMENTAÇÃO DO SISTEMA
@@ -56,7 +54,6 @@ BOOT_COMPONENTS = [
         "constructor": []
     },
 
-
     {
         "name": "config",
         "category": "service",
@@ -68,7 +65,6 @@ BOOT_COMPONENTS = [
             "logger"
         ]
     },
-
 
     {
         "name": "event_bus",
@@ -82,11 +78,9 @@ BOOT_COMPONENTS = [
         ]
     },
 
-
     # ======================================================
     # REGISTRO GLOBAL
     # ======================================================
-
 
     {
         "name": "registry",
@@ -100,11 +94,9 @@ BOOT_COMPONENTS = [
         ]
     },
 
-
     # ======================================================
     # SISTEMA
     # ======================================================
-
 
     {
         "name": "diagnostics",
@@ -118,11 +110,9 @@ BOOT_COMPONENTS = [
         ]
     },
 
-
     # ======================================================
     # INTELIGÊNCIA
     # ======================================================
-
 
     {
         "name": "agent_manager",
@@ -140,14 +130,11 @@ BOOT_COMPONENTS = [
 ]
 
 
-
-def get_boot_components():
-
+def get_boot_components() -> List[Dict[str, Any]]:
     """
     Retorna componentes ativos
     ordenados pela prioridade.
     """
-
     return sorted(
         [
             component

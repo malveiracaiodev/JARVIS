@@ -21,23 +21,22 @@ Arquitetura:
                   │
     ┌─────────────┼─────────────┐
     │             │             │
- Parser       Planner      Reasoner
-                                   │
-                              Executor
-                                   │
-                              Reflection
+Parser         Planner       Reasoner
+                                │
+                             Executor
+                                │
+                            Reflection
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Intelligence
+IV - Neural Lattice / Thought Engine
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
-
 
 # =====================================================
 # INTERPRETAÇÃO
@@ -68,10 +67,17 @@ from .executor import Executor
 
 
 # =====================================================
-# APRENDIZADO
+# APRENDIZADO & REFLEXÃO
 # =====================================================
 
 from .reflection import Reflection
+
+
+# =====================================================
+# CONTROLE DO CICLO COGNITIVO
+# =====================================================
+
+from .thought_engine import ThoughtEngine
 
 
 # =====================================================
@@ -79,15 +85,10 @@ from .reflection import Reflection
 # =====================================================
 
 __all__ = [
-
     "Parser",
-
     "Planner",
-
     "Reasoner",
-
     "Executor",
-
     "Reflection",
-
+    "ThoughtEngine",
 ]

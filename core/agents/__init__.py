@@ -1,67 +1,41 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
-Pacote:
-core.agents
+Arquivo:
+core/agents/__init__.py
 
 Descrição:
-Exposição centralizada dos agentes
-inteligentes do Genesis Core.
-
-Os agentes representam personalidades
-ou entidades capazes de interagir com
-o usuário utilizando a infraestrutura
-cognitiva do sistema.
-
-Arquitetura:
-
-             Genesis Core
-
-                  │
-            Agent Manager
-                  │
-        ┌─────────┴─────────┐
-        │                   │
-     JARVIS             RAFIKI
-        │                   │
-        └─────────┬─────────┘
-                  │
-                Brain
-                  │
-        Cognitive Pipeline
-
-Mark:
-III - Intelligence
-
-Autor:
-Caio Vitor Malveira
+Inicializador e ponto de exportação do pacote
+core.agents do Genesis Core (Mark IV).
 =========================================
 """
 
+from typing import List, Optional
 
 # ==================================================
-# AGENTES BASE
+# CLASSE BASE DE AGENTES
 # ==================================================
-
 from .agent import Agent
 
+# ==================================================
+# AGENTE RAIZ GENESIS
+# ==================================================
+try:
+    from .genesis_agent import GenesisAgent
+except ImportError:
+    GenesisAgent = None  # type: ignore
 
 # ==================================================
 # GERENCIADOR
 # ==================================================
-
 from .agent_manager import AgentManager
-
 
 # ==================================================
 # EXPORTAÇÃO PÚBLICA
 # ==================================================
-
-__all__ = [
-
+__all__: List[str] = [
     "Agent",
-
+    "GenesisAgent",
     "AgentManager",
-
 ]

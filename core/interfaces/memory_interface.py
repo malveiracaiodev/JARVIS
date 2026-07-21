@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/interfaces/memory_interface.py
@@ -33,12 +33,10 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from abc import (
     ABC,
     abstractmethod
 )
-
 
 
 class MemoryInterface(ABC):
@@ -58,8 +56,6 @@ class MemoryInterface(ABC):
     Não realiza raciocínio.
     Não toma decisões.
     """
-
-
 
     # ==================================================
     # ARMAZENAMENTO
@@ -94,10 +90,7 @@ class MemoryInterface(ABC):
         result:
             Resultado da operação.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # RECUPERAÇÃO
@@ -125,10 +118,7 @@ class MemoryInterface(ABC):
         memories:
             Memórias encontradas.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # BUSCA SEMÂNTICA
@@ -155,10 +145,7 @@ class MemoryInterface(ABC):
         results:
             Memórias relevantes.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # REMOÇÃO TOTAL
@@ -177,10 +164,7 @@ class MemoryInterface(ABC):
         result:
             Estado da operação.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # REMOÇÃO ESPECÍFICA
@@ -210,10 +194,7 @@ class MemoryInterface(ABC):
         result:
             Resultado da operação.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # PERSISTÊNCIA
@@ -233,10 +214,7 @@ class MemoryInterface(ABC):
         - vetor;
         - cloud.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # CARREGAMENTO
@@ -249,10 +227,7 @@ class MemoryInterface(ABC):
         """
         Recupera memórias persistidas.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # STATUS
@@ -266,10 +241,7 @@ class MemoryInterface(ABC):
         Retorna estado operacional
         do sistema de memória.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # IDENTIDADE
@@ -289,5 +261,4 @@ class MemoryInterface(ABC):
         memory.vector
         memory.episodic
         """
-
         raise NotImplementedError()

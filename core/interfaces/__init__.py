@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Pacote:
 core.interfaces
@@ -56,14 +56,12 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 # =====================================================
 # INPUT / ENTRADA
 # =====================================================
 
 from .command_interface import CommandInterface
 from .parser_interface import ParserInterface
-
 
 
 # =====================================================
@@ -76,7 +74,6 @@ from .planner_interface import PlannerInterface
 from .reasoner_interface import ReasonerInterface
 
 
-
 # =====================================================
 # EXECUÇÃO
 # =====================================================
@@ -85,14 +82,12 @@ from .executor_interface import ExecutorInterface
 from .tool_interface import ToolInterface
 
 
-
 # =====================================================
 # MEMÓRIA / CONHECIMENTO
 # =====================================================
 
 from .memory_interface import MemoryInterface
 from .knowledge_interface import KnowledgeInterface
-
 
 
 # =====================================================
@@ -105,18 +100,15 @@ __all__ = [
     "CommandInterface",
     "ParserInterface",
 
-
     # Cognição
     "BrainInterface",
     "PipelineInterface",
     "PlannerInterface",
     "ReasonerInterface",
 
-
     # Execução
     "ExecutorInterface",
     "ToolInterface",
-
 
     # Memória
     "MemoryInterface",

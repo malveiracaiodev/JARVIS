@@ -6,28 +6,44 @@ Arquivo:
 core/agents/agent_manager.py
 
 Descrição:
-Gerenciador central de agentes do ecossistema.
+Gerenciador central de agentes.
 
-Responsabilidades:
-- Registro de agentes
+Responsável por:
+
+- Registro
 - Descoberta
-- Ciclo de vida
-- Broadcast
-- Estatísticas
+- Inicialização
+- Encerramento
+- Comunicação
 - Health Check
+- Carregamento dinâmico de Personas
 
 Arquitetura:
-Genesis Core
+
+Kernel
+   |
+   ▼
+AgentManager
+   |
+   ▼
+PersonaFactory
+   |
+   ▼
+identity.json
+
 
 Mark:
-III - Matrix
+IV - Thought Engine
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
+
 import threading
+
+
 
 from core.base.module import (
     Module,
@@ -35,301 +51,761 @@ from core.base.module import (
 )
 
 
+
+from personas.persona_factory import (
+    PersonaFactory
+)
+
+
+
+
+
 class AgentManager(Module):
+
+
     """
-    Gerenciador central dos agentes do Genesis.
+    Controlador do ecossistema
+    de agentes Genesis.
 
-    Este módulo NÃO possui inteligência.
+    Não conhece agentes específicos.
 
-    Sua única responsabilidade é administrar
-    o ciclo de vida dos agentes registrados.
+    Toda descoberta é feita
+    através da PersonaFactory.
     """
 
-    def __init__(self, logger=None):
-        super().__init__("core.agent_manager")
 
-        self.version = "3.0"
+
+    def __init__(
+        self,
+        logger=None,
+        factory=None
+    ):
+
+
+        super().__init__(
+            "core.agent_manager"
+        )
+
+
+        self.version = "4.0"
+
 
         self.logger = logger
 
+
+        self.factory = (
+
+            factory
+
+            or
+
+            PersonaFactory()
+
+        )
+
+
         self.agents = {}
+
 
         self._lock = threading.RLock()
 
-    # ==========================================================
+
+
+
+
+
+
+    # ==================================================
     # CICLO DE VIDA
-    # ==========================================================
+    # ==================================================
+
 
     def initialize(self):
 
-        self.set_status(ModuleStatus.INITIALIZING)
 
-        with self._lock:
-            self.agents.clear()
+        self.set_status(
+            ModuleStatus.INITIALIZING
+        )
 
-        self.set_status(ModuleStatus.ONLINE)
 
-        self.success("Agent Manager inicializado.")
+        self.set_status(
+            ModuleStatus.ONLINE
+        )
+
+
+        self.success(
+            "Agent Manager inicializado."
+        )
+
+
+
+
+
 
     def shutdown(self):
 
-        self.stop_all()
 
-        with self._lock:
-            self.agents.clear()
+        self.shutdown_all()
 
-        self.set_status(ModuleStatus.OFFLINE)
 
-        self.info("Agent Manager finalizado.")
+        self.agents.clear()
 
-    # ==========================================================
+
+        self.set_status(
+            ModuleStatus.OFFLINE
+        )
+
+
+        self.info(
+            "Agent Manager encerrado."
+        )
+
+
+
+
+
+
+
+
+    # ==================================================
+    # DESCOBERTA DE PERSONAS
+    # ==================================================
+
+
+    def discover(self):
+
+
+        """
+        Descobre personas disponíveis
+        no identity.json.
+        """
+
+
+        if not self.factory:
+
+            return []
+
+
+
+        return self.factory.available()
+
+
+
+
+
+
+
+    # ==================================================
+    # CARREGAMENTO DINÂMICO
+    # ==================================================
+
+
+    def load_personas(self):
+
+
+        """
+        Cria e registra todas as
+        personas declaradas.
+        """
+
+
+        personas = self.discover()
+
+
+
+        for name in personas:
+
+
+            try:
+
+
+                agent = self.factory.create(
+                    name
+                )
+
+
+                self.register(
+                    agent
+                )
+
+
+
+            except Exception as error:
+
+
+                self.error(
+
+                    f"Falha carregando {name}: {error}"
+
+                )
+
+
+
+
+
+
+
+
+
+    # ==================================================
     # REGISTRO
-    # ==========================================================
+    # ==================================================
 
-    def register(self, agent):
+
+    def register(
+        self,
+        agent
+    ):
+
 
         if agent is None:
-            self.error("Tentativa de registrar agente nulo.")
+
+
+            self.error(
+                "Agente inválido."
+            )
+
+
             return False
 
-        if not hasattr(agent, "name"):
-            self.error("O agente não possui atributo 'name'.")
+
+
+
+        if not hasattr(
+            agent,
+            "name"
+        ):
+
+
+            self.error(
+                "Agente sem nome."
+            )
+
+
             return False
+
+
+
+
 
         key = agent.name.lower()
 
+
+
+
         with self._lock:
 
+
+
             if key in self.agents:
-                self.error(
-                    f"Agente '{agent.name}' já registrado."
+
+
+                self.warning(
+                    f"{agent.name} já registrado."
                 )
+
+
                 return False
+
+
+
+
 
             self.agents[key] = agent
 
+
+
+
+
+
         self.success(
+
             f"Agente registrado: {agent.name}"
+
         )
+
 
         return True
 
-    def unregister(self, name):
+
+
+
+
+
+
+    def unregister(
+        self,
+        name
+    ):
+
 
         with self._lock:
 
-            agent = self.agents.pop(name.lower(), None)
 
-        if agent is None:
-            return False
+            agent = self.agents.pop(
 
-        try:
+                name.lower(),
 
-            if hasattr(agent, "stop"):
-                agent.stop()
+                None
 
-        except Exception as e:
-
-            self.error(
-                f"Erro ao finalizar agente '{name}': {e}"
             )
 
-        self.info(
-            f"Agente removido: {name}"
-        )
 
-        return True
 
-    # ==========================================================
-    # CONSULTAS
-    # ==========================================================
 
-    def exists(self, name):
+        if agent:
 
-        with self._lock:
-            return name.lower() in self.agents
 
-    def get(self, name):
+            try:
 
-        with self._lock:
-            return self.agents.get(name.lower())
+                agent.shutdown()
 
-    def list_agents(self):
 
-        with self._lock:
-            return sorted(self.agents.keys())
+            except Exception as error:
 
-    def count(self):
 
-        with self._lock:
-            return len(self.agents)
+                self.error(
+                    str(error)
+                )
 
-    # ==========================================================
-    # CICLO DOS AGENTES
-    # ==========================================================
 
-    def start_all(self):
-
-        with self._lock:
-
-            for agent in self.agents.values():
-
-                if hasattr(agent, "start"):
-
-                    try:
-
-                        agent.start()
-
-                    except Exception as e:
-
-                        self.error(
-                            f"Erro ao iniciar '{agent.name}': {e}"
-                        )
-
-    def stop_all(self):
-
-        with self._lock:
-
-            for agent in self.agents.values():
-
-                if hasattr(agent, "stop"):
-
-                    try:
-
-                        agent.stop()
-
-                    except Exception as e:
-
-                        self.error(
-                            f"Erro ao parar '{agent.name}': {e}"
-                        )
-
-    def restart(self, name):
-
-        agent = self.get(name)
-
-        if agent is None:
-            return False
-
-        try:
-
-            if hasattr(agent, "stop"):
-                agent.stop()
-
-            if hasattr(agent, "start"):
-                agent.start()
 
             return True
 
-        except Exception as e:
 
-            self.error(
-                f"Erro ao reiniciar '{name}': {e}"
-            )
+
+        return False
+
+
+
+
+
+
+
+    # ==================================================
+    # CONSULTA
+    # ==================================================
+
+
+    def get(
+        self,
+        name
+    ):
+
+
+        return self.agents.get(
+
+            name.lower()
+
+        )
+
+
+
+
+
+
+
+    def exists(
+        self,
+        name
+    ):
+
+
+        return (
+
+            name.lower()
+
+            in
+
+            self.agents
+
+        )
+
+
+
+
+
+
+
+    def list_agents(
+        self
+    ):
+
+
+        return list(
+
+            self.agents.keys()
+
+        )
+
+
+
+
+
+
+
+    def count(
+        self
+    ):
+
+
+        return len(
+
+            self.agents
+
+        )
+
+
+
+
+
+
+
+
+    # ==================================================
+    # CONTROLE
+    # ==================================================
+
+
+    def initialize_all(self):
+
+
+        with self._lock:
+
+
+            for agent in self.agents.values():
+
+
+                try:
+
+
+                    agent.initialize()
+
+
+
+                except Exception as error:
+
+
+                    self.error(
+
+                        f"{agent.name}: {error}"
+
+                    )
+
+
+
+
+
+
+
+
+    def shutdown_all(self):
+
+
+        with self._lock:
+
+
+            for agent in self.agents.values():
+
+
+                try:
+
+
+                    agent.shutdown()
+
+
+
+                except Exception as error:
+
+
+                    self.error(
+
+                        f"{agent.name}: {error}"
+
+                    )
+
+
+
+
+
+
+
+
+    def restart(
+        self,
+        name
+    ):
+
+
+        agent = self.get(
+            name
+        )
+
+
+
+        if not agent:
 
             return False
 
-    # ==========================================================
+
+
+
+
+        try:
+
+
+            agent.shutdown()
+
+
+            agent.initialize()
+
+
+
+            return True
+
+
+
+        except Exception as error:
+
+
+            self.error(
+                str(error)
+            )
+
+
+            return False
+
+
+
+
+
+
+
+
+    # ==================================================
     # COMUNICAÇÃO
-    # ==========================================================
+    # ==================================================
 
-    def broadcast(self, event):
+
+    def send(
+        self,
+        agent_name,
+        message
+    ):
+
+
+        agent = self.get(
+            agent_name
+        )
+
+
+
+        if not agent:
+
+
+            return "Agente não encontrado."
+
+
+
+        return agent.receive(
+            message
+        )
+
+
+
+
+
+
+
+
+    def broadcast(
+        self,
+        message
+    ):
+
+
+        responses = {}
+
+
 
         with self._lock:
 
-            for agent in self.agents.values():
 
-                if hasattr(agent, "handle"):
+            for name, agent in self.agents.items():
 
-                    try:
 
-                        agent.handle(event)
+                try:
 
-                    except Exception as e:
 
-                        self.error(
-                            f"Erro no broadcast para "
-                            f"{agent.name}: {e}"
-                        )
+                    responses[name] = agent.receive(
+                        message
+                    )
 
-    # ==========================================================
+
+
+                except Exception as error:
+
+
+                    responses[name] = str(error)
+
+
+
+        return responses
+
+
+
+
+
+
+
+
+    # ==================================================
     # HEALTH CHECK
-    # ==========================================================
+    # ==================================================
 
-    def get_online_agents(self):
 
-        online = []
+    def online_agents(self):
 
-        with self._lock:
 
-            for agent in self.agents.values():
+        result = []
 
-                if hasattr(agent, "status"):
 
-                    if agent.status == ModuleStatus.ONLINE:
-                        online.append(agent)
 
-        return online
+        for agent in self.agents.values():
 
-    # ==========================================================
-    # ESTATÍSTICAS
-    # ==========================================================
+
+            if agent.status == ModuleStatus.ONLINE:
+
+
+                result.append(
+                    agent.name
+                )
+
+
+        return result
+
+
+
+
+
+
+
 
     def stats(self):
 
-        with self._lock:
 
-            total = len(self.agents)
+        data = {
 
-            online = 0
-            offline = 0
-            initializing = 0
-            error = 0
+            "total": 0,
 
-            for agent in self.agents.values():
+            "online": 0,
 
-                status = getattr(agent, "status", None)
+            "offline": 0,
 
-                if status == ModuleStatus.ONLINE:
-                    online += 1
+            "error": 0
 
-                elif status == ModuleStatus.OFFLINE:
-                    offline += 1
+        }
 
-                elif status == ModuleStatus.INITIALIZING:
-                    initializing += 1
 
-                elif status == ModuleStatus.ERROR:
-                    error += 1
 
-            return {
-                "total": total,
-                "online": online,
-                "offline": offline,
-                "initializing": initializing,
-                "error": error
-            }
+        for agent in self.agents.values():
 
-    # ==========================================================
-    # LOGS
-    # ==========================================================
 
-    def info(self, message):
+            data["total"] += 1
+
+
+
+            if agent.status == ModuleStatus.ONLINE:
+
+
+                data["online"] += 1
+
+
+
+            elif agent.status == ModuleStatus.ERROR:
+
+
+                data["error"] += 1
+
+
+
+            else:
+
+
+                data["offline"] += 1
+
+
+
+        return data
+
+
+
+
+
+
+
+
+    # ==================================================
+    # LOG
+    # ==================================================
+
+
+    def info(
+        self,
+        message
+    ):
+
 
         if self.logger:
-            self.logger.info(message)
 
-    def success(self, message):
+            self.logger.info(
+                message
+            )
+
+
+
+
+
+    def success(
+        self,
+        message
+    ):
+
 
         if self.logger:
-            self.logger.success(message)
 
-    def warning(self, message):
+            self.logger.success(
+                message
+            )
+
+
+
+
+
+    def warning(
+        self,
+        message
+    ):
+
 
         if self.logger:
-            self.logger.warning(message)
 
-    def error(self, message):
+            self.logger.warning(
+                message
+            )
+
+
+
+
+
+    def error(
+        self,
+        message
+    ):
+
 
         if self.logger:
-            self.logger.error(message)
+
+            self.logger.error(
+                message
+            )

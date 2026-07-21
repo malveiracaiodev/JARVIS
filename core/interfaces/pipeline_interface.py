@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/interfaces/pipeline_interface.py
@@ -20,19 +20,15 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from abc import (
     ABC,
     abstractmethod
 )
 
 
-
 class PipelineInterface(
     ABC
 ):
-
-
     """
     Contrato base para pipelines.
 
@@ -42,12 +38,9 @@ class PipelineInterface(
     Não possui inteligência própria.
     """
 
-
-
     # ==================================================
     # PROCESSAMENTO
     # ==================================================
-
 
     @abstractmethod
     def process(
@@ -55,83 +48,60 @@ class PipelineInterface(
         input_data,
         context=None
     ):
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # ETAPAS
     # ==================================================
-
 
     @abstractmethod
     def add_step(
         self,
         step
     ):
-
         raise NotImplementedError()
-
-
 
     @abstractmethod
     def remove_step(
         self,
         step_name
     ):
-
         raise NotImplementedError()
-
-
 
     @abstractmethod
     def steps(
         self
     ):
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # CICLO
     # ==================================================
 
-
     @abstractmethod
     def reset(
         self
     ):
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # IDENTIDADE
     # ==================================================
-
 
     @property
     @abstractmethod
     def name(
         self
     ):
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # STATUS
     # ==================================================
-
 
     @property
     @abstractmethod
     def status(
         self
     ):
-
         raise NotImplementedError()

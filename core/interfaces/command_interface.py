@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/interfaces/command_interface.py
@@ -37,16 +37,13 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 import threading
 import unicodedata
-
 
 from core.base.module import (
     Module,
     ModuleStatus
 )
-
 
 
 class CommandInterface(Module):
@@ -55,8 +52,6 @@ class CommandInterface(Module):
 
     Atua apenas como camada de entrada.
     """
-
-
 
     def __init__(
         self,
@@ -82,8 +77,6 @@ class CommandInterface(Module):
 
         self._lock = threading.RLock()
 
-
-
     # ==================================================
     # NORMALIZAÇÃO
     # ==================================================
@@ -92,7 +85,6 @@ class CommandInterface(Module):
         self,
         text
     ):
-
         if not text:
             return ""
 
@@ -109,53 +101,38 @@ class CommandInterface(Module):
 
         return text.lower().strip()
 
-
-
     # ==================================================
     # CICLO DE VIDA
     # ==================================================
 
     def initialize(self):
-
         with self._lock:
-
             if self.is_online():
                 return
-
 
             self.set_status(
                 ModuleStatus.INITIALIZING
             )
 
-
             self.set_status(
                 ModuleStatus.ONLINE
             )
-
 
             self.success(
                 "Command Interface online."
             )
 
-
-
     def shutdown(self):
-
         with self._lock:
-
             self.running = False
-
 
             self.set_status(
                 ModuleStatus.OFFLINE
             )
 
-
             self.info(
                 "Command Interface encerrada."
             )
-
-
 
     # ==================================================
     # START
@@ -164,16 +141,12 @@ class CommandInterface(Module):
     def start_interface(
         self
     ):
-
         self.initialize()
-
 
         if self.running:
             return
 
-
         self.running = True
-
 
         self._cli_thread = threading.Thread(
             target=self._loop,
@@ -181,10 +154,7 @@ class CommandInterface(Module):
             daemon=True
         )
 
-
         self._cli_thread.start()
-
-
 
     # ==================================================
     # LOOP PRINCIPAL
@@ -193,92 +163,64 @@ class CommandInterface(Module):
     def _loop(
         self
     ):
-
         print("\n")
         print("=" * 45)
         print(" JARVIS GENESIS CORE - CLI")
         print(" Interface cognitiva ativa")
         print("=" * 45)
 
-
         while self.running:
-
             try:
-
                 text = input(
                     "\nSenhor > "
                 )
 
-
                 text = text.strip()
-
 
                 if not text:
                     continue
-
 
                 command = self._normalize(
                     text
                 )
 
-
                 if command in (
                     "sair",
                     "exit"
                 ):
-
                     self.exit()
-
                     break
-
-
 
                 elif command in (
                     "status",
                     "diagnostico"
                 ):
-
                     self.status()
-
                     continue
-
-
 
                 elif command in (
                     "ajuda",
                     "help"
                 ):
-
                     self.help()
-
                     continue
 
-
-
                 else:
-
                     self.send_to_brain(
                         text
                     )
-
 
             except (
                 KeyboardInterrupt,
                 EOFError
             ):
-
                 self.exit()
-
                 break
 
-
             except Exception as error:
-
                 self.error(
                     str(error)
                 )
-
-
 
     # ==================================================
     # ENCAMINHAMENTO COGNITIVO
@@ -288,16 +230,13 @@ class CommandInterface(Module):
         self,
         text
     ):
-
         brain = getattr(
             self.kernel,
             "brain",
             None
         )
 
-
         if brain:
-
             result = brain.process(
                 {
                     "source": "cli",
@@ -305,26 +244,20 @@ class CommandInterface(Module):
                 }
             )
 
-
             print(
                 f"\nJARVIS > {result}"
             )
 
-
         else:
-
             print(
                 "\n[!] Brain offline."
             )
-
-
 
     # ==================================================
     # COMANDOS BÁSICOS
     # ==================================================
 
     def help(self):
-
         print(
             """
 Comandos:
@@ -338,45 +271,33 @@ para a Matrix Cognitiva.
 """
         )
 
-
-
     def status(self):
-
         if hasattr(
             self.kernel,
             "diagnostics"
         ):
-
             self.kernel.diagnostics.display()
 
         else:
-
             print(
                 "Diagnóstico indisponível."
             )
 
-
-
     def exit(self):
-
         print(
             "\nEncerrando Genesis Core..."
         )
 
         self.shutdown()
 
-
         if hasattr(
             self.kernel,
             "shutdown"
         ):
-
             threading.Thread(
                 target=self.kernel.shutdown,
                 daemon=True
             ).start()
-
-
 
     # ==================================================
     # LOG
@@ -386,26 +307,19 @@ para a Matrix Cognitiva.
         self,
         message
     ):
-
         if self.logger:
             self.logger.info(message)
-
-
 
     def success(
         self,
         message
     ):
-
         if self.logger:
             self.logger.success(message)
-
-
 
     def error(
         self,
         message
     ):
-
         if self.logger:
             self.logger.error(message)

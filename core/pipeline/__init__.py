@@ -1,51 +1,16 @@
 """
 =========================================
-GENESIS CORE
+GENESIS CORE - COGNITIVE PIPELINE PACKAGE
 
-Pacote:
-core.pipeline
-
-Descrição:
-Exposição dos componentes da Pipeline Cognitiva.
-
-Arquitetura:
-Genesis Core
-
-Mark:
-IV - Thought Engine
-
-Autor:
-Caio Vitor Malveira
+Arquivo: core/pipeline/__init__.py
+Descrição: Exposição dos componentes da Pipeline Cognitiva.
+Mark: IV - Thought Engine
+Autor: Caio Vitor Malveira
 =========================================
 """
 
+from core.pipeline.pipeline_context import PipelineContext
+from core.pipeline.pipeline_step import PipelineStep
 
-"""
-IMPORTANTE:
-
-Este arquivo NÃO deve importar:
-
-- PipelineInitializer
-- CognitivePipeline
-
-automaticamente.
-
-Motivo:
-
-Evita ciclo:
-
-cognitive
-   |
- parser
-   |
- pipeline
-   |
- initializer
-   |
- cognitive
-
-A inicialização deve ser explícita.
-"""
-
-
-__all__ = []
+# Conforme especificação, CognitivePipeline e PipelineInitializer não são auto-importados para evitar ciclos.
+__all__ = ["PipelineContext", "PipelineStep"]

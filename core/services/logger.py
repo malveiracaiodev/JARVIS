@@ -26,355 +26,102 @@ Caio Vitor Malveira
 =========================================
 """
 
-
-import copy
 import threading
-
+import copy
+import os
 from collections import deque
 from datetime import datetime
 from pathlib import Path
-
-
-from core.base.module import (
-    Module,
-    ModuleStatus
-)
-
+from core.base.module import Module, ModuleStatus
 
 
 class Logger(Module):
     """
-    Serviço central de logs do Genesis Core.
-
-    Atua como camada de observabilidade
-    de todos os módulos do sistema.
+    Serviço de observabilidade de alta performance (Mark III - Matrix).
     """
 
-
-
     def __init__(self):
-
-        super().__init__(
-            "core.logger"
-        )
-
-
-        self.version = "3.0"
-
-
+        super().__init__("core.logger")
+        self.version = "3.1"
         self.event_bus = None
-
-
-        self.log_folder = Path(
-            "logs"
-        )
-
-
-        self.log_file = (
-            self.log_folder /
-            "genesis_core.log"
-        )
-
-
+        self.log_folder = Path("logs")
+        self.log_file = self.log_folder / "genesis_core.log"
         self.max_history = 1000
-
-
-        self.history = deque(
-            maxlen=self.max_history
-        )
-
-
+        self.history = deque(maxlen=self.max_history)
         self._lock = threading.RLock()
 
-
-
-    # =====================================================
-    # DEPENDÊNCIAS
-    # =====================================================
-
-
-    def connect_event_bus(
-        self,
-        event_bus
-    ):
-
-        self.event_bus = event_bus
-
-
-
-    def set_event_bus(
-        self,
-        event_bus
-    ):
-
-        self.connect_event_bus(
-            event_bus
-        )
-
-
-
-    # =====================================================
-    # CICLO DE VIDA
-    # =====================================================
-
-
-    def initialize(self):
-
-        self.set_status(
-            ModuleStatus.INITIALIZING
-        )
-
-
-        try:
-
-            self.log_folder.mkdir(
-                parents=True,
-                exist_ok=True
-            )
-
-
-            self._write(
-                "BOOT",
-                "Sistema de logs Genesis Core inicializado."
-            )
-
-
-            self.set_status(
-                ModuleStatus.ONLINE
-            )
-
-
-            self.success(
-                "Logger ONLINE"
-            )
-
-
-            self.emit(
-                "LOGGER_STARTED"
-            )
-
-
-        except Exception as error:
-
-
-            self.set_error(
-                str(error)
-            )
-
-
-            self.error(
-                f"Falha inicializando Logger: {error}"
-            )
-
-
-
-    def shutdown(self):
-
-        self.info(
-            "Logger encerrando."
-        )
-
-
-        self.emit(
-            "LOGGER_STOPPED"
-        )
-
-
-        self.set_status(
-            ModuleStatus.OFFLINE
-        )
-
-
-
-    # =====================================================
-    # EVENTOS
-    # =====================================================
-
-
-    def emit(
-        self,
-        event,
-        *args,
-        **kwargs
-    ):
-
-
-        if self.event_bus:
-
+    def initialize(self) -> None:
+        """Inicializa o subsistema de log, garantindo que o diretório exista."""
+        with self._lock:
             try:
+                self.log_folder.mkdir(parents=True, exist_ok=True)
+                self.status = ModuleStatus.ONLINE
+                self._write("INFO", "[LOGGER] Subsistema de log inicializado com sucesso.")
+            except Exception as error:
+                self.status = ModuleStatus.ERROR
+                print(f"[LOGGER FATAL] Falha ao inicializar o logger: {error}")
 
-                self.event_bus.emit(
-                    event,
-                    *args,
-                    **kwargs
-                )
+    def shutdown(self) -> None:
+        """Encerra o subsistema de log com segurança."""
+        with self._lock:
+            self._write("INFO", "[LOGGER] Encerrando subsistema de log...")
+            self.status = ModuleStatus.OFFLINE
 
+    def connect_event_bus(self, event_bus) -> None:
+        """Conecta o logger ao barramento de eventos do núcleo."""
+        with self._lock:
+            self.event_bus = event_bus
 
-            except Exception:
+    # ==================================================
+    # MÉTODOS DE CONVENIÊNCIA (INTERFACE DO LOGGER)
+    # ==================================================
 
-                pass
+    def info(self, message):
+        self._write("INFO", message)
 
+    def error(self, message):
+        self._write("ERROR", message)
 
+    def warning(self, message):
+        self._write("WARNING", message)
 
-    # =====================================================
-    # API PÚBLICA
-    # =====================================================
+    def success(self, message):
+        self._write("SUCCESS", message)
 
+    def debug(self, message):
+        self._write("DEBUG", message)
 
-    def debug(
-        self,
-        message
-    ):
+    # ==================================================
+    # ESCRITA E PERSISTÊNCIA
+    # ==================================================
 
-        self._write(
-            "DEBUG",
-            message
-        )
-
-
-
-    def info(
-        self,
-        message
-    ):
-
-        self._write(
-            "INFO",
-            message
-        )
-
-
-
-    def success(
-        self,
-        message
-    ):
-
-        self._write(
-            "SUCCESS",
-            message
-        )
-
-
-
-    def warning(
-        self,
-        message
-    ):
-
-        self._write(
-            "WARNING",
-            message
-        )
-
-
-
-    def error(
-        self,
-        message
-    ):
-
-        self._write(
-            "ERROR",
-            message
-        )
-
-
-
-    # =====================================================
-    # ESCRITA
-    # =====================================================
-
-
-    def _write(
-        self,
-        level,
-        message
-    ):
-
-
+    def _write(self, level, message):
+        """Escrita atômica com garantia de persistência física (fsync)."""
         now = datetime.now()
+        log_entry = {
+            "time": now.isoformat(),
+            "level": level,
+            "message": str(message)
+        }
+        text = f"[{now:%Y-%m-%d %H:%M:%S}] [{level}] {message}"
 
-
-        text = (
-            f"[{now:%Y-%m-%d %H:%M:%S}] "
-            f"[{level}] "
-            f"{message}"
-        )
-
-
-        print(
-            text
-        )
-
-
+        # Exibição imediata no console
+        print(text)
 
         with self._lock:
+            # Mantém histórico em memória
+            self.history.append(log_entry)
 
-
-            self.history.append(
-
-                {
-
-                    "time":
-                        now.isoformat(),
-
-                    "level":
-                        level,
-
-                    "message":
-                        str(message)
-
-                }
-
-            )
-
-
-
+            # Escrita persistente no disco
             try:
-
-
-                self.log_folder.mkdir(
-                    parents=True,
-                    exist_ok=True
-                )
-
-
-                with open(
-                    self.log_file,
-                    "a",
-                    encoding="utf-8"
-                ) as file:
-
-
-                    file.write(
-                        text + "\n"
-                    )
-
-
+                self.log_folder.mkdir(parents=True, exist_ok=True)
+                with open(self.log_file, "a", encoding="utf-8") as file:
+                    file.write(text + "\n")
                     file.flush()
-
-
-
+                    os.fsync(file.fileno()) 
             except Exception as error:
-
-
-                print(
-                    "[LOGGER FAILURE] "
-                    f"{error}"
-                )
-
-
-
-    # =====================================================
-    # DIAGNÓSTICO
-    # =====================================================
-
+                print(f"[LOGGER FAILURE] {error}")
 
     def get_history(self):
-
         with self._lock:
-
-            return copy.deepcopy(
-                list(self.history)
-            )
+            return copy.deepcopy(list(self.history))

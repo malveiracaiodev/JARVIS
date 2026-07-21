@@ -1,6 +1,6 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE
 
 Arquivo:
 core/interfaces/knowledge_interface.py
@@ -18,7 +18,7 @@ Arquitetura:
 Cognitive Pipeline
         |
         v
-   Knowledge System
+    Knowledge System
 
 
 Arquitetura:
@@ -32,12 +32,10 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from abc import (
     ABC,
     abstractmethod
 )
-
 
 
 class KnowledgeInterface(ABC):
@@ -52,8 +50,6 @@ class KnowledgeInterface(ABC):
     Não raciocina.
     Apenas disponibiliza conhecimento.
     """
-
-
 
     # ==================================================
     # INSERÇÃO
@@ -77,10 +73,7 @@ class KnowledgeInterface(ABC):
         result:
             Resultado da operação.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # CONSULTA
@@ -108,10 +101,7 @@ class KnowledgeInterface(ABC):
         knowledge:
             Dados encontrados.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # PESQUISA SEMÂNTICA
@@ -138,10 +128,7 @@ class KnowledgeInterface(ABC):
         results:
             Lista de conhecimentos relacionados.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # ATUALIZAÇÃO
@@ -156,10 +143,7 @@ class KnowledgeInterface(ABC):
         """
         Atualiza conhecimento existente.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # REMOÇÃO
@@ -173,10 +157,7 @@ class KnowledgeInterface(ABC):
         """
         Remove conhecimento.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # EXISTÊNCIA
@@ -195,10 +176,7 @@ class KnowledgeInterface(ABC):
         -------
         bool
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # PERSISTÊNCIA
@@ -218,10 +196,7 @@ class KnowledgeInterface(ABC):
         - vetor
         - cloud
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # CARREGAMENTO
@@ -235,10 +210,7 @@ class KnowledgeInterface(ABC):
         Carrega conhecimento
         persistido.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # STATUS
@@ -252,10 +224,7 @@ class KnowledgeInterface(ABC):
         Retorna estado
         do sistema de conhecimento.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # IDENTIDADE
@@ -274,5 +243,4 @@ class KnowledgeInterface(ABC):
         vector.knowledge
         web.knowledge
         """
-
         raise NotImplementedError()

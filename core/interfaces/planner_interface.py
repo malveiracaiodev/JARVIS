@@ -40,19 +40,15 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from abc import (
     ABC,
     abstractmethod
 )
 
 
-
 class PlannerInterface(
     ABC
 ):
-
-
     """
     Contrato dos Planners.
 
@@ -70,12 +66,9 @@ class PlannerInterface(
     - preparar raciocínio.
     """
 
-
-
     # ==================================================
     # CRIAÇÃO DE PLANO
     # ==================================================
-
 
     @abstractmethod
     def create_plan(
@@ -83,65 +76,48 @@ class PlannerInterface(
         intention,
         context=None
     ):
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # VALIDAÇÃO
     # ==================================================
-
 
     @abstractmethod
     def validate_plan(
         self,
         plan
     ):
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # OTIMIZAÇÃO
     # ==================================================
-
 
     @abstractmethod
     def optimize_plan(
         self,
         plan
     ):
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # DECOMPOSIÇÃO
     # ==================================================
-
 
     @abstractmethod
     def decompose(
         self,
         goal
     ):
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # CANCELAMENTO
     # ==================================================
-
 
     @abstractmethod
     def cancel_plan(
         self,
         plan_id
     ):
-
         raise NotImplementedError()

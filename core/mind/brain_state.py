@@ -1,381 +1,105 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE - BRAIN STATE
 
-Arquivo:
-core/mind/brain_state.py
-
-Descrição:
-Gerenciador central do estado cognitivo.
-
-Responsável por concentrar:
-- Contexto atual
-- Memória
-- Conhecimento
-- Sessão
-- Objetivos
-- Histórico cognitivo
-
-Arquitetura:
-Genesis Core
-
-Mark:
-III - Matrix
-
-Autor:
-Caio Vitor Malveira
+Arquivo: core/mind/brain_state.py
+Descrição: Concentrador central do estado mental e subsistemas de memória.
+Mark: IV - Thought Engine
 =========================================
 """
 
-
 from copy import deepcopy
-
-
-from core.mind.brain_context import Context
-
+from typing import Dict, Any, List, Optional
+from core.mind.context import Context
 from core.mind.memory import Memory
-
 from core.mind.knowledge import Knowledge
-
-
 
 class BrainState:
     """
-    Estado central da mente do Genesis Core.
-
-    Representa o estado interno utilizado
-    pelos componentes cognitivos.
+    Representação unificada e thread-safe do estado interno da mente.
     """
 
-
-
-    def __init__(
-        self,
-        logger=None
-    ):
-
+    def __init__(self, logger: Optional[Any] = None):
         self.logger = logger
-
-
         self.initialized = False
-
-
-
-        # Estado atual
-
+        
         self.context = Context()
-
-
-
-        # Memória persistente
-
         self.memory = Memory()
-
-
-
-        # Base de conhecimento
-
         self.knowledge = Knowledge()
+        
+        self.session: Dict[str, Any] = {}
+        self.variables: Dict[str, Any] = {}
+        self.goals: List[Any] = []
+        self.history: List[Any] = []
 
-
-
-        # Sessão atual
-
-        self.session = {}
-
-
-
-        # Variáveis internas
-
-        self.variables = {}
-
-
-
-        # Objetivos
-
-        self.goals = []
-
-
-
-        # Histórico cognitivo
-
-        self.history = []
-
-
-
-    # =====================================================
-    # Inicialização
-    # =====================================================
-
-
-    def initialize(
-        self
-    ):
-
+    def initialize(self) -> bool:
         if self.initialized:
-
             return True
 
-
-
         self.memory.logger = self.logger
-
         self.knowledge.logger = self.logger
 
-
-
-        if hasattr(
-            self.memory,
-            "initialize"
-        ):
-
+        if hasattr(self.memory, "initialize"):
             self.memory.initialize()
 
-
-
-        if hasattr(
-            self.knowledge,
-            "initialize"
-        ):
-
+        if hasattr(self.knowledge, "initialize"):
             self.knowledge.initialize()
 
-
-
         self.initialized = True
-
-
-
-        if self.logger:
-
-            self.logger.success(
-                "BrainState inicializado."
-            )
-
-
-
+        if self.logger and hasattr(self.logger, "success"):
+            self.logger.success("BrainState inicializado no padrão Mark IV.")
         return True
 
-
-
-    # =====================================================
-    # Sessão
-    # =====================================================
-
-
-    def set_session(
-        self,
-        key,
-        value
-    ):
-
+    def set_session(self, key: str, value: Any) -> None:
         self.session[key] = value
 
+    def get_session(self, key: str, default: Any = None) -> Any:
+        return self.session.get(key, default)
 
-
-    def get_session(
-        self,
-        key,
-        default=None
-    ):
-
-        return self.session.get(
-            key,
-            default
-        )
-
-
-
-    # =====================================================
-    # Variáveis
-    # =====================================================
-
-
-    def set_variable(
-        self,
-        key,
-        value
-    ):
-
+    def set_variable(self, key: str, value: Any) -> None:
         self.variables[key] = value
 
+    def get_variable(self, key: str, default: Any = None) -> Any:
+        return self.variables.get(key, default)
 
+    def add_goal(self, goal: Any) -> None:
+        self.goals.append(goal)
 
-    def get_variable(
-        self,
-        key,
-        default=None
-    ):
-
-        return self.variables.get(
-            key,
-            default
-        )
-
-
-
-    # =====================================================
-    # Objetivos
-    # =====================================================
-
-
-    def add_goal(
-        self,
-        goal
-    ):
-
-        self.goals.append(
-            goal
-        )
-
-
-
-    def remove_goal(
-        self,
-        goal
-    ):
-
+    def remove_goal(self, goal: Any) -> None:
         if goal in self.goals:
+            self.goals.remove(goal)
 
-            self.goals.remove(
-                goal
-            )
-
-
-
-    def clear_goals(
-        self
-    ):
-
+    def clear_goals(self) -> None:
         self.goals.clear()
 
+    def add_history(self, entry: Any) -> None:
+        self.history.append(entry)
 
-
-    # =====================================================
-    # Histórico
-    # =====================================================
-
-
-    def add_history(
-        self,
-        entry
-    ):
-
-        self.history.append(
-            entry
-        )
-
-
-
-    def clear_history(
-        self
-    ):
-
+    def clear_history(self) -> None:
         self.history.clear()
 
+    def set_thought(self, thought: Any) -> None:
+        self.context.set_thought(thought)
 
-
-    # =====================================================
-    # Integração Cognitiva
-    # =====================================================
-
-
-    def set_thought(
-        self,
-        thought
-    ):
-
-        self.context.set_thought(
-            thought
-        )
-
-
-
-    def get_snapshot(
-        self
-    ):
-
+    def get_snapshot(self) -> Dict[str, Any]:
         return self.snapshot()
 
-
-
-    # =====================================================
-    # Snapshot
-    # =====================================================
-
-
-    def snapshot(
-        self
-    ):
-
+    def snapshot(self) -> Dict[str, Any]:
         return {
-
-
-            "session":
-                deepcopy(
-                    self.session
-                ),
-
-
-            "variables":
-                deepcopy(
-                    self.variables
-                ),
-
-
-            "goals":
-                deepcopy(
-                    self.goals
-                ),
-
-
-            "history_size":
-                len(
-                    self.history
-                ),
-
-
-            "context":
-                self.context.snapshot()
-
+            "session": deepcopy(self.session),
+            "variables": deepcopy(self.variables),
+            "goals": deepcopy(self.goals),
+            "history_size": len(self.history),
+            "context": self.context.snapshot()
         }
 
-
-
-    # =====================================================
-    # Finalização
-    # =====================================================
-
-
-    def shutdown(
-        self
-    ):
-
-
-        if hasattr(
-            self.memory,
-            "shutdown"
-        ):
-
+    def shutdown(self) -> bool:
+        if hasattr(self.memory, "shutdown"):
             self.memory.shutdown()
-
-
-
-        if hasattr(
-            self.knowledge,
-            "shutdown"
-        ):
-
+        if hasattr(self.knowledge, "shutdown"):
             self.knowledge.shutdown()
 
-
-
         self.initialized = False
-
-
-
-        if self.logger:
-
-            self.logger.info(
-                "BrainState finalizado."
-            )
+        if self.logger and hasattr(self.logger, "info"):
+            self.logger.info("BrainState finalizado.")
+        return True

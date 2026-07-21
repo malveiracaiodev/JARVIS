@@ -1,60 +1,18 @@
 """
 =========================================
-JARVIS CORE
+GENESIS CORE - TOOL LAYER REGISTRY
 
-Pacote:
-core.tools
-
-Descrição:
-Camada de ferramentas executáveis
-do Genesis Core.
-
-Responsável por:
-- Expor ferramentas registradas
-- Centralizar imports
-- Padronizar Tool Layer
-
-Arquitetura:
-Genesis Core
-
-Mark:
-III - Matrix (Tool Layer)
-
-Autor:
-Caio Vitor Malveira
+Arquivo: core/tools/__init__.py
+Descrição: Centralização e exportação da camada de ferramentas executáveis.
+Mark: IV - Thought Engine
+Autor: Caio Vitor Malveira
 =========================================
 """
 
-
-# ======================================================
-# Interfaces
-# ======================================================
-
-from core.interfaces.tool_interface import (
-    ToolInterface
-)
-
-
-
-# ======================================================
-# Ferramentas internas
-# ======================================================
-
-from .system_test_tool import (
-    SystemTestTool
-)
-
-
-
-# ======================================================
-# Exportações públicas
-# ======================================================
-
+from core.interfaces.tool_interface import ToolInterface
+from core.tools.system_test_tool import SystemTestTool
 
 __all__ = [
-
     "ToolInterface",
-
     "SystemTestTool"
-
 ]

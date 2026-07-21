@@ -7,101 +7,145 @@
 
     "creator": "Caio Vitor Malveira",
 
-    "version": "Mark III - Matrix",
 
-    "codename": "Matrix",
+    "version": "Mark IV - Thought Engine",
+
+    "codename": "Genesis",
+
+
+    "description":
+
+        "Sistema cognitivo modular composto por agentes, personas, ferramentas e motores de inteligência.",
+
 
 
     "purpose": [
+
         "Auxiliar o usuário",
+
         "Responder perguntas",
+
+        "Pesquisar informações",
+
         "Gerenciar tarefas",
-        "Organizar informações",
-        "Monitorar o sistema",
+
+        "Organizar conhecimento",
+
         "Executar ferramentas autorizadas",
-        "Aprender novos conhecimentos"
+
+        "Aprender e evoluir através de memória"
+
     ],
 
 
-    "agents": {
-
-        "jarvis": {
-
-            "name": "JARVIS",
-
-            "role": "Assistente técnico inteligente",
-
-            "description": "Agente principal responsável pela operação, análise e execução de tarefas.",
-
-            "personality": {
-
-                "tone": "educado",
-
-                "style": "assistente técnico",
-
-                "humor": "leve",
-
-                "formal_address": "Senhor"
-
-            }
-
-        },
-
-
-        "rafiki": {
-
-            "name": "Rafiki",
-
-            "role": "Conselheiro pessoal",
-
-            "description": "Agente focado em reflexão, orientação e suporte conversacional.",
-
-            "personality": {
-
-                "tone": "acolhedor",
-
-                "style": "conselheiro",
-
-                "humor": "positivo",
-
-                "formal_address": "Caio"
-
-            }
-
-        }
-
-    },
-
-
-    "personality": {
-
-        "tone": "educado",
-
-        "style": "assistente inteligente",
-
-        "humor": "leve",
-
-        "formal_address": "Senhor"
-
-    },
-
-
-    "boot_date": "2026-07-11",
 
     "language": "pt-BR",
 
 
-    "capabilities": [
+
+    "personas": {
+
+
+        "jarvis":
+
+        {
+
+            "module":
+
+                "personas.jarvis.Jarvis",
+
+
+            "type":
+
+                "operational",
+
+
+            "enabled":
+
+                true
+
+        },
+
+
+
+        "rafiki":
+
+        {
+
+            "module":
+
+                "personas.rafiki.Rafiki",
+
+
+            "type":
+
+                "reflection",
+
+
+            "enabled":
+
+                true
+
+        }
+
+
+    },
+
+
+
+    "architecture":
+
+    {
+
+
+        "layers":
+
+        [
+
+            "Kernel",
+
+            "Managers",
+
+            "Agents",
+
+            "Personas",
+
+            "Intelligence",
+
+            "Tools",
+
+            "Memory"
+
+        ]
+
+    },
+
+
+
+    "capabilities":
+
+    [
 
         "Cognitive Pipeline",
 
-        "Task Management",
+        "Response Engine",
+
+        "Research Intelligence",
 
         "Memory System",
 
         "Tool Execution",
 
+        "Task Management",
+
         "System Monitoring"
 
-    ]
+    ],
+
+
+
+    "boot_date":
+
+        "2026-07-11"
+
 }

@@ -320,7 +320,7 @@ print(
 
 print(
 
-    pipeline.status()
+    pipeline.status
 
 )
 
@@ -349,7 +349,7 @@ print(
 
 print(
 
-    engine.status()
+    engine.status
 
 )
 

@@ -20,9 +20,7 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from abc import ABC, abstractmethod
-
 
 
 class BrainInterface(ABC):
@@ -42,7 +40,6 @@ class BrainInterface(ABC):
     Não executa infraestrutura.
     """
 
-
     # ==================================================
     # PROCESSAMENTO COGNITIVO
     # ==================================================
@@ -55,10 +52,7 @@ class BrainInterface(ABC):
         """
         Executa um ciclo cognitivo.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # APRENDIZADO
@@ -72,10 +66,7 @@ class BrainInterface(ABC):
         """
         Registra aprendizado cognitivo.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # RESET
@@ -88,10 +79,7 @@ class BrainInterface(ABC):
         """
         Limpa estados temporários.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # ESTADO COGNITIVO
@@ -112,5 +100,4 @@ class BrainInterface(ABC):
         - THINKING
         - ERROR
         """
-
         raise NotImplementedError()

@@ -3,7 +3,7 @@
 JARVIS CORE
 
 Arquivo:
-engine.py
+core/runtime/engine.py
 
 Descrição:
 Motor e orquestrador principal de processamento
@@ -13,7 +13,7 @@ Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+III - Matrix (Mark IV - Neural Lattice)
 
 Autor:
 Caio Vitor Malveira
@@ -22,583 +22,103 @@ Caio Vitor Malveira
 
 import os
 import threading
-
-from datetime import datetime
-
-
-from core.base.module import (
-    Module,
-    ModuleStatus
-)
-
-
-from core.runtime.queue import (
-    TaskQueue
-)
-
-
-from core.runtime.worker import (
-    Worker
-)
-
+from concurrent.futures import ProcessPoolExecutor
+from core.base.module import Module, ModuleStatus
 
 
 class Runtime(Module):
-
     """
-    Gerenciador unificado de execução em background.
-
-    Responsável por:
-
-    • Gerenciar Workers
-    • Receber tarefas assíncronas
-    • Distribuir tarefas na fila
-    • Coletar métricas
-    • Controlar ciclo de vida
-
-    Não conhece:
-
-    - Brain
-    - Pipeline
-    - Agents
-    - IA
-
-    Apenas fornece infraestrutura.
+    Motor Mark IV (Neural Lattice).
+    Isolamento por Processos (Memory-Safe) e Backpressure-Ready.
     """
 
-
-
-    def __init__(
-        self,
-        logger=None,
-        event_bus=None,
-        worker_pool_size=None,
-    ):
-
-
-        super().__init__(
-            "core.runtime"
-        )
-
-
-
-        self.version = (
-            "Genesis Core Mark III"
-        )
-
-
-
+    def __init__(self, logger=None, event_bus=None, max_workers=None, worker_pool_size=None, **kwargs):
+        super().__init__("core.runtime")
+        self.version = "4.0-Lattice"
         self.logger = logger
-
         self.event_bus = event_bus
-
-
-
-        # =====================================================
-        # WORKERS
-        # =====================================================
-
-
-        if worker_pool_size is None:
-
-
-            cpu = (
-                os.cpu_count()
-                or 2
-            )
-
-
-            self.worker_count = max(
-                2,
-                cpu
-            )
-
-
-        else:
-
-
-            self.worker_count = max(
-                1,
-                worker_pool_size
-            )
-
-
-
-        # =====================================================
-        # FILA
-        # =====================================================
-
-
-        self.queue = TaskQueue()
-
-
-        self.workers = []
-
-
-        self.start_time = None
-
-
-
+        self.max_workers = max_workers or worker_pool_size or os.cpu_count()
+        self._executor = None
         self._lock = threading.RLock()
-
-
-
-        # =====================================================
-        # MÉTRICAS
-        # =====================================================
-        #
-        # IMPORTANTE:
-        #
-        # Não substitui as métricas
-        # existentes do Module.
-        #
-        # Apenas adiciona métricas
-        # específicas do Runtime.
-        #
-        # =====================================================
-
-
+        
+        # Mantém as métricas padrão da classe base Module e adiciona as específicas do Lattice
         self.metrics.update({
-
-            "queued_tasks": 0,
-
-            "processed_tasks": 0,
-
-            "failed_tasks": 0,
-
-            "running_tasks": 0,
-
-            "queue_peak": 0,
-
+            "active_lattice_nodes": 0,
+            "throughput": 0
         })
 
+    # ==================================================
+    # CICLO DE VIDA (CONTRATOS OBRIGATÓRIOS DO MODULE)
+    # ==================================================
 
-
-    # =====================================================
-    # CICLO DE VIDA
-    # =====================================================
-
-
-
-    def initialize(
-        self
-    ):
-
-
+    def initialize(self):
+        """Inicializa o executor do Neural Lattice."""
         with self._lock:
+            if self.is_online():
+                return
 
+            self.set_status(ModuleStatus.INITIALIZING)
+            try:
+                if self._executor is None:
+                    self._executor = ProcessPoolExecutor(max_workers=self.max_workers)
+                
+                self.metrics["active_lattice_nodes"] = 0
+                self.set_status(ModuleStatus.ONLINE)
 
+                if self.logger:
+                    self.logger.success(f"Runtime Lattice Mark IV online (Workers: {self.max_workers}).")
+            except Exception as error:
+                self.set_error(f"Falha ao inicializar o Runtime: {error}")
+                if self.logger:
+                    self.logger.error(self.error_message)
+                raise
 
-            if (
-                self.get_status()
-                ==
-                ModuleStatus.ONLINE
-            ):
-
-                self.info(
-                    "Runtime já está ONLINE."
-                )
-
-                return True
-
-
-
-
-            self.set_status(
-                ModuleStatus.INITIALIZING
-            )
-
-
-
-            self.start_time = datetime.now()
-
-
-
-            self.workers = [
-
-                Worker(
-                    queue=self.queue,
-                    logger=self.logger,
-                    event_bus=self.event_bus,
-                    name=f"Worker-{index + 1}"
-                )
-
-                for index
-
-                in range(
-                    self.worker_count
-                )
-
-            ]
-
-
-
-            for worker in self.workers:
-
-                worker.start()
-
-
-
-            self.set_status(
-                ModuleStatus.ONLINE
-            )
-
-
-
-            self.success(
-                f"Motor Runtime ONLINE com {self.worker_count} Workers."
-            )
-
-
-
-            self._emit(
-                "runtime.started"
-            )
-
-
-
-        return True
-
-
-
-
-
-    def start(
-        self
-    ):
-
-        return self.initialize()
-
-
-
-
-
-    def stop(
-        self
-    ):
-
-
+    def shutdown(self):
+        """Encerra o executor do Lattice de forma limpa."""
         with self._lock:
+            self.set_status(ModuleStatus.OFFLINE)
+            try:
+                if self._executor:
+                    self._executor.shutdown(wait=True, cancel_futures=True)
+                    self._executor = None
+            except Exception as error:
+                if self.logger:
+                    self.logger.error(f"Erro ao encerrar executor do Runtime: {error}")
 
+            if self.logger:
+                self.logger.info("Runtime Lattice encerrado.")
 
+    # ==================================================
+    # PROCESSAMENTO E SUBMISSÃO
+    # ==================================================
 
-            if (
-                self.get_status()
-                ==
-                ModuleStatus.OFFLINE
-            ):
+    def submit(self, task):
+        """Alocação dinâmica para o Lattice Node."""
+        with self._lock:
+            if not self.is_online() or self._executor is None:
+                if self.logger:
+                    self.logger.warning("Tentativa de submissão com Runtime offline.")
+                return False
 
+            try:
+                self.metrics["active_lattice_nodes"] += 1
+                future = self._executor.submit(task.execute)
+                future.add_done_callback(self._on_lattice_node_complete)
                 return True
-
-
-
-
-            self.set_status(
-                ModuleStatus.WARNING
-            )
-
-
-
-            for worker in self.workers:
-
-                worker.stop()
-
-
-
-            for worker in self.workers:
-
-                worker.join()
-
-
-
-            self.workers.clear()
-
-
-
-            self.set_status(
-                ModuleStatus.OFFLINE
-            )
-
-
-
-            self.info(
-                "Runtime finalizado."
-            )
-
-
-
-            self._emit(
-                "runtime.stopped"
-            )
-
-
-
-        return True
-
-
-
-
-
-    def shutdown(
-        self
-    ):
-
-        return self.stop()
-
-
-
-    # =====================================================
-    # FILA
-    # =====================================================
-
-
-
-    def add_task(
-        self,
-        task
-    ):
-
-        """
-        Adiciona uma tarefa
-        para execução assíncrona.
-        """
-
-
-
-        self.queue.push(
-            task
-        )
-
-
-
-        self.metrics[
-            "queued_tasks"
-        ] += 1
-
-
-
-        queue_size = (
-            self.queue.size()
-        )
-
-
-
-        if (
-            queue_size
-            >
-            self.metrics["queue_peak"]
-        ):
-
-            self.metrics[
-                "queue_peak"
-            ] = queue_size
-
-
-
-
-        task_name = getattr(
-
-            task,
-
-            "name",
-
-            task.__class__.__name__
-
-        )
-
-
-
-        self.info(
-            f"Tarefa adicionada: {task_name}"
-        )
-
-
-
-        self._emit(
-            "runtime.task.queued",
-            task=task_name
-        )
-
-
-
-    # =====================================================
-    # STATUS
-    # =====================================================
-
-
-
-    def status(
-        self
-    ):
-
-
-
-        uptime = 0
-
-
-
-        if self.start_time:
-
-
-            uptime = (
-
-                datetime.now()
-
-                -
-
-                self.start_time
-
-            ).total_seconds()
-
-
-
-
-        return {
-
-
-            "name":
-
-                self.name,
-
-
-            "version":
-
-                self.version,
-
-
-            "status":
-
-                self.get_status()
-                .value,
-
-
-            "workers":
-
-                self.worker_count,
-
-
-            "active_workers":
-
-                len(
-                    self.workers
-                ),
-
-
-            "pending_tasks":
-
-                self.queue.size(),
-
-
-            "uptime":
-
-                round(
-                    uptime,
-                    2
-                ),
-
-
-            "metrics":
-
-                self.metrics.copy()
-
-        }
-
-
-
-
-    # =====================================================
-    # EVENTOS
-    # =====================================================
-
-
-
-    def _emit(
-        self,
-        event,
-        **payload
-    ):
-
-
-        if not self.event_bus:
-
-            return
-
-
-
-        try:
-
-
-            self.event_bus.emit(
-                event,
-                payload
-            )
-
-
-        except Exception as error:
-
-
-            self.info(
-                f"Falha evento {event}: {error}"
-            )
-
-
-
-    # =====================================================
-    # LOGGING
-    # =====================================================
-
-
-
-    def info(
-        self,
-        message
-    ):
-
-
-        if self.logger:
-
-            self.logger.info(
-                message
-            )
-
-
-
-    def success(
-        self,
-        message
-    ):
-
-
-        if self.logger:
-
-            self.logger.success(
-                message
-            )
-
-
-
-    def warning(
-        self,
-        message
-    ):
-
-
-        if self.logger:
-
-            self.logger.warning(
-                message
-            )
-
-
-
-    def error(
-        self,
-        message
-    ):
-
-
-        if self.logger:
-
-            self.logger.error(
-                message
-            )
+            except Exception as error:
+                self.metrics["active_lattice_nodes"] = max(0, self.metrics["active_lattice_nodes"] - 1)
+                if self.logger:
+                    self.logger.error(f"Erro ao submeter tarefa ao Lattice: {error}")
+                return False
+
+    def _on_lattice_node_complete(self, future):
+        with self._lock:
+            self.metrics["active_lattice_nodes"] = max(0, self.metrics["active_lattice_nodes"] - 1)
+            self.metrics["throughput"] += 1
+            
+            try:
+                exception = future.exception()
+                if exception and self.logger:
+                    self.logger.error(f"Erro em nó da Lattice: {exception}")
+            except Exception:
+                pass

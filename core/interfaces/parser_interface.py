@@ -39,19 +39,15 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from abc import (
     ABC,
     abstractmethod
 )
 
 
-
 class ParserInterface(
     ABC
 ):
-
-
     """
     Contrato dos Parsers.
 
@@ -66,12 +62,9 @@ class ParserInterface(
     pelos módulos cognitivos.
     """
 
-
-
     # ==================================================
     # INTERPRETAÇÃO
     # ==================================================
-
 
     @abstractmethod
     def parse(
@@ -79,27 +72,21 @@ class ParserInterface(
         input_data,
         context=None
     ):
-
         """
         Converte entrada bruta em
         estrutura cognitiva.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # COMPATIBILIDADE
     # ==================================================
-
 
     @abstractmethod
     def supports(
         self,
         input_type
     ):
-
         """
         Verifica tipos de entrada
         suportados.
@@ -118,22 +105,17 @@ class ParserInterface(
 
         sensor
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # CONFIANÇA
     # ==================================================
-
 
     @abstractmethod
     def confidence(
         self,
         input_data
     ):
-
         """
         Retorna confiança da
         interpretação realizada.
@@ -141,5 +123,4 @@ class ParserInterface(
         Usado futuramente pelo
         Reasoner.
         """
-
         raise NotImplementedError()

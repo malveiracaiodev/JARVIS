@@ -29,15 +29,12 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from enum import IntEnum
-
 
 
 class Priority(
     IntEnum
 ):
-
     """
     Níveis de prioridade do sistema.
 
@@ -45,114 +42,74 @@ class Priority(
     maior a urgência.
     """
 
-
-
     # ==================================================
     # SISTEMA
     # ==================================================
 
-
     LOWEST = 0
-
-
     LOW = 25
-
-
     NORMAL = 50
-
-
     HIGH = 75
-
-
     CRITICAL = 100
-
-
 
     # ==================================================
     # ALTA DISPONIBILIDADE
     # ==================================================
 
-
     EMERGENCY = 125
-
-
 
     # ==================================================
     # UTILIDADES
     # ==================================================
 
-
     def description(
         self
-    ):
-
+    ) -> str:
         descriptions = {
-
-
             Priority.LOWEST:
             "Sem urgência. Pode aguardar.",
-
 
             Priority.LOW:
             "Baixa prioridade operacional.",
 
-
             Priority.NORMAL:
             "Execução padrão.",
-
 
             Priority.HIGH:
             "Deve ser processado rapidamente.",
 
-
             Priority.CRITICAL:
             "Prioridade elevada. Requer atenção.",
 
-
             Priority.EMERGENCY:
             "Evento crítico do sistema."
-
         }
-
 
         return descriptions.get(
             self,
             "Prioridade desconhecida."
         )
 
-
-
     def is_urgent(
         self
-    ):
-
+    ) -> bool:
         return self >= Priority.HIGH
-
-
 
     def is_critical(
         self
-    ):
-
+    ) -> bool:
         return self >= Priority.CRITICAL
-
-
 
     @classmethod
     def from_value(
         cls,
-        value
-    ):
-
+        value: int
+    ) -> "Priority":
         """
         Converte número em prioridade.
         """
-
         for priority in cls:
-
             if priority.value == value:
-
                 return priority
-
 
         return cls.NORMAL

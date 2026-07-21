@@ -1,6 +1,5 @@
 """
 =========================================
-
 GENESIS CORE
 
 Arquivo:
@@ -38,19 +37,15 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from abc import (
     ABC,
     abstractmethod
 )
 
 
-
 class ExecutorInterface(
     ABC
 ):
-
-
     """
     Contrato dos executores.
 
@@ -62,12 +57,9 @@ class ExecutorInterface(
     existente em ação executável.
     """
 
-
-
     # ==================================================
     # EXECUÇÃO
     # ==================================================
-
 
     @abstractmethod
     def execute(
@@ -75,7 +67,6 @@ class ExecutorInterface(
         action,
         context=None
     ):
-
         """
         Executa uma ação cognitiva.
 
@@ -99,22 +90,17 @@ class ExecutorInterface(
 
             Resultado da execução.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # VALIDAÇÃO
     # ==================================================
-
 
     @abstractmethod
     def validate(
         self,
         action
     ):
-
         """
         Verifica se uma ação
         pode ser executada.
@@ -126,24 +112,18 @@ class ExecutorInterface(
         - segurança;
         - dependências.
         """
-
         raise NotImplementedError()
-
-
 
     # ==================================================
     # REVERSÃO
     # ==================================================
-
 
     @abstractmethod
     def rollback(
         self,
         action
     ):
-
         """
         Tenta desfazer uma operação.
         """
-
         raise NotImplementedError()

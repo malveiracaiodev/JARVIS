@@ -6,10 +6,10 @@ Arquivo:
 core/cognitive/reasoner.py
 
 Descrição:
-Motor de raciocínio cognitivo do Genesis.
+Motor de raciocínio cognitivo do Genesis (Mark IV - Neural Lattice).
 
 Responsável por analisar contexto,
-avaliar alternativas e produzir decisões.
+avaliar alternativas e produzir decisões dentro da malha neural.
 
 Não executa ações.
 
@@ -17,751 +17,372 @@ Arquitetura:
 Genesis Core
 
 Mark:
-IV - Thought Engine
+IV - Neural Lattice / Thought Engine
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
-
 import uuid
-
-
 from datetime import datetime
-
+from typing import Any, Dict, List, Optional, Union
 
 from core.interfaces.reasoner_interface import (
     ReasonerInterface
 )
-
-
 from core.pipeline.pipeline_step import (
     PipelineStep
 )
-
-
 from core.pipeline.pipeline_context import (
     PipelineContext
 )
-
 
 
 class Reasoner(
     PipelineStep,
     ReasonerInterface
 ):
-
-
     """
-    Núcleo de decisão cognitiva.
+    Núcleo de decisão cognitiva na Neural Lattice.
 
     Recebe planos.
 
-    Avalia alternativas.
+    Avalia alternativas na malha.
 
-    Produz decisão.
+    Produz decisão estruturada.
 
     Não executa.
     """
 
-
-
     def __init__(
         self,
-        logger=None,
-        memory=None
-    ):
-
-
+        logger: Optional[Any] = None,
+        memory: Optional[Any] = None
+    ) -> None:
         super().__init__(
             "reasoner"
         )
 
-
         self.logger = logger
-
         self.memory = memory
-
-
-        self.decisions = 0
-
-        self.errors = 0
-
-        self.history = []
-
-
+        self.decisions: int = 0
+        self.errors: int = 0
+        self.history: List[Dict[str, Any]] = []
 
     # ==================================================
     # IDENTIDADE
     # ==================================================
 
-
-    def module_name(
-        self
-    ):
-
+    def module_name(self) -> str:
         return self.name
-
-
 
     # ==================================================
     # STATUS
     # ==================================================
 
-
-    def status(
-        self
-    ):
-
-
+    def status(self) -> Dict[str, Any]:
         return {
-
-
-            "name":
-
-                self.name,
-
-
-            "decisions":
-
-                self.decisions,
-
-
-            "errors":
-
-                self.errors
-
+            "name": self.name,
+            "decisions": self.decisions,
+            "errors": self.errors
         }
-
-
 
     # ==================================================
     # PROCESSAMENTO
     # ==================================================
 
-
     def process(
         self,
         context: PipelineContext
     ) -> PipelineContext:
-
-
         thought = context.thought
 
-
-
         if thought is None:
-
-
             context.add_error(
-
-                "Reasoner recebeu Context sem Thought."
-
+                "Reasoner recebeu Context sem Thought na Neural Lattice."
             )
-
-
             self.errors += 1
-
-
             return context
 
-
-
         try:
-
-
             thought.thinking()
 
-
-
             parsed = thought.get_metadata(
-
                 "parsed",
-
                 {}
-
             )
-
-
 
             plan = thought.plan
 
-
-
             if plan is None:
-
-
                 plan = thought.get_metadata(
-
                     "plan",
-
                     {}
-
                 )
 
-
-
             reasoning_context = {
-
-
-                "input":
-
-                    parsed.get(
-
-                        "content"
-
-                    ),
-
-
-
-                "plan":
-
-                    plan
-
+                "input": parsed.get(
+                    "content"
+                ),
+                "plan": plan
             }
 
-
-
             result = self.reason(
-
                 reasoning_context
-
             )
-
-
 
             decision = result.get(
-
                 "decision"
-
             )
-
-
 
             # ======================================
             # ATUALIZA CONTEXT
             # ======================================
 
-
             context.set(
-
                 "reasoning",
-
                 result
-
             )
-
 
             context.set(
-
                 "decision",
-
                 decision
-
             )
-
-
 
             # ======================================
             # ATUALIZA THOUGHT
             # ======================================
 
-
             thought.set_decision(
-
                 decision
-
             )
-
 
             thought.set_metadata(
-
                 "reasoning",
-
                 result
-
             )
-
 
             thought.confidence = (
-
                 result.get(
-
                     "confidence",
-
                     0
-
                 )
-
             )
-
-
 
             thought.add_history(
-
                 "reasoner_completed"
-
             )
-
-
 
             context.add_history(
-
                 {
-
-                    "event":
-
-                        "reasoner_completed",
-
-                    "timestamp":
-
-                        datetime.now().isoformat()
-
+                    "event": "reasoner_completed",
+                    "timestamp": datetime.now().isoformat()
                 }
-
             )
-
-
 
         except Exception as error:
-
-
             self.errors += 1
 
-
-
             error_data = {
-
-
-                "decision":
-
-                    None,
-
-
-                "confidence":
-
-                    0,
-
-
-                "error":
-
-                    str(error)
-
+                "decision": None,
+                "confidence": 0,
+                "error": str(error)
             }
 
-
-
             context.add_error(
-
                 error_data
-
             )
-
 
             context.set(
-
                 "reasoning",
-
                 error_data
-
             )
-
 
             self.log_error(
-
                 str(error)
-
             )
 
-
-
         return context
-
-
 
     # ==================================================
     # RACIOCÍNIO
     # ==================================================
 
-
     def reason(
         self,
-        context
-    ):
-
-
+        context: Dict[str, Any]
+    ) -> Dict[str, Any]:
         plan = context.get(
-
             "plan"
-
         )
-
-
 
         if not plan:
-
-
             return {
-
-
-                "decision":
-
-                    None,
-
-
-                "confidence":
-
-                    0,
-
-
-                "analysis":
-
-                    "Nenhum plano disponível."
-
+                "decision": None,
+                "confidence": 0,
+                "analysis": "Nenhum plano disponível na Neural Lattice."
             }
 
-
-
         options = self.generate_options(
-
             plan
-
         )
-
-
 
         decision = self.decide(
-
             options
-
         )
-
-
 
         result = {
-
-
-            "id":
-
-                str(
-
-                    uuid.uuid4()
-
-                ),
-
-
-
-            "timestamp":
-
-                datetime.now()
-
-                .isoformat(),
-
-
-
-            "alternatives":
-
-                options,
-
-
-
-            "decision":
-
-                decision,
-
-
-
-            "confidence":
-
-                self.confidence(
-
-                    decision
-
-                )
-
+            "id": str(
+                uuid.uuid4()
+            ),
+            "timestamp": datetime.now().isoformat(),
+            "alternatives": options,
+            "decision": decision,
+            "confidence": self.confidence(
+                decision
+            )
         }
 
-
-
         self.decisions += 1
-
-
         self.history.append(
-
             result
-
         )
 
-
         return result
-
-
 
     # ==================================================
     # OPÇÕES
     # ==================================================
 
-
     def generate_options(
         self,
-        plan
-    ):
-
-
+        plan: Any
+    ) -> List[Dict[str, Any]]:
         return [
-
-
             {
-
-                "strategy":
-
-                    "execute_plan",
-
-
-                "plan":
-
-                    plan,
-
-
-                "score":
-
-                    1.0
-
+                "strategy": "execute_lattice_plan",
+                "plan": plan,
+                "score": 1.0
             }
-
         ]
-
-
 
     # ==================================================
     # AVALIAÇÃO
     # ==================================================
 
-
     def evaluate(
         self,
-        option,
-        context=None
-    ):
-
-
+        option: Dict[str, Any],
+        context: Optional[PipelineContext] = None
+    ) -> Dict[str, Any]:
         if not option:
-
-
             return {
-
-
-                "valid":
-
-                    False,
-
-
-                "score":
-
-                    0
-
+                "valid": False,
+                "score": 0
             }
 
-
-
         return {
-
-
-            "option":
-
-                option,
-
-
-            "score":
-
-                option.get(
-
-                    "score",
-
-                    0
-
-                ),
-
-
-            "valid":
-
-                True
-
+            "option": option,
+            "score": option.get(
+                "score",
+                0
+            ),
+            "valid": True
         }
-
-
 
     # ==================================================
     # DECISÃO
     # ==================================================
 
-
     def decide(
         self,
-        possibilities
-    ):
-
-
+        possibilities: List[Dict[str, Any]]
+    ) -> Optional[Dict[str, Any]]:
         if not possibilities:
-
             return None
 
-
-
         return sorted(
-
             possibilities,
-
-            key=lambda x:
-
-                x.get(
-
-                    "score",
-
-                    0
-
-                ),
-
+            key=lambda x: x.get(
+                "score",
+                0
+            ),
             reverse=True
-
         )[0]
-
-
 
     # ==================================================
     # CONFIANÇA
     # ==================================================
 
-
     def confidence(
         self,
-        decision
-    ):
-
-
+        decision: Optional[Dict[str, Any]]
+    ) -> Union[int, float]:
         if not decision:
-
             return 0
 
-
-
         return decision.get(
-
             "score",
-
             0
-
         )
-
-
 
     # ==================================================
     # EXPLICAÇÃO
     # ==================================================
 
-
     def explain(
         self,
-        decision
-    ):
-
-
+        decision: Optional[Dict[str, Any]]
+    ) -> str:
         if not decision:
-
-            return "Nenhuma decisão tomada."
-
-
+            return "Nenhuma decisão tomada na malha."
 
         return (
-
             "Decisão selecionada baseada "
-            "na maior pontuação disponível."
-
+            "na maior pontuação disponível na Neural Lattice."
         )
-
-
 
     # ==================================================
     # COMPATIBILIDADE
     # ==================================================
 
-
     def evaluate_options(
         self,
-        options,
-        context=None
-    ):
-
-
+        options: List[Dict[str, Any]],
+        context: Optional[PipelineContext] = None
+    ) -> List[Dict[str, Any]]:
         return [
-
             self.evaluate(
                 option,
                 context
             )
-
             for option in options
-
         ]
-
-
 
     # ==================================================
     # LOG
     # ==================================================
 
-
     def log_error(
         self,
-        message
-    ):
-
-
-        if self.logger:
-
+        message: str
+    ) -> None:
+        if self.logger and hasattr(self.logger, "error"):
             self.logger.error(
-
                 message
-
             )
-
-
 
     # ==================================================
     # DIAGNÓSTICO
     # ==================================================
 
-
-    def info(
-        self
-    ):
-
-
+    def info(self) -> Dict[str, Any]:
         return {
-
-
-            "name":
-
-                self.name,
-
-
-            "decisions":
-
-                self.decisions,
-
-
-            "errors":
-
-                self.errors,
-
-
-            "history":
-
-                len(
-
-                    self.history
-
-                )
-
+            "name": self.name,
+            "decisions": self.decisions,
+            "errors": self.errors,
+            "history": len(
+                self.history
+            )
         }
