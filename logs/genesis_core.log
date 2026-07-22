@@ -1243,3 +1243,1613 @@
 [2026-07-21 15:01:33] [INFO] [OFFLINE] logger
 [2026-07-21 15:01:33] [INFO] [OFFLINE] registry
 [2026-07-21 15:01:33] [INFO] Genesis Core desligado.
+[2026-07-21 16:11:05] [INFO] Componente acoplado: logger
+[2026-07-21 16:11:05] [INFO] Componente acoplado: event_bus
+[2026-07-21 16:11:05] [INFO] Componente acoplado: config
+[2026-07-21 16:11:05] [INFO] Componente acoplado: identity
+[2026-07-21 16:11:05] [INFO] Componente acoplado: service_manager
+[2026-07-21 16:11:05] [INFO] Componente acoplado: tool_manager
+[2026-07-21 16:11:05] [INFO] Componente acoplado: runtime
+[2026-07-21 16:11:05] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 16:11:05] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 16:11:05] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 16:11:05] [INFO] Ferramenta registrada: system_test
+[2026-07-21 16:11:05] [INFO] Etapa registrada na malha: parser
+[2026-07-21 16:11:05] [INFO] Etapa registrada na malha: planner
+[2026-07-21 16:11:05] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 16:11:05] [INFO] Etapa registrada na malha: executor
+[2026-07-21 16:11:05] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 16:11:05] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 16:11:05] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 16:11:05] [INFO] Componente acoplado: pipeline
+[2026-07-21 16:11:05] [INFO] Componente acoplado: mind
+[2026-07-21 16:11:05] [INFO] Encerrando Genesis Core...
+[2026-07-21 16:11:05] [INFO] Mente central deslogada.
+[2026-07-21 16:11:05] [INFO] [OFFLINE] mind
+[2026-07-21 16:11:05] [INFO] [OFFLINE] pipeline
+[2026-07-21 16:11:05] [INFO] Plugin Manager encerrado.
+[2026-07-21 16:11:05] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 16:11:05] [INFO] Runtime Lattice encerrado.
+[2026-07-21 16:11:05] [INFO] [OFFLINE] runtime
+[2026-07-21 16:11:05] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 16:11:05] [INFO] Tool Manager encerrado.
+[2026-07-21 16:11:05] [INFO] [OFFLINE] tool_manager
+[2026-07-21 16:11:05] [INFO] Service Manager encerrado.
+[2026-07-21 16:11:05] [INFO] [OFFLINE] service_manager
+[2026-07-21 16:11:05] [INFO] IdentityManager encerrado.
+[2026-07-21 16:11:05] [INFO] [OFFLINE] identity
+[2026-07-21 16:11:05] [INFO] ConfigManager encerrado.
+[2026-07-21 16:11:05] [INFO] [OFFLINE] config
+[2026-07-21 16:11:05] [INFO] EventBus encerrado.
+[2026-07-21 16:11:05] [INFO] [OFFLINE] event_bus
+[2026-07-21 16:11:05] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 16:11:05] [INFO] [OFFLINE] logger
+[2026-07-21 16:11:05] [INFO] [OFFLINE] registry
+[2026-07-21 16:11:05] [INFO] Genesis Core desligado.
+[2026-07-21 16:14:18] [INFO] Componente acoplado: logger
+[2026-07-21 16:14:18] [INFO] Componente acoplado: event_bus
+[2026-07-21 16:14:18] [INFO] Componente acoplado: config
+[2026-07-21 16:14:18] [INFO] Componente acoplado: identity
+[2026-07-21 16:14:18] [INFO] Componente acoplado: service_manager
+[2026-07-21 16:14:18] [INFO] Componente acoplado: tool_manager
+[2026-07-21 16:14:18] [INFO] Componente acoplado: runtime
+[2026-07-21 16:14:18] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 16:14:18] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 16:14:18] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 16:14:18] [INFO] Ferramenta registrada: system_test
+[2026-07-21 16:14:18] [INFO] Etapa registrada na malha: parser
+[2026-07-21 16:14:18] [INFO] Etapa registrada na malha: planner
+[2026-07-21 16:14:18] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 16:14:18] [INFO] Etapa registrada na malha: executor
+[2026-07-21 16:14:18] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 16:14:18] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 16:14:18] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 16:14:19] [INFO] Componente acoplado: pipeline
+[2026-07-21 16:14:19] [INFO] Componente acoplado: mind
+[2026-07-21 16:14:19] [INFO] Encerrando Genesis Core...
+[2026-07-21 16:14:19] [INFO] Mente central deslogada.
+[2026-07-21 16:14:19] [INFO] [OFFLINE] mind
+[2026-07-21 16:14:19] [INFO] [OFFLINE] pipeline
+[2026-07-21 16:14:19] [INFO] Plugin Manager encerrado.
+[2026-07-21 16:14:19] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 16:14:19] [INFO] Runtime Lattice encerrado.
+[2026-07-21 16:14:19] [INFO] [OFFLINE] runtime
+[2026-07-21 16:14:19] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 16:14:19] [INFO] Tool Manager encerrado.
+[2026-07-21 16:14:19] [INFO] [OFFLINE] tool_manager
+[2026-07-21 16:14:19] [INFO] Service Manager encerrado.
+[2026-07-21 16:14:19] [INFO] [OFFLINE] service_manager
+[2026-07-21 16:14:19] [INFO] IdentityManager encerrado.
+[2026-07-21 16:14:19] [INFO] [OFFLINE] identity
+[2026-07-21 16:14:19] [INFO] ConfigManager encerrado.
+[2026-07-21 16:14:19] [INFO] [OFFLINE] config
+[2026-07-21 16:14:19] [INFO] EventBus encerrado.
+[2026-07-21 16:14:19] [INFO] [OFFLINE] event_bus
+[2026-07-21 16:14:19] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 16:14:19] [INFO] [OFFLINE] logger
+[2026-07-21 16:14:19] [INFO] [OFFLINE] registry
+[2026-07-21 16:14:19] [INFO] Genesis Core desligado.
+[2026-07-21 16:15:00] [INFO] Componente acoplado: logger
+[2026-07-21 16:15:00] [INFO] Componente acoplado: event_bus
+[2026-07-21 16:15:00] [INFO] Componente acoplado: config
+[2026-07-21 16:15:00] [INFO] Componente acoplado: identity
+[2026-07-21 16:15:00] [INFO] Componente acoplado: service_manager
+[2026-07-21 16:15:00] [INFO] Componente acoplado: tool_manager
+[2026-07-21 16:15:00] [INFO] Componente acoplado: runtime
+[2026-07-21 16:15:00] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 16:15:00] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 16:15:00] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 16:15:00] [INFO] Ferramenta registrada: system_test
+[2026-07-21 16:15:00] [INFO] Etapa registrada na malha: parser
+[2026-07-21 16:15:00] [INFO] Etapa registrada na malha: planner
+[2026-07-21 16:15:00] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 16:15:00] [INFO] Etapa registrada na malha: executor
+[2026-07-21 16:15:00] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 16:15:00] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 16:15:00] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 16:15:00] [INFO] Componente acoplado: pipeline
+[2026-07-21 16:15:00] [INFO] Componente acoplado: mind
+[2026-07-21 16:15:00] [INFO] Tool integrada ao Lattice: fetch_external_data
+[2026-07-21 16:15:00] [INFO] Tool integrada ao Lattice: process_dataframe_metrics
+[2026-07-21 16:15:00] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 16:15:00] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 16:15:00] [INFO] [ONLINE] logger
+[2026-07-21 16:15:00] [SUCCESS] EventBus online e operacional.
+[2026-07-21 16:15:00] [INFO] [ONLINE] event_bus
+[2026-07-21 16:15:00] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 16:15:00] [INFO] [ONLINE] config
+[2026-07-21 16:15:00] [INFO] [ONLINE] registry
+[2026-07-21 16:15:00] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 16:15:00] [INFO] [ONLINE] identity
+[2026-07-21 16:15:00] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:15:00] [INFO] [ONLINE] service_manager
+[2026-07-21 16:15:00] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:15:01] [INFO] [ONLINE] tool_manager
+[2026-07-21 16:15:01] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 16:15:01] [INFO] [ONLINE] runtime
+[2026-07-21 16:15:01] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:15:01] [INFO] [ONLINE] plugin_manager
+[2026-07-21 16:15:01] [INFO] [ONLINE] pipeline
+[2026-07-21 16:15:01] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 16:15:01] [INFO] [ONLINE] mind
+[2026-07-21 16:15:01] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 16:15:15] [INFO] Encerrando Genesis Core...
+[2026-07-21 16:15:15] [INFO] Mente central deslogada.
+[2026-07-21 16:15:15] [INFO] [OFFLINE] mind
+[2026-07-21 16:15:15] [INFO] [OFFLINE] pipeline
+[2026-07-21 16:15:15] [INFO] Plugin Manager encerrado.
+[2026-07-21 16:15:15] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 16:15:15] [INFO] Runtime Lattice encerrado.
+[2026-07-21 16:15:15] [INFO] [OFFLINE] runtime
+[2026-07-21 16:15:15] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 16:15:15] [INFO] Tool removida da Lattice: fetch_external_data
+[2026-07-21 16:15:15] [INFO] Tool removida da Lattice: process_dataframe_metrics
+[2026-07-21 16:15:15] [INFO] Tool Manager encerrado.
+[2026-07-21 16:15:15] [INFO] [OFFLINE] tool_manager
+[2026-07-21 16:15:15] [INFO] Service Manager encerrado.
+[2026-07-21 16:15:15] [INFO] [OFFLINE] service_manager
+[2026-07-21 16:15:15] [INFO] IdentityManager encerrado.
+[2026-07-21 16:15:15] [INFO] [OFFLINE] identity
+[2026-07-21 16:15:15] [INFO] ConfigManager encerrado.
+[2026-07-21 16:15:15] [INFO] [OFFLINE] config
+[2026-07-21 16:15:15] [INFO] EventBus encerrado.
+[2026-07-21 16:15:15] [INFO] [OFFLINE] event_bus
+[2026-07-21 16:15:15] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 16:15:15] [INFO] [OFFLINE] logger
+[2026-07-21 16:15:16] [INFO] [OFFLINE] registry
+[2026-07-21 16:15:16] [INFO] Genesis Core desligado.
+[2026-07-21 16:17:58] [INFO] Componente acoplado: logger
+[2026-07-21 16:17:58] [INFO] Componente acoplado: event_bus
+[2026-07-21 16:17:58] [INFO] Componente acoplado: config
+[2026-07-21 16:17:58] [INFO] Componente acoplado: identity
+[2026-07-21 16:17:58] [INFO] Componente acoplado: service_manager
+[2026-07-21 16:17:58] [INFO] Componente acoplado: tool_manager
+[2026-07-21 16:17:58] [INFO] Componente acoplado: runtime
+[2026-07-21 16:17:58] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 16:17:58] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 16:17:58] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 16:17:58] [INFO] Ferramenta registrada: system_test
+[2026-07-21 16:17:58] [INFO] Etapa registrada na malha: parser
+[2026-07-21 16:17:58] [INFO] Etapa registrada na malha: planner
+[2026-07-21 16:17:58] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 16:17:58] [INFO] Etapa registrada na malha: executor
+[2026-07-21 16:17:58] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 16:17:58] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 16:17:58] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 16:17:58] [INFO] Componente acoplado: pipeline
+[2026-07-21 16:17:58] [INFO] Componente acoplado: mind
+[2026-07-21 16:17:58] [INFO] Tool integrada ao Lattice: fetch_external_data
+[2026-07-21 16:17:58] [INFO] Tool integrada ao Lattice: process_dataframe_metrics
+[2026-07-21 16:17:58] [INFO] Tool integrada ao Lattice: conversation
+[2026-07-21 16:17:58] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 16:17:58] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 16:17:58] [INFO] [ONLINE] logger
+[2026-07-21 16:17:58] [SUCCESS] EventBus online e operacional.
+[2026-07-21 16:17:58] [INFO] [ONLINE] event_bus
+[2026-07-21 16:17:58] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 16:17:58] [INFO] [ONLINE] config
+[2026-07-21 16:17:58] [INFO] [ONLINE] registry
+[2026-07-21 16:17:58] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 16:17:58] [INFO] [ONLINE] identity
+[2026-07-21 16:17:58] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:17:58] [INFO] [ONLINE] service_manager
+[2026-07-21 16:17:58] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:17:58] [INFO] [ONLINE] tool_manager
+[2026-07-21 16:17:58] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 16:17:58] [INFO] [ONLINE] runtime
+[2026-07-21 16:17:58] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:17:58] [INFO] [ONLINE] plugin_manager
+[2026-07-21 16:17:58] [INFO] [ONLINE] pipeline
+[2026-07-21 16:17:58] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 16:17:58] [INFO] [ONLINE] mind
+[2026-07-21 16:17:58] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 16:18:11] [INFO] Encerrando Genesis Core...
+[2026-07-21 16:18:11] [INFO] Mente central deslogada.
+[2026-07-21 16:18:11] [INFO] [OFFLINE] mind
+[2026-07-21 16:18:11] [INFO] [OFFLINE] pipeline
+[2026-07-21 16:18:11] [INFO] Plugin Manager encerrado.
+[2026-07-21 16:18:11] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 16:18:11] [INFO] Runtime Lattice encerrado.
+[2026-07-21 16:18:11] [INFO] [OFFLINE] runtime
+[2026-07-21 16:18:11] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 16:18:11] [INFO] Tool removida da Lattice: fetch_external_data
+[2026-07-21 16:18:11] [INFO] Tool removida da Lattice: process_dataframe_metrics
+[2026-07-21 16:18:11] [INFO] Tool removida da Lattice: conversation
+[2026-07-21 16:18:11] [INFO] Tool Manager encerrado.
+[2026-07-21 16:18:11] [INFO] [OFFLINE] tool_manager
+[2026-07-21 16:18:11] [INFO] Service Manager encerrado.
+[2026-07-21 16:18:11] [INFO] [OFFLINE] service_manager
+[2026-07-21 16:18:11] [INFO] IdentityManager encerrado.
+[2026-07-21 16:18:11] [INFO] [OFFLINE] identity
+[2026-07-21 16:18:11] [INFO] ConfigManager encerrado.
+[2026-07-21 16:18:11] [INFO] [OFFLINE] config
+[2026-07-21 16:18:11] [INFO] EventBus encerrado.
+[2026-07-21 16:18:12] [INFO] [OFFLINE] event_bus
+[2026-07-21 16:18:12] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 16:18:12] [INFO] [OFFLINE] logger
+[2026-07-21 16:18:12] [INFO] [OFFLINE] registry
+[2026-07-21 16:18:12] [INFO] Genesis Core desligado.
+[2026-07-21 16:21:25] [INFO] Componente acoplado: logger
+[2026-07-21 16:21:25] [INFO] Componente acoplado: event_bus
+[2026-07-21 16:21:25] [INFO] Componente acoplado: config
+[2026-07-21 16:21:25] [INFO] Componente acoplado: identity
+[2026-07-21 16:21:25] [INFO] Componente acoplado: service_manager
+[2026-07-21 16:21:25] [INFO] Componente acoplado: tool_manager
+[2026-07-21 16:21:25] [INFO] Componente acoplado: runtime
+[2026-07-21 16:21:25] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 16:21:25] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 16:21:25] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 16:21:25] [INFO] Ferramenta registrada: system_test
+[2026-07-21 16:21:25] [INFO] Etapa registrada na malha: parser
+[2026-07-21 16:21:25] [INFO] Etapa registrada na malha: planner
+[2026-07-21 16:21:25] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 16:21:25] [INFO] Etapa registrada na malha: executor
+[2026-07-21 16:21:25] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 16:21:25] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 16:21:25] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 16:21:25] [INFO] Componente acoplado: pipeline
+[2026-07-21 16:21:25] [INFO] Componente acoplado: mind
+[2026-07-21 16:21:25] [INFO] Tool integrada ao Lattice: conversation
+[2026-07-21 16:21:25] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 16:21:25] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 16:21:25] [INFO] [ONLINE] logger
+[2026-07-21 16:21:25] [SUCCESS] EventBus online e operacional.
+[2026-07-21 16:21:25] [INFO] [ONLINE] event_bus
+[2026-07-21 16:21:25] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 16:21:25] [INFO] [ONLINE] config
+[2026-07-21 16:21:25] [INFO] [ONLINE] registry
+[2026-07-21 16:21:25] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 16:21:25] [INFO] [ONLINE] identity
+[2026-07-21 16:21:25] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:21:25] [INFO] [ONLINE] service_manager
+[2026-07-21 16:21:25] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:21:25] [INFO] [ONLINE] tool_manager
+[2026-07-21 16:21:25] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 16:21:25] [INFO] [ONLINE] runtime
+[2026-07-21 16:21:26] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:21:26] [INFO] [ONLINE] plugin_manager
+[2026-07-21 16:21:26] [INFO] [ONLINE] pipeline
+[2026-07-21 16:21:26] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 16:21:26] [INFO] [ONLINE] mind
+[2026-07-21 16:21:26] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 16:21:41] [INFO] Encerrando Genesis Core...
+[2026-07-21 16:21:41] [INFO] Mente central deslogada.
+[2026-07-21 16:21:41] [INFO] [OFFLINE] mind
+[2026-07-21 16:21:41] [INFO] [OFFLINE] pipeline
+[2026-07-21 16:21:41] [INFO] Plugin Manager encerrado.
+[2026-07-21 16:21:41] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 16:21:41] [INFO] Runtime Lattice encerrado.
+[2026-07-21 16:21:41] [INFO] [OFFLINE] runtime
+[2026-07-21 16:21:41] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 16:21:41] [INFO] Tool removida da Lattice: conversation
+[2026-07-21 16:21:42] [INFO] Tool Manager encerrado.
+[2026-07-21 16:21:42] [INFO] [OFFLINE] tool_manager
+[2026-07-21 16:21:42] [INFO] Service Manager encerrado.
+[2026-07-21 16:21:42] [INFO] [OFFLINE] service_manager
+[2026-07-21 16:21:42] [INFO] IdentityManager encerrado.
+[2026-07-21 16:21:42] [INFO] [OFFLINE] identity
+[2026-07-21 16:21:42] [INFO] ConfigManager encerrado.
+[2026-07-21 16:21:42] [INFO] [OFFLINE] config
+[2026-07-21 16:21:42] [INFO] EventBus encerrado.
+[2026-07-21 16:21:42] [INFO] [OFFLINE] event_bus
+[2026-07-21 16:21:42] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 16:21:42] [INFO] [OFFLINE] logger
+[2026-07-21 16:21:43] [INFO] [OFFLINE] registry
+[2026-07-21 16:21:43] [INFO] Genesis Core desligado.
+[2026-07-21 16:23:32] [INFO] Componente acoplado: logger
+[2026-07-21 16:23:32] [INFO] Componente acoplado: event_bus
+[2026-07-21 16:23:32] [INFO] Componente acoplado: config
+[2026-07-21 16:23:32] [INFO] Componente acoplado: identity
+[2026-07-21 16:23:32] [INFO] Componente acoplado: service_manager
+[2026-07-21 16:23:32] [INFO] Componente acoplado: tool_manager
+[2026-07-21 16:23:32] [INFO] Componente acoplado: runtime
+[2026-07-21 16:23:32] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 16:23:32] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 16:23:32] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 16:23:32] [INFO] Ferramenta registrada: system_test
+[2026-07-21 16:23:32] [INFO] Etapa registrada na malha: parser
+[2026-07-21 16:23:32] [INFO] Etapa registrada na malha: planner
+[2026-07-21 16:23:32] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 16:23:32] [INFO] Etapa registrada na malha: executor
+[2026-07-21 16:23:32] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 16:23:32] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 16:23:32] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 16:23:32] [INFO] Componente acoplado: pipeline
+[2026-07-21 16:23:32] [INFO] Componente acoplado: mind
+[2026-07-21 16:23:32] [INFO] Tool integrada ao Lattice: conversation
+[2026-07-21 16:23:32] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 16:23:32] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 16:23:32] [INFO] [ONLINE] logger
+[2026-07-21 16:23:32] [SUCCESS] EventBus online e operacional.
+[2026-07-21 16:23:33] [INFO] [ONLINE] event_bus
+[2026-07-21 16:23:33] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 16:23:33] [INFO] [ONLINE] config
+[2026-07-21 16:23:33] [INFO] [ONLINE] registry
+[2026-07-21 16:23:33] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 16:23:33] [INFO] [ONLINE] identity
+[2026-07-21 16:23:33] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:23:33] [INFO] [ONLINE] service_manager
+[2026-07-21 16:23:33] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:23:33] [INFO] [ONLINE] tool_manager
+[2026-07-21 16:23:33] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 16:23:34] [INFO] [ONLINE] runtime
+[2026-07-21 16:23:34] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:23:34] [INFO] [ONLINE] plugin_manager
+[2026-07-21 16:23:34] [INFO] [ONLINE] pipeline
+[2026-07-21 16:23:34] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 16:23:34] [INFO] [ONLINE] mind
+[2026-07-21 16:23:34] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 16:23:42] [INFO] Encerrando Genesis Core...
+[2026-07-21 16:23:42] [INFO] Mente central deslogada.
+[2026-07-21 16:23:42] [INFO] [OFFLINE] mind
+[2026-07-21 16:23:42] [INFO] [OFFLINE] pipeline
+[2026-07-21 16:23:42] [INFO] Plugin Manager encerrado.
+[2026-07-21 16:23:42] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 16:23:42] [INFO] Runtime Lattice encerrado.
+[2026-07-21 16:23:42] [INFO] [OFFLINE] runtime
+[2026-07-21 16:23:42] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 16:23:42] [INFO] Tool removida da Lattice: conversation
+[2026-07-21 16:23:42] [INFO] Tool Manager encerrado.
+[2026-07-21 16:23:42] [INFO] [OFFLINE] tool_manager
+[2026-07-21 16:23:42] [INFO] Service Manager encerrado.
+[2026-07-21 16:23:42] [INFO] [OFFLINE] service_manager
+[2026-07-21 16:23:42] [INFO] IdentityManager encerrado.
+[2026-07-21 16:23:42] [INFO] [OFFLINE] identity
+[2026-07-21 16:23:42] [INFO] ConfigManager encerrado.
+[2026-07-21 16:23:42] [INFO] [OFFLINE] config
+[2026-07-21 16:23:42] [INFO] EventBus encerrado.
+[2026-07-21 16:23:42] [INFO] [OFFLINE] event_bus
+[2026-07-21 16:23:42] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 16:23:42] [INFO] [OFFLINE] logger
+[2026-07-21 16:23:43] [INFO] [OFFLINE] registry
+[2026-07-21 16:23:43] [INFO] Genesis Core desligado.
+[2026-07-21 16:26:55] [INFO] Componente acoplado: logger
+[2026-07-21 16:26:55] [INFO] Componente acoplado: event_bus
+[2026-07-21 16:26:55] [INFO] Componente acoplado: config
+[2026-07-21 16:26:56] [INFO] Componente acoplado: identity
+[2026-07-21 16:26:56] [INFO] Componente acoplado: service_manager
+[2026-07-21 16:26:56] [INFO] Componente acoplado: tool_manager
+[2026-07-21 16:26:56] [INFO] Componente acoplado: runtime
+[2026-07-21 16:26:56] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 16:26:56] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 16:26:56] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 16:26:56] [INFO] Ferramenta registrada: system_test
+[2026-07-21 16:26:56] [INFO] Etapa registrada na malha: parser
+[2026-07-21 16:26:56] [INFO] Etapa registrada na malha: planner
+[2026-07-21 16:26:56] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 16:26:56] [INFO] Etapa registrada na malha: executor
+[2026-07-21 16:26:56] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 16:26:56] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 16:26:56] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 16:26:56] [INFO] Componente acoplado: pipeline
+[2026-07-21 16:26:56] [INFO] Componente acoplado: mind
+[2026-07-21 16:26:56] [INFO] Tool integrada ao Lattice: conversation
+[2026-07-21 16:26:56] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 16:26:56] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 16:26:56] [INFO] [ONLINE] logger
+[2026-07-21 16:26:56] [SUCCESS] EventBus online e operacional.
+[2026-07-21 16:26:56] [INFO] [ONLINE] event_bus
+[2026-07-21 16:26:56] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 16:26:56] [INFO] [ONLINE] config
+[2026-07-21 16:26:56] [INFO] [ONLINE] registry
+[2026-07-21 16:26:56] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 16:26:56] [INFO] [ONLINE] identity
+[2026-07-21 16:26:56] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:26:56] [INFO] [ONLINE] service_manager
+[2026-07-21 16:26:56] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:26:56] [INFO] [ONLINE] tool_manager
+[2026-07-21 16:26:56] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 16:26:56] [INFO] [ONLINE] runtime
+[2026-07-21 16:26:56] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:26:56] [INFO] [ONLINE] plugin_manager
+[2026-07-21 16:26:56] [INFO] [ONLINE] pipeline
+[2026-07-21 16:26:56] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 16:26:56] [INFO] [ONLINE] mind
+[2026-07-21 16:26:56] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 16:27:16] [INFO] Encerrando Genesis Core...
+[2026-07-21 16:27:16] [INFO] Mente central deslogada.
+[2026-07-21 16:27:16] [INFO] [OFFLINE] mind
+[2026-07-21 16:27:16] [INFO] [OFFLINE] pipeline
+[2026-07-21 16:27:16] [INFO] Plugin Manager encerrado.
+[2026-07-21 16:27:16] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 16:27:16] [INFO] Runtime Lattice encerrado.
+[2026-07-21 16:27:16] [INFO] [OFFLINE] runtime
+[2026-07-21 16:27:16] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 16:27:16] [INFO] Tool removida da Lattice: conversation
+[2026-07-21 16:27:16] [INFO] Tool Manager encerrado.
+[2026-07-21 16:27:16] [INFO] [OFFLINE] tool_manager
+[2026-07-21 16:27:16] [INFO] Service Manager encerrado.
+[2026-07-21 16:27:16] [INFO] [OFFLINE] service_manager
+[2026-07-21 16:27:16] [INFO] IdentityManager encerrado.
+[2026-07-21 16:27:16] [INFO] [OFFLINE] identity
+[2026-07-21 16:27:17] [INFO] ConfigManager encerrado.
+[2026-07-21 16:27:17] [INFO] [OFFLINE] config
+[2026-07-21 16:27:17] [INFO] EventBus encerrado.
+[2026-07-21 16:27:17] [INFO] [OFFLINE] event_bus
+[2026-07-21 16:27:17] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 16:27:17] [INFO] [OFFLINE] logger
+[2026-07-21 16:27:17] [INFO] [OFFLINE] registry
+[2026-07-21 16:27:17] [INFO] Genesis Core desligado.
+[2026-07-21 16:28:35] [INFO] Componente acoplado: logger
+[2026-07-21 16:28:35] [INFO] Componente acoplado: event_bus
+[2026-07-21 16:28:35] [INFO] Componente acoplado: config
+[2026-07-21 16:28:35] [INFO] Componente acoplado: identity
+[2026-07-21 16:28:35] [INFO] Componente acoplado: service_manager
+[2026-07-21 16:28:35] [INFO] Componente acoplado: tool_manager
+[2026-07-21 16:28:35] [INFO] Componente acoplado: runtime
+[2026-07-21 16:28:35] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 16:28:35] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 16:28:35] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 16:28:35] [INFO] Ferramenta registrada: system_test
+[2026-07-21 16:28:35] [INFO] Etapa registrada na malha: parser
+[2026-07-21 16:28:35] [INFO] Etapa registrada na malha: planner
+[2026-07-21 16:28:35] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 16:28:35] [INFO] Etapa registrada na malha: executor
+[2026-07-21 16:28:35] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 16:28:35] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 16:28:35] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 16:28:35] [INFO] Componente acoplado: pipeline
+[2026-07-21 16:28:35] [INFO] Componente acoplado: mind
+[2026-07-21 16:28:35] [INFO] Tool integrada ao Lattice: conversation
+[2026-07-21 16:28:35] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 16:28:35] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 16:28:35] [INFO] [ONLINE] logger
+[2026-07-21 16:28:35] [SUCCESS] EventBus online e operacional.
+[2026-07-21 16:28:35] [INFO] [ONLINE] event_bus
+[2026-07-21 16:28:35] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 16:28:35] [INFO] [ONLINE] config
+[2026-07-21 16:28:35] [INFO] [ONLINE] registry
+[2026-07-21 16:28:35] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 16:28:35] [INFO] [ONLINE] identity
+[2026-07-21 16:28:35] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:28:35] [INFO] [ONLINE] service_manager
+[2026-07-21 16:28:35] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:28:35] [INFO] [ONLINE] tool_manager
+[2026-07-21 16:28:36] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 16:28:36] [INFO] [ONLINE] runtime
+[2026-07-21 16:28:36] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:28:36] [INFO] [ONLINE] plugin_manager
+[2026-07-21 16:28:36] [INFO] [ONLINE] pipeline
+[2026-07-21 16:28:36] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 16:28:36] [INFO] [ONLINE] mind
+[2026-07-21 16:28:36] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 16:28:45] [INFO] Encerrando Genesis Core...
+[2026-07-21 16:28:45] [INFO] Mente central deslogada.
+[2026-07-21 16:28:45] [INFO] [OFFLINE] mind
+[2026-07-21 16:28:45] [INFO] [OFFLINE] pipeline
+[2026-07-21 16:28:45] [INFO] Plugin Manager encerrado.
+[2026-07-21 16:28:45] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 16:28:45] [INFO] Runtime Lattice encerrado.
+[2026-07-21 16:28:45] [INFO] [OFFLINE] runtime
+[2026-07-21 16:28:45] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 16:28:45] [INFO] Tool removida da Lattice: conversation
+[2026-07-21 16:28:46] [INFO] Tool Manager encerrado.
+[2026-07-21 16:28:46] [INFO] [OFFLINE] tool_manager
+[2026-07-21 16:28:46] [INFO] Service Manager encerrado.
+[2026-07-21 16:28:46] [INFO] [OFFLINE] service_manager
+[2026-07-21 16:28:47] [INFO] IdentityManager encerrado.
+[2026-07-21 16:28:47] [INFO] [OFFLINE] identity
+[2026-07-21 16:28:47] [INFO] ConfigManager encerrado.
+[2026-07-21 16:28:48] [INFO] [OFFLINE] config
+[2026-07-21 16:28:48] [INFO] EventBus encerrado.
+[2026-07-21 16:28:48] [INFO] [OFFLINE] event_bus
+[2026-07-21 16:28:48] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 16:28:48] [INFO] [OFFLINE] logger
+[2026-07-21 16:28:49] [INFO] [OFFLINE] registry
+[2026-07-21 16:28:49] [INFO] Genesis Core desligado.
+[2026-07-21 16:29:34] [INFO] Componente acoplado: logger
+[2026-07-21 16:29:34] [INFO] Componente acoplado: event_bus
+[2026-07-21 16:29:34] [INFO] Componente acoplado: config
+[2026-07-21 16:29:34] [INFO] Componente acoplado: identity
+[2026-07-21 16:29:34] [INFO] Componente acoplado: service_manager
+[2026-07-21 16:29:34] [INFO] Componente acoplado: tool_manager
+[2026-07-21 16:29:35] [INFO] Componente acoplado: runtime
+[2026-07-21 16:29:35] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 16:29:35] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 16:29:35] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 16:29:35] [INFO] Ferramenta registrada: system_test
+[2026-07-21 16:29:35] [INFO] Etapa registrada na malha: parser
+[2026-07-21 16:29:35] [INFO] Etapa registrada na malha: planner
+[2026-07-21 16:29:35] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 16:29:35] [INFO] Etapa registrada na malha: executor
+[2026-07-21 16:29:35] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 16:29:35] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 16:29:35] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 16:29:35] [INFO] Componente acoplado: pipeline
+[2026-07-21 16:29:35] [INFO] Componente acoplado: mind
+[2026-07-21 16:29:36] [INFO] Tool integrada ao Lattice: conversation
+[2026-07-21 16:29:36] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 16:29:36] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 16:29:36] [INFO] [ONLINE] logger
+[2026-07-21 16:29:36] [SUCCESS] EventBus online e operacional.
+[2026-07-21 16:29:36] [INFO] [ONLINE] event_bus
+[2026-07-21 16:29:36] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 16:29:36] [INFO] [ONLINE] config
+[2026-07-21 16:29:36] [INFO] [ONLINE] registry
+[2026-07-21 16:29:36] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 16:29:36] [INFO] [ONLINE] identity
+[2026-07-21 16:29:36] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:29:36] [INFO] [ONLINE] service_manager
+[2026-07-21 16:29:36] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:29:36] [INFO] [ONLINE] tool_manager
+[2026-07-21 16:29:36] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 16:29:36] [INFO] [ONLINE] runtime
+[2026-07-21 16:29:36] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 16:29:36] [INFO] [ONLINE] plugin_manager
+[2026-07-21 16:29:36] [INFO] [ONLINE] pipeline
+[2026-07-21 16:29:36] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 16:29:36] [INFO] [ONLINE] mind
+[2026-07-21 16:29:36] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 16:29:44] [INFO] Encerrando Genesis Core...
+[2026-07-21 16:29:44] [INFO] Mente central deslogada.
+[2026-07-21 16:29:44] [INFO] [OFFLINE] mind
+[2026-07-21 16:29:44] [INFO] [OFFLINE] pipeline
+[2026-07-21 16:29:44] [INFO] Plugin Manager encerrado.
+[2026-07-21 16:29:44] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 16:29:44] [INFO] Runtime Lattice encerrado.
+[2026-07-21 16:29:44] [INFO] [OFFLINE] runtime
+[2026-07-21 16:29:44] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 16:29:44] [INFO] Tool removida da Lattice: conversation
+[2026-07-21 16:29:44] [INFO] Tool Manager encerrado.
+[2026-07-21 16:29:44] [INFO] [OFFLINE] tool_manager
+[2026-07-21 16:29:44] [INFO] Service Manager encerrado.
+[2026-07-21 16:29:44] [INFO] [OFFLINE] service_manager
+[2026-07-21 16:29:44] [INFO] IdentityManager encerrado.
+[2026-07-21 16:29:44] [INFO] [OFFLINE] identity
+[2026-07-21 16:29:44] [INFO] ConfigManager encerrado.
+[2026-07-21 16:29:44] [INFO] [OFFLINE] config
+[2026-07-21 16:29:44] [INFO] EventBus encerrado.
+[2026-07-21 16:29:44] [INFO] [OFFLINE] event_bus
+[2026-07-21 16:29:44] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 16:29:44] [INFO] [OFFLINE] logger
+[2026-07-21 16:29:44] [INFO] [OFFLINE] registry
+[2026-07-21 16:29:44] [INFO] Genesis Core desligado.
+[2026-07-21 17:34:03] [INFO] Componente acoplado: logger
+[2026-07-21 17:34:03] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:34:03] [INFO] Componente acoplado: config
+[2026-07-21 17:34:03] [INFO] Componente acoplado: identity
+[2026-07-21 17:34:03] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:34:04] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:34:04] [INFO] Componente acoplado: runtime
+[2026-07-21 17:34:04] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:34:04] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:34:04] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:34:04] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:34:04] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:34:04] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:34:04] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:34:04] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:34:04] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:34:04] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:34:04] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:34:04] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:34:04] [INFO] Componente acoplado: mind
+[2026-07-21 17:34:04] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:34:04] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:34:04] [INFO] [ONLINE] logger
+[2026-07-21 17:34:04] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:34:04] [INFO] [ONLINE] event_bus
+[2026-07-21 17:34:04] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:34:04] [INFO] [ONLINE] config
+[2026-07-21 17:34:04] [INFO] [ONLINE] registry
+[2026-07-21 17:34:04] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:34:04] [INFO] [ONLINE] identity
+[2026-07-21 17:34:04] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:34:04] [INFO] [ONLINE] service_manager
+[2026-07-21 17:34:05] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:34:05] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:34:05] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:34:05] [INFO] [ONLINE] runtime
+[2026-07-21 17:34:05] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:34:05] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:34:05] [INFO] [ONLINE] pipeline
+[2026-07-21 17:34:05] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:34:05] [INFO] [ONLINE] mind
+[2026-07-21 17:34:05] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:34:27] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:34:27] [INFO] Mente central deslogada.
+[2026-07-21 17:34:27] [INFO] [OFFLINE] mind
+[2026-07-21 17:34:27] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:34:27] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:34:27] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:34:27] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:34:27] [INFO] [OFFLINE] runtime
+[2026-07-21 17:34:27] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:34:27] [INFO] Tool Manager encerrado.
+[2026-07-21 17:34:27] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:34:27] [INFO] Service Manager encerrado.
+[2026-07-21 17:34:27] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:34:27] [INFO] IdentityManager encerrado.
+[2026-07-21 17:34:27] [INFO] [OFFLINE] identity
+[2026-07-21 17:34:27] [INFO] ConfigManager encerrado.
+[2026-07-21 17:34:27] [INFO] [OFFLINE] config
+[2026-07-21 17:34:27] [INFO] EventBus encerrado.
+[2026-07-21 17:34:27] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:34:27] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:34:27] [INFO] [OFFLINE] logger
+[2026-07-21 17:34:27] [INFO] [OFFLINE] registry
+[2026-07-21 17:34:27] [INFO] Genesis Core desligado.
+[2026-07-21 17:36:02] [INFO] Componente acoplado: logger
+[2026-07-21 17:36:02] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:36:02] [INFO] Componente acoplado: config
+[2026-07-21 17:36:02] [INFO] Componente acoplado: identity
+[2026-07-21 17:36:02] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:36:02] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:36:02] [INFO] Componente acoplado: runtime
+[2026-07-21 17:36:02] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:36:02] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:36:02] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:36:02] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:36:02] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:36:02] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:36:02] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:36:02] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:36:02] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:36:02] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:36:02] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:36:02] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:36:02] [INFO] Componente acoplado: mind
+[2026-07-21 17:36:02] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:36:02] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:36:02] [INFO] [ONLINE] logger
+[2026-07-21 17:36:02] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:36:02] [INFO] [ONLINE] event_bus
+[2026-07-21 17:36:02] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:36:02] [INFO] [ONLINE] config
+[2026-07-21 17:36:02] [INFO] [ONLINE] registry
+[2026-07-21 17:36:02] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:36:02] [INFO] [ONLINE] identity
+[2026-07-21 17:36:02] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:36:02] [INFO] [ONLINE] service_manager
+[2026-07-21 17:36:02] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:36:02] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:36:02] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:36:02] [INFO] [ONLINE] runtime
+[2026-07-21 17:36:02] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:36:02] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:36:02] [INFO] [ONLINE] pipeline
+[2026-07-21 17:36:02] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:36:02] [INFO] [ONLINE] mind
+[2026-07-21 17:36:02] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:36:20] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:36:20] [INFO] Mente central deslogada.
+[2026-07-21 17:36:20] [INFO] [OFFLINE] mind
+[2026-07-21 17:36:20] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:36:20] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:36:20] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:36:20] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:36:20] [INFO] [OFFLINE] runtime
+[2026-07-21 17:36:20] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:36:20] [INFO] Tool Manager encerrado.
+[2026-07-21 17:36:20] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:36:20] [INFO] Service Manager encerrado.
+[2026-07-21 17:36:20] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:36:20] [INFO] IdentityManager encerrado.
+[2026-07-21 17:36:20] [INFO] [OFFLINE] identity
+[2026-07-21 17:36:21] [INFO] ConfigManager encerrado.
+[2026-07-21 17:36:21] [INFO] [OFFLINE] config
+[2026-07-21 17:36:21] [INFO] EventBus encerrado.
+[2026-07-21 17:36:21] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:36:21] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:36:21] [INFO] [OFFLINE] logger
+[2026-07-21 17:36:21] [INFO] [OFFLINE] registry
+[2026-07-21 17:36:21] [INFO] Genesis Core desligado.
+[2026-07-21 17:41:18] [INFO] Componente acoplado: logger
+[2026-07-21 17:41:18] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:41:18] [INFO] Componente acoplado: config
+[2026-07-21 17:41:18] [INFO] Componente acoplado: identity
+[2026-07-21 17:41:18] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:41:18] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:41:18] [INFO] Componente acoplado: runtime
+[2026-07-21 17:41:19] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:41:19] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:41:19] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:41:19] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:41:19] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:41:19] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:41:19] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:41:19] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:41:19] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:41:19] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:41:19] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:41:19] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:41:19] [INFO] Componente acoplado: mind
+[2026-07-21 17:41:19] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:41:19] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:41:19] [INFO] [ONLINE] logger
+[2026-07-21 17:41:19] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:41:19] [INFO] [ONLINE] event_bus
+[2026-07-21 17:41:19] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:41:19] [INFO] [ONLINE] config
+[2026-07-21 17:41:19] [INFO] [ONLINE] registry
+[2026-07-21 17:41:19] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:41:19] [INFO] [ONLINE] identity
+[2026-07-21 17:41:19] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:41:19] [INFO] [ONLINE] service_manager
+[2026-07-21 17:41:19] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:41:19] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:41:19] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:41:19] [INFO] [ONLINE] runtime
+[2026-07-21 17:41:20] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:41:20] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:41:20] [INFO] [ONLINE] pipeline
+[2026-07-21 17:41:20] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:41:20] [INFO] [ONLINE] mind
+[2026-07-21 17:41:20] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:41:32] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:41:32] [INFO] Mente central deslogada.
+[2026-07-21 17:41:32] [INFO] [OFFLINE] mind
+[2026-07-21 17:41:32] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:41:32] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:41:32] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:41:32] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:41:32] [INFO] [OFFLINE] runtime
+[2026-07-21 17:41:32] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:41:32] [INFO] Tool Manager encerrado.
+[2026-07-21 17:41:32] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:41:32] [INFO] Service Manager encerrado.
+[2026-07-21 17:41:32] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:41:32] [INFO] IdentityManager encerrado.
+[2026-07-21 17:41:32] [INFO] [OFFLINE] identity
+[2026-07-21 17:41:32] [INFO] ConfigManager encerrado.
+[2026-07-21 17:41:32] [INFO] [OFFLINE] config
+[2026-07-21 17:41:32] [INFO] EventBus encerrado.
+[2026-07-21 17:41:32] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:41:32] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:41:32] [INFO] [OFFLINE] logger
+[2026-07-21 17:41:32] [INFO] [OFFLINE] registry
+[2026-07-21 17:41:32] [INFO] Genesis Core desligado.
+[2026-07-21 17:43:36] [INFO] Componente acoplado: logger
+[2026-07-21 17:43:36] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:43:36] [INFO] Componente acoplado: config
+[2026-07-21 17:43:36] [INFO] Componente acoplado: identity
+[2026-07-21 17:43:36] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:43:36] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:43:36] [INFO] Componente acoplado: runtime
+[2026-07-21 17:43:36] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:43:36] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:43:36] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:43:36] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:43:36] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:43:36] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:43:36] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:43:36] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:43:36] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:43:36] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:43:36] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:43:36] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:43:36] [INFO] Componente acoplado: mind
+[2026-07-21 17:43:36] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:43:37] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:43:37] [INFO] [ONLINE] logger
+[2026-07-21 17:43:37] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:43:37] [INFO] [ONLINE] event_bus
+[2026-07-21 17:43:37] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:43:37] [INFO] [ONLINE] config
+[2026-07-21 17:43:37] [INFO] [ONLINE] registry
+[2026-07-21 17:43:37] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:43:37] [INFO] [ONLINE] identity
+[2026-07-21 17:43:37] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:43:37] [INFO] [ONLINE] service_manager
+[2026-07-21 17:43:37] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:43:37] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:43:37] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:43:37] [INFO] [ONLINE] runtime
+[2026-07-21 17:43:37] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:43:37] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:43:37] [INFO] [ONLINE] pipeline
+[2026-07-21 17:43:37] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:43:37] [INFO] [ONLINE] mind
+[2026-07-21 17:43:37] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:43:50] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:43:50] [INFO] Mente central deslogada.
+[2026-07-21 17:43:50] [INFO] [OFFLINE] mind
+[2026-07-21 17:43:50] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:43:50] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:43:50] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:43:50] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:43:50] [INFO] [OFFLINE] runtime
+[2026-07-21 17:43:50] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:43:50] [INFO] Tool Manager encerrado.
+[2026-07-21 17:43:50] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:43:50] [INFO] Service Manager encerrado.
+[2026-07-21 17:43:50] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:43:50] [INFO] IdentityManager encerrado.
+[2026-07-21 17:43:50] [INFO] [OFFLINE] identity
+[2026-07-21 17:43:50] [INFO] ConfigManager encerrado.
+[2026-07-21 17:43:50] [INFO] [OFFLINE] config
+[2026-07-21 17:43:50] [INFO] EventBus encerrado.
+[2026-07-21 17:43:50] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:43:50] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:43:50] [INFO] [OFFLINE] logger
+[2026-07-21 17:43:51] [INFO] [OFFLINE] registry
+[2026-07-21 17:43:51] [INFO] Genesis Core desligado.
+[2026-07-21 17:45:00] [INFO] Componente acoplado: logger
+[2026-07-21 17:45:00] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:45:00] [INFO] Componente acoplado: config
+[2026-07-21 17:45:00] [INFO] Componente acoplado: identity
+[2026-07-21 17:45:00] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:45:00] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:45:00] [INFO] Componente acoplado: runtime
+[2026-07-21 17:45:00] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:45:00] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:45:00] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:45:00] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:45:00] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:45:00] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:45:00] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:45:00] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:45:00] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:45:00] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:45:00] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:45:00] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:45:00] [INFO] Componente acoplado: mind
+[2026-07-21 17:45:00] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:45:00] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:45:00] [INFO] [ONLINE] logger
+[2026-07-21 17:45:00] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:45:00] [INFO] [ONLINE] event_bus
+[2026-07-21 17:45:00] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:45:00] [INFO] [ONLINE] config
+[2026-07-21 17:45:00] [INFO] [ONLINE] registry
+[2026-07-21 17:45:00] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:45:00] [INFO] [ONLINE] identity
+[2026-07-21 17:45:00] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:45:00] [INFO] [ONLINE] service_manager
+[2026-07-21 17:45:00] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:45:00] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:45:00] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:45:00] [INFO] [ONLINE] runtime
+[2026-07-21 17:45:00] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:45:00] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:45:00] [INFO] [ONLINE] pipeline
+[2026-07-21 17:45:00] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:45:00] [INFO] [ONLINE] mind
+[2026-07-21 17:45:00] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:45:40] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:45:40] [INFO] Mente central deslogada.
+[2026-07-21 17:45:40] [INFO] [OFFLINE] mind
+[2026-07-21 17:45:40] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:45:40] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:45:40] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:45:40] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:45:40] [INFO] [OFFLINE] runtime
+[2026-07-21 17:45:40] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:45:40] [INFO] Tool Manager encerrado.
+[2026-07-21 17:45:40] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:45:40] [INFO] Service Manager encerrado.
+[2026-07-21 17:45:40] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:45:40] [INFO] IdentityManager encerrado.
+[2026-07-21 17:45:40] [INFO] [OFFLINE] identity
+[2026-07-21 17:45:40] [INFO] ConfigManager encerrado.
+[2026-07-21 17:45:40] [INFO] [OFFLINE] config
+[2026-07-21 17:45:40] [INFO] EventBus encerrado.
+[2026-07-21 17:45:40] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:45:40] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:45:40] [INFO] [OFFLINE] logger
+[2026-07-21 17:45:40] [INFO] [OFFLINE] registry
+[2026-07-21 17:45:40] [INFO] Genesis Core desligado.
+[2026-07-21 17:46:48] [INFO] Componente acoplado: logger
+[2026-07-21 17:46:48] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:46:48] [INFO] Componente acoplado: config
+[2026-07-21 17:46:48] [INFO] Componente acoplado: identity
+[2026-07-21 17:46:48] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:46:48] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:46:48] [INFO] Componente acoplado: runtime
+[2026-07-21 17:46:48] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:46:48] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:46:48] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:46:48] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:46:48] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:46:48] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:46:48] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:46:48] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:46:48] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:46:48] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:46:48] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:46:48] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:46:48] [INFO] Componente acoplado: mind
+[2026-07-21 17:46:48] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:46:48] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:46:48] [INFO] [ONLINE] logger
+[2026-07-21 17:46:48] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:46:48] [INFO] [ONLINE] event_bus
+[2026-07-21 17:46:48] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:46:48] [INFO] [ONLINE] config
+[2026-07-21 17:46:48] [INFO] [ONLINE] registry
+[2026-07-21 17:46:48] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:46:48] [INFO] [ONLINE] identity
+[2026-07-21 17:46:48] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:46:48] [INFO] [ONLINE] service_manager
+[2026-07-21 17:46:48] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:46:48] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:46:49] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:46:49] [INFO] [ONLINE] runtime
+[2026-07-21 17:46:49] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:46:49] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:46:49] [INFO] [ONLINE] pipeline
+[2026-07-21 17:46:49] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:46:49] [INFO] [ONLINE] mind
+[2026-07-21 17:46:49] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:47:00] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:47:00] [INFO] Mente central deslogada.
+[2026-07-21 17:47:00] [INFO] [OFFLINE] mind
+[2026-07-21 17:47:00] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:47:00] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:47:00] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:47:00] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:47:00] [INFO] [OFFLINE] runtime
+[2026-07-21 17:47:00] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:47:00] [INFO] Tool Manager encerrado.
+[2026-07-21 17:47:00] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:47:00] [INFO] Service Manager encerrado.
+[2026-07-21 17:47:00] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:47:00] [INFO] IdentityManager encerrado.
+[2026-07-21 17:47:00] [INFO] [OFFLINE] identity
+[2026-07-21 17:47:00] [INFO] ConfigManager encerrado.
+[2026-07-21 17:47:00] [INFO] [OFFLINE] config
+[2026-07-21 17:47:00] [INFO] EventBus encerrado.
+[2026-07-21 17:47:00] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:47:00] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:47:00] [INFO] [OFFLINE] logger
+[2026-07-21 17:47:00] [INFO] [OFFLINE] registry
+[2026-07-21 17:47:01] [INFO] Genesis Core desligado.
+[2026-07-21 17:50:50] [INFO] Componente acoplado: logger
+[2026-07-21 17:50:50] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:50:50] [INFO] Componente acoplado: config
+[2026-07-21 17:50:50] [INFO] Componente acoplado: identity
+[2026-07-21 17:50:50] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:50:50] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:50:50] [INFO] Componente acoplado: runtime
+[2026-07-21 17:50:50] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:50:50] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:50:50] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:50:50] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:50:50] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:50:50] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:50:50] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:50:50] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:50:50] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:50:50] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:50:50] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:50:50] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:50:50] [INFO] Componente acoplado: mind
+[2026-07-21 17:50:50] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:50:50] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:50:50] [INFO] [ONLINE] logger
+[2026-07-21 17:50:50] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:50:50] [INFO] [ONLINE] event_bus
+[2026-07-21 17:50:50] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:50:50] [INFO] [ONLINE] config
+[2026-07-21 17:50:50] [INFO] [ONLINE] registry
+[2026-07-21 17:50:50] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:50:50] [INFO] [ONLINE] identity
+[2026-07-21 17:50:50] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:50:50] [INFO] [ONLINE] service_manager
+[2026-07-21 17:50:51] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:50:51] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:50:51] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:50:51] [INFO] [ONLINE] runtime
+[2026-07-21 17:50:51] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:50:51] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:50:51] [INFO] [ONLINE] pipeline
+[2026-07-21 17:50:51] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:50:51] [INFO] [ONLINE] mind
+[2026-07-21 17:50:51] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:50:59] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:50:59] [INFO] Mente central deslogada.
+[2026-07-21 17:50:59] [INFO] [OFFLINE] mind
+[2026-07-21 17:50:59] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:50:59] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:50:59] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:50:59] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:50:59] [INFO] [OFFLINE] runtime
+[2026-07-21 17:50:59] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:50:59] [INFO] Tool Manager encerrado.
+[2026-07-21 17:50:59] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:50:59] [INFO] Service Manager encerrado.
+[2026-07-21 17:50:59] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:50:59] [INFO] IdentityManager encerrado.
+[2026-07-21 17:50:59] [INFO] [OFFLINE] identity
+[2026-07-21 17:50:59] [INFO] ConfigManager encerrado.
+[2026-07-21 17:50:59] [INFO] [OFFLINE] config
+[2026-07-21 17:50:59] [INFO] EventBus encerrado.
+[2026-07-21 17:50:59] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:50:59] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:51:00] [INFO] [OFFLINE] logger
+[2026-07-21 17:51:00] [INFO] [OFFLINE] registry
+[2026-07-21 17:51:00] [INFO] Genesis Core desligado.
+[2026-07-21 17:53:17] [INFO] Componente acoplado: logger
+[2026-07-21 17:53:17] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:53:17] [INFO] Componente acoplado: config
+[2026-07-21 17:53:18] [INFO] Componente acoplado: identity
+[2026-07-21 17:53:18] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:53:18] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:53:18] [INFO] Componente acoplado: runtime
+[2026-07-21 17:53:18] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:53:18] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:53:18] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:53:18] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:53:18] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:53:18] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:53:18] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:53:18] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:53:18] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:53:18] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:53:18] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:53:18] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:53:18] [INFO] Componente acoplado: mind
+[2026-07-21 17:53:18] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:53:18] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:53:18] [INFO] [ONLINE] logger
+[2026-07-21 17:53:18] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:53:18] [INFO] [ONLINE] event_bus
+[2026-07-21 17:53:18] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:53:18] [INFO] [ONLINE] config
+[2026-07-21 17:53:18] [INFO] [ONLINE] registry
+[2026-07-21 17:53:18] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:53:18] [INFO] [ONLINE] identity
+[2026-07-21 17:53:18] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:53:18] [INFO] [ONLINE] service_manager
+[2026-07-21 17:53:19] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:53:19] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:53:19] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:53:19] [INFO] [ONLINE] runtime
+[2026-07-21 17:53:19] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:53:19] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:53:19] [INFO] [ONLINE] pipeline
+[2026-07-21 17:53:19] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:53:19] [INFO] [ONLINE] mind
+[2026-07-21 17:53:19] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:53:27] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:53:27] [INFO] Mente central deslogada.
+[2026-07-21 17:53:27] [INFO] [OFFLINE] mind
+[2026-07-21 17:53:27] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:53:27] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:53:27] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:53:27] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:53:28] [INFO] [OFFLINE] runtime
+[2026-07-21 17:53:28] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:53:28] [INFO] Tool Manager encerrado.
+[2026-07-21 17:53:28] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:53:28] [INFO] Service Manager encerrado.
+[2026-07-21 17:53:28] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:53:28] [INFO] IdentityManager encerrado.
+[2026-07-21 17:53:28] [INFO] [OFFLINE] identity
+[2026-07-21 17:53:28] [INFO] ConfigManager encerrado.
+[2026-07-21 17:53:28] [INFO] [OFFLINE] config
+[2026-07-21 17:53:28] [INFO] EventBus encerrado.
+[2026-07-21 17:53:28] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:53:28] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:53:28] [INFO] [OFFLINE] logger
+[2026-07-21 17:53:28] [INFO] [OFFLINE] registry
+[2026-07-21 17:53:28] [INFO] Genesis Core desligado.
+[2026-07-21 17:54:22] [INFO] Componente acoplado: logger
+[2026-07-21 17:54:23] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:54:23] [INFO] Componente acoplado: config
+[2026-07-21 17:54:23] [INFO] Componente acoplado: identity
+[2026-07-21 17:54:23] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:54:23] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:54:23] [INFO] Componente acoplado: runtime
+[2026-07-21 17:54:23] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:54:23] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:54:23] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:54:23] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:54:23] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:54:23] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:54:24] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:54:24] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:54:24] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:54:24] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:54:24] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:54:24] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:54:24] [INFO] Componente acoplado: mind
+[2026-07-21 17:54:24] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:54:24] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:54:25] [INFO] [ONLINE] logger
+[2026-07-21 17:54:25] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:54:25] [INFO] [ONLINE] event_bus
+[2026-07-21 17:54:25] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:54:25] [INFO] [ONLINE] config
+[2026-07-21 17:54:25] [INFO] [ONLINE] registry
+[2026-07-21 17:54:25] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:54:25] [INFO] [ONLINE] identity
+[2026-07-21 17:54:25] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:54:25] [INFO] [ONLINE] service_manager
+[2026-07-21 17:54:25] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:54:25] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:54:25] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:54:25] [INFO] [ONLINE] runtime
+[2026-07-21 17:54:25] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:54:25] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:54:25] [INFO] [ONLINE] pipeline
+[2026-07-21 17:54:25] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:54:25] [INFO] [ONLINE] mind
+[2026-07-21 17:54:25] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:54:30] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:54:30] [INFO] Mente central deslogada.
+[2026-07-21 17:54:30] [INFO] [OFFLINE] mind
+[2026-07-21 17:54:30] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:54:30] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:54:30] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:54:30] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:54:30] [INFO] [OFFLINE] runtime
+[2026-07-21 17:54:30] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:54:30] [INFO] Tool Manager encerrado.
+[2026-07-21 17:54:30] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:54:30] [INFO] Service Manager encerrado.
+[2026-07-21 17:54:30] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:54:30] [INFO] IdentityManager encerrado.
+[2026-07-21 17:54:30] [INFO] [OFFLINE] identity
+[2026-07-21 17:54:30] [INFO] ConfigManager encerrado.
+[2026-07-21 17:54:30] [INFO] [OFFLINE] config
+[2026-07-21 17:54:30] [INFO] EventBus encerrado.
+[2026-07-21 17:54:30] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:54:31] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:54:31] [INFO] [OFFLINE] logger
+[2026-07-21 17:54:31] [INFO] [OFFLINE] registry
+[2026-07-21 17:54:31] [INFO] Genesis Core desligado.
+[2026-07-21 17:55:23] [INFO] Componente acoplado: logger
+[2026-07-21 17:55:23] [INFO] Componente acoplado: event_bus
+[2026-07-21 17:55:23] [INFO] Componente acoplado: config
+[2026-07-21 17:55:23] [INFO] Componente acoplado: identity
+[2026-07-21 17:55:23] [INFO] Componente acoplado: service_manager
+[2026-07-21 17:55:23] [INFO] Componente acoplado: tool_manager
+[2026-07-21 17:55:23] [INFO] Componente acoplado: runtime
+[2026-07-21 17:55:23] [INFO] Componente acoplado: plugin_manager
+[2026-07-21 17:55:23] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-21 17:55:23] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-21 17:55:23] [INFO] Ferramenta registrada: system_test
+[2026-07-21 17:55:23] [INFO] Etapa registrada na malha: parser
+[2026-07-21 17:55:23] [INFO] Etapa registrada na malha: planner
+[2026-07-21 17:55:23] [INFO] Etapa registrada na malha: reasoner
+[2026-07-21 17:55:23] [INFO] Etapa registrada na malha: executor
+[2026-07-21 17:55:23] [INFO] Etapa registrada na malha: reflection
+[2026-07-21 17:55:23] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-21 17:55:23] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-21 17:55:23] [INFO] Componente acoplado: pipeline
+[2026-07-21 17:55:23] [INFO] Componente acoplado: mind
+[2026-07-21 17:55:23] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-21 17:55:23] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-21 17:55:23] [INFO] [ONLINE] logger
+[2026-07-21 17:55:23] [SUCCESS] EventBus online e operacional.
+[2026-07-21 17:55:23] [INFO] [ONLINE] event_bus
+[2026-07-21 17:55:23] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-21 17:55:23] [INFO] [ONLINE] config
+[2026-07-21 17:55:23] [INFO] [ONLINE] registry
+[2026-07-21 17:55:23] [INFO] IdentityManager online e identidade carregada.
+[2026-07-21 17:55:23] [INFO] [ONLINE] identity
+[2026-07-21 17:55:23] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:55:23] [INFO] [ONLINE] service_manager
+[2026-07-21 17:55:23] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:55:23] [INFO] [ONLINE] tool_manager
+[2026-07-21 17:55:24] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-21 17:55:24] [INFO] [ONLINE] runtime
+[2026-07-21 17:55:24] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-21 17:55:24] [INFO] [ONLINE] plugin_manager
+[2026-07-21 17:55:24] [INFO] [ONLINE] pipeline
+[2026-07-21 17:55:24] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-21 17:55:24] [INFO] [ONLINE] mind
+[2026-07-21 17:55:24] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-21 17:55:30] [INFO] Encerrando Genesis Core...
+[2026-07-21 17:55:30] [INFO] Mente central deslogada.
+[2026-07-21 17:55:30] [INFO] [OFFLINE] mind
+[2026-07-21 17:55:30] [INFO] [OFFLINE] pipeline
+[2026-07-21 17:55:30] [INFO] Plugin Manager encerrado.
+[2026-07-21 17:55:30] [INFO] [OFFLINE] plugin_manager
+[2026-07-21 17:55:30] [INFO] Runtime Lattice encerrado.
+[2026-07-21 17:55:30] [INFO] [OFFLINE] runtime
+[2026-07-21 17:55:30] [INFO] Tool removida da Lattice: system_test
+[2026-07-21 17:55:30] [INFO] Tool Manager encerrado.
+[2026-07-21 17:55:30] [INFO] [OFFLINE] tool_manager
+[2026-07-21 17:55:30] [INFO] Service Manager encerrado.
+[2026-07-21 17:55:30] [INFO] [OFFLINE] service_manager
+[2026-07-21 17:55:30] [INFO] IdentityManager encerrado.
+[2026-07-21 17:55:30] [INFO] [OFFLINE] identity
+[2026-07-21 17:55:30] [INFO] ConfigManager encerrado.
+[2026-07-21 17:55:30] [INFO] [OFFLINE] config
+[2026-07-21 17:55:30] [INFO] EventBus encerrado.
+[2026-07-21 17:55:30] [INFO] [OFFLINE] event_bus
+[2026-07-21 17:55:30] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-21 17:55:30] [INFO] [OFFLINE] logger
+[2026-07-21 17:55:30] [INFO] [OFFLINE] registry
+[2026-07-21 17:55:30] [INFO] Genesis Core desligado.
+[2026-07-22 10:04:56] [INFO] Componente acoplado: logger
+[2026-07-22 10:04:56] [INFO] Componente acoplado: event_bus
+[2026-07-22 10:04:56] [INFO] Componente acoplado: config
+[2026-07-22 10:04:56] [INFO] Componente acoplado: identity
+[2026-07-22 10:04:56] [INFO] Componente acoplado: service_manager
+[2026-07-22 10:04:56] [INFO] Componente acoplado: tool_manager
+[2026-07-22 10:04:56] [INFO] Componente acoplado: runtime
+[2026-07-22 10:04:56] [INFO] Componente acoplado: plugin_manager
+[2026-07-22 10:04:56] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-22 10:04:56] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-22 10:04:56] [INFO] Ferramenta registrada: system_test
+[2026-07-22 10:04:56] [INFO] Etapa registrada na malha: parser
+[2026-07-22 10:04:56] [INFO] Etapa registrada na malha: planner
+[2026-07-22 10:04:56] [INFO] Etapa registrada na malha: reasoner
+[2026-07-22 10:04:56] [INFO] Etapa registrada na malha: executor
+[2026-07-22 10:04:56] [INFO] Etapa registrada na malha: reflection
+[2026-07-22 10:04:56] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-22 10:04:56] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-22 10:04:56] [INFO] Componente acoplado: pipeline
+[2026-07-22 10:04:56] [INFO] Componente acoplado: mind
+[2026-07-22 10:04:57] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-22 10:04:57] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-22 10:04:57] [INFO] [ONLINE] logger
+[2026-07-22 10:04:57] [SUCCESS] EventBus online e operacional.
+[2026-07-22 10:04:57] [INFO] [ONLINE] event_bus
+[2026-07-22 10:04:57] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-22 10:04:57] [INFO] [ONLINE] config
+[2026-07-22 10:04:57] [INFO] [ONLINE] registry
+[2026-07-22 10:04:57] [INFO] IdentityManager online e identidade carregada.
+[2026-07-22 10:04:57] [INFO] [ONLINE] identity
+[2026-07-22 10:04:57] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:04:57] [INFO] [ONLINE] service_manager
+[2026-07-22 10:04:57] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:04:57] [INFO] [ONLINE] tool_manager
+[2026-07-22 10:04:57] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-22 10:04:57] [INFO] [ONLINE] runtime
+[2026-07-22 10:04:57] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:04:57] [INFO] [ONLINE] plugin_manager
+[2026-07-22 10:04:57] [INFO] [ONLINE] pipeline
+[2026-07-22 10:04:57] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-22 10:04:57] [INFO] [ONLINE] mind
+[2026-07-22 10:04:57] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-22 10:05:16] [INFO] Encerrando Genesis Core...
+[2026-07-22 10:05:16] [INFO] Mente central deslogada.
+[2026-07-22 10:05:16] [INFO] [OFFLINE] mind
+[2026-07-22 10:05:16] [INFO] [OFFLINE] pipeline
+[2026-07-22 10:05:16] [INFO] Plugin Manager encerrado.
+[2026-07-22 10:05:16] [INFO] [OFFLINE] plugin_manager
+[2026-07-22 10:05:16] [INFO] Runtime Lattice encerrado.
+[2026-07-22 10:05:16] [INFO] [OFFLINE] runtime
+[2026-07-22 10:05:16] [INFO] Tool removida da Lattice: system_test
+[2026-07-22 10:05:16] [INFO] Tool Manager encerrado.
+[2026-07-22 10:05:16] [INFO] [OFFLINE] tool_manager
+[2026-07-22 10:05:16] [INFO] Service Manager encerrado.
+[2026-07-22 10:05:16] [INFO] [OFFLINE] service_manager
+[2026-07-22 10:05:16] [INFO] IdentityManager encerrado.
+[2026-07-22 10:05:16] [INFO] [OFFLINE] identity
+[2026-07-22 10:05:16] [INFO] ConfigManager encerrado.
+[2026-07-22 10:05:16] [INFO] [OFFLINE] config
+[2026-07-22 10:05:16] [INFO] EventBus encerrado.
+[2026-07-22 10:05:16] [INFO] [OFFLINE] event_bus
+[2026-07-22 10:05:16] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-22 10:05:16] [INFO] [OFFLINE] logger
+[2026-07-22 10:05:16] [INFO] [OFFLINE] registry
+[2026-07-22 10:05:16] [INFO] Genesis Core desligado.
+[2026-07-22 10:42:34] [INFO] Componente acoplado: logger
+[2026-07-22 10:42:34] [INFO] Componente acoplado: event_bus
+[2026-07-22 10:42:34] [INFO] Componente acoplado: config
+[2026-07-22 10:42:34] [INFO] Componente acoplado: identity
+[2026-07-22 10:42:34] [INFO] Componente acoplado: service_manager
+[2026-07-22 10:42:34] [INFO] Componente acoplado: tool_manager
+[2026-07-22 10:42:34] [INFO] Componente acoplado: runtime
+[2026-07-22 10:42:34] [INFO] Componente acoplado: plugin_manager
+[2026-07-22 10:42:34] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-22 10:42:34] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-22 10:42:34] [INFO] Ferramenta registrada: system_test
+[2026-07-22 10:42:34] [INFO] Etapa registrada na malha: parser
+[2026-07-22 10:42:34] [INFO] Etapa registrada na malha: planner
+[2026-07-22 10:42:34] [INFO] Etapa registrada na malha: reasoner
+[2026-07-22 10:42:34] [INFO] Etapa registrada na malha: executor
+[2026-07-22 10:42:34] [INFO] Etapa registrada na malha: reflection
+[2026-07-22 10:42:34] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-22 10:42:34] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-22 10:42:34] [INFO] Componente acoplado: pipeline
+[2026-07-22 10:42:34] [INFO] Componente acoplado: mind
+[2026-07-22 10:42:34] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-22 10:42:34] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-22 10:42:34] [INFO] [ONLINE] logger
+[2026-07-22 10:42:34] [SUCCESS] EventBus online e operacional.
+[2026-07-22 10:42:34] [INFO] [ONLINE] event_bus
+[2026-07-22 10:42:34] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-22 10:42:34] [INFO] [ONLINE] config
+[2026-07-22 10:42:34] [INFO] [ONLINE] registry
+[2026-07-22 10:42:34] [INFO] IdentityManager online e identidade carregada.
+[2026-07-22 10:42:34] [INFO] [ONLINE] identity
+[2026-07-22 10:42:34] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:42:34] [INFO] [ONLINE] service_manager
+[2026-07-22 10:42:34] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:42:34] [INFO] [ONLINE] tool_manager
+[2026-07-22 10:42:34] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-22 10:42:34] [INFO] [ONLINE] runtime
+[2026-07-22 10:42:34] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:42:34] [INFO] [ONLINE] plugin_manager
+[2026-07-22 10:42:34] [INFO] [ONLINE] pipeline
+[2026-07-22 10:42:34] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-22 10:42:34] [INFO] [ONLINE] mind
+[2026-07-22 10:42:34] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-22 10:43:48] [INFO] Encerrando Genesis Core...
+[2026-07-22 10:43:48] [INFO] Mente central deslogada.
+[2026-07-22 10:43:48] [INFO] [OFFLINE] mind
+[2026-07-22 10:43:48] [INFO] [OFFLINE] pipeline
+[2026-07-22 10:43:48] [INFO] Plugin Manager encerrado.
+[2026-07-22 10:43:48] [INFO] [OFFLINE] plugin_manager
+[2026-07-22 10:43:48] [INFO] Runtime Lattice encerrado.
+[2026-07-22 10:43:48] [INFO] [OFFLINE] runtime
+[2026-07-22 10:43:48] [INFO] Tool removida da Lattice: system_test
+[2026-07-22 10:43:48] [INFO] Tool Manager encerrado.
+[2026-07-22 10:43:48] [INFO] [OFFLINE] tool_manager
+[2026-07-22 10:43:48] [INFO] Service Manager encerrado.
+[2026-07-22 10:43:48] [INFO] [OFFLINE] service_manager
+[2026-07-22 10:43:48] [INFO] IdentityManager encerrado.
+[2026-07-22 10:43:48] [INFO] [OFFLINE] identity
+[2026-07-22 10:43:48] [INFO] ConfigManager encerrado.
+[2026-07-22 10:43:48] [INFO] [OFFLINE] config
+[2026-07-22 10:43:48] [INFO] EventBus encerrado.
+[2026-07-22 10:43:48] [INFO] [OFFLINE] event_bus
+[2026-07-22 10:43:48] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-22 10:43:48] [INFO] [OFFLINE] logger
+[2026-07-22 10:43:48] [INFO] [OFFLINE] registry
+[2026-07-22 10:43:48] [INFO] Genesis Core desligado.
+[2026-07-22 10:43:50] [INFO] Componente acoplado: logger
+[2026-07-22 10:43:50] [INFO] Componente acoplado: event_bus
+[2026-07-22 10:43:50] [INFO] Componente acoplado: config
+[2026-07-22 10:43:50] [INFO] Componente acoplado: identity
+[2026-07-22 10:43:50] [INFO] Componente acoplado: service_manager
+[2026-07-22 10:43:50] [INFO] Componente acoplado: tool_manager
+[2026-07-22 10:43:50] [INFO] Componente acoplado: runtime
+[2026-07-22 10:43:50] [INFO] Componente acoplado: plugin_manager
+[2026-07-22 10:43:50] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-22 10:43:50] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-22 10:43:50] [INFO] Ferramenta registrada: system_test
+[2026-07-22 10:43:50] [INFO] Etapa registrada na malha: parser
+[2026-07-22 10:43:50] [INFO] Etapa registrada na malha: planner
+[2026-07-22 10:43:50] [INFO] Etapa registrada na malha: reasoner
+[2026-07-22 10:43:50] [INFO] Etapa registrada na malha: executor
+[2026-07-22 10:43:50] [INFO] Etapa registrada na malha: reflection
+[2026-07-22 10:43:50] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-22 10:43:50] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-22 10:43:50] [INFO] Componente acoplado: pipeline
+[2026-07-22 10:43:50] [INFO] Componente acoplado: mind
+[2026-07-22 10:43:50] [INFO] Inicializando Genesis Core Matrix...
+[2026-07-22 10:43:50] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-22 10:43:50] [INFO] [ONLINE] logger
+[2026-07-22 10:43:50] [SUCCESS] EventBus online e operacional.
+[2026-07-22 10:43:50] [INFO] [ONLINE] event_bus
+[2026-07-22 10:43:50] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-22 10:43:50] [INFO] [ONLINE] config
+[2026-07-22 10:43:50] [INFO] [ONLINE] registry
+[2026-07-22 10:43:50] [INFO] IdentityManager online e identidade carregada.
+[2026-07-22 10:43:50] [INFO] [ONLINE] identity
+[2026-07-22 10:43:50] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:43:50] [INFO] [ONLINE] service_manager
+[2026-07-22 10:43:50] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:43:50] [INFO] [ONLINE] tool_manager
+[2026-07-22 10:43:50] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-22 10:43:50] [INFO] [ONLINE] runtime
+[2026-07-22 10:43:50] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:43:50] [INFO] [ONLINE] plugin_manager
+[2026-07-22 10:43:50] [INFO] [ONLINE] pipeline
+[2026-07-22 10:43:50] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-22 10:43:50] [INFO] [ONLINE] mind
+[2026-07-22 10:43:50] [INFO] Genesis Core Matrix ONLINE.
+[2026-07-22 10:43:58] [INFO] Encerrando Genesis Core...
+[2026-07-22 10:43:58] [INFO] Mente central deslogada.
+[2026-07-22 10:43:58] [INFO] [OFFLINE] mind
+[2026-07-22 10:43:58] [INFO] [OFFLINE] pipeline
+[2026-07-22 10:43:58] [INFO] Plugin Manager encerrado.
+[2026-07-22 10:43:58] [INFO] [OFFLINE] plugin_manager
+[2026-07-22 10:43:58] [INFO] Runtime Lattice encerrado.
+[2026-07-22 10:43:58] [INFO] [OFFLINE] runtime
+[2026-07-22 10:43:59] [INFO] Tool removida da Lattice: system_test
+[2026-07-22 10:43:59] [INFO] Tool Manager encerrado.
+[2026-07-22 10:43:59] [INFO] [OFFLINE] tool_manager
+[2026-07-22 10:43:59] [INFO] Service Manager encerrado.
+[2026-07-22 10:43:59] [INFO] [OFFLINE] service_manager
+[2026-07-22 10:43:59] [INFO] IdentityManager encerrado.
+[2026-07-22 10:43:59] [INFO] [OFFLINE] identity
+[2026-07-22 10:43:59] [INFO] ConfigManager encerrado.
+[2026-07-22 10:43:59] [INFO] [OFFLINE] config
+[2026-07-22 10:43:59] [INFO] EventBus encerrado.
+[2026-07-22 10:43:59] [INFO] [OFFLINE] event_bus
+[2026-07-22 10:43:59] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-22 10:43:59] [INFO] [OFFLINE] logger
+[2026-07-22 10:43:59] [INFO] [OFFLINE] registry
+[2026-07-22 10:43:59] [INFO] Genesis Core desligado.
+[2026-07-22 10:45:18] [INFO] Componente acoplado: logger
+[2026-07-22 10:45:18] [INFO] Componente acoplado: event_bus
+[2026-07-22 10:45:18] [INFO] Componente acoplado: config
+[2026-07-22 10:45:18] [INFO] Componente acoplado: identity
+[2026-07-22 10:45:18] [INFO] Componente acoplado: ai_service
+[2026-07-22 10:45:18] [INFO] Componente acoplado: service_manager
+[2026-07-22 10:45:18] [INFO] Componente acoplado: tool_manager
+[2026-07-22 10:45:18] [INFO] Componente acoplado: runtime
+[2026-07-22 10:45:18] [INFO] Componente acoplado: plugin_manager
+[2026-07-22 10:45:18] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-22 10:45:18] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-22 10:45:18] [INFO] Ferramenta registrada: system_test
+[2026-07-22 10:45:18] [INFO] Etapa registrada na malha: parser
+[2026-07-22 10:45:18] [INFO] Etapa registrada na malha: planner
+[2026-07-22 10:45:18] [INFO] Etapa registrada na malha: reasoner
+[2026-07-22 10:45:18] [INFO] Etapa registrada na malha: executor
+[2026-07-22 10:45:18] [INFO] Etapa registrada na malha: reflection
+[2026-07-22 10:45:18] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-22 10:45:18] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-22 10:45:18] [INFO] Componente acoplado: pipeline
+[2026-07-22 10:45:18] [INFO] Componente acoplado: mind
+[2026-07-22 10:45:18] [INFO] Inicializando Genesis Core Evolution...
+[2026-07-22 10:45:18] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-22 10:45:18] [INFO] [ONLINE] logger
+[2026-07-22 10:45:18] [SUCCESS] EventBus online e operacional.
+[2026-07-22 10:45:18] [INFO] [ONLINE] event_bus
+[2026-07-22 10:45:18] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-22 10:45:18] [INFO] [ONLINE] config
+[2026-07-22 10:45:18] [INFO] [ONLINE] registry
+[2026-07-22 10:45:18] [INFO] IdentityManager online e identidade carregada.
+[2026-07-22 10:45:18] [INFO] [ONLINE] identity
+[2026-07-22 10:45:18] [INFO] [ONLINE] ai_service
+[2026-07-22 10:45:18] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:45:18] [INFO] [ONLINE] service_manager
+[2026-07-22 10:45:18] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:45:18] [INFO] [ONLINE] tool_manager
+[2026-07-22 10:45:18] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-22 10:45:18] [INFO] [ONLINE] runtime
+[2026-07-22 10:45:18] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:45:18] [INFO] [ONLINE] plugin_manager
+[2026-07-22 10:45:18] [INFO] [ONLINE] pipeline
+[2026-07-22 10:45:18] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-22 10:45:18] [INFO] [ONLINE] mind
+[2026-07-22 10:45:18] [INFO] Genesis Core Evolution ONLINE.
+[2026-07-22 10:45:18] [INFO] Encerrando Genesis Core...
+[2026-07-22 10:45:18] [INFO] Mente central deslogada.
+[2026-07-22 10:45:18] [INFO] [OFFLINE] mind
+[2026-07-22 10:45:18] [INFO] [OFFLINE] pipeline
+[2026-07-22 10:45:18] [INFO] Plugin Manager encerrado.
+[2026-07-22 10:45:18] [INFO] [OFFLINE] plugin_manager
+[2026-07-22 10:45:18] [INFO] Runtime Lattice encerrado.
+[2026-07-22 10:45:19] [INFO] [OFFLINE] runtime
+[2026-07-22 10:45:19] [INFO] Tool removida da Lattice: system_test
+[2026-07-22 10:45:19] [INFO] Tool Manager encerrado.
+[2026-07-22 10:45:19] [INFO] [OFFLINE] tool_manager
+[2026-07-22 10:45:19] [INFO] Service Manager encerrado.
+[2026-07-22 10:45:19] [INFO] [OFFLINE] service_manager
+[2026-07-22 10:45:19] [INFO] [OFFLINE] ai_service
+[2026-07-22 10:45:19] [INFO] IdentityManager encerrado.
+[2026-07-22 10:45:19] [INFO] [OFFLINE] identity
+[2026-07-22 10:45:19] [INFO] ConfigManager encerrado.
+[2026-07-22 10:45:19] [INFO] [OFFLINE] config
+[2026-07-22 10:45:19] [INFO] EventBus encerrado.
+[2026-07-22 10:45:19] [INFO] [OFFLINE] event_bus
+[2026-07-22 10:45:19] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-22 10:45:19] [INFO] [OFFLINE] logger
+[2026-07-22 10:45:19] [INFO] [OFFLINE] registry
+[2026-07-22 10:45:19] [INFO] Genesis Core desligado.
+[2026-07-22 10:47:59] [INFO] Componente acoplado: logger
+[2026-07-22 10:47:59] [INFO] Componente acoplado: event_bus
+[2026-07-22 10:47:59] [INFO] Componente acoplado: config
+[2026-07-22 10:47:59] [INFO] Componente acoplado: identity
+[2026-07-22 10:47:59] [INFO] Componente acoplado: ai_service
+[2026-07-22 10:47:59] [INFO] Componente acoplado: service_manager
+[2026-07-22 10:47:59] [INFO] Componente acoplado: tool_manager
+[2026-07-22 10:47:59] [INFO] Componente acoplado: runtime
+[2026-07-22 10:47:59] [INFO] Componente acoplado: plugin_manager
+[2026-07-22 10:47:59] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-22 10:47:59] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-22 10:47:59] [INFO] Ferramenta registrada: system_test
+[2026-07-22 10:47:59] [INFO] Etapa registrada na malha: parser
+[2026-07-22 10:47:59] [INFO] Etapa registrada na malha: planner
+[2026-07-22 10:47:59] [INFO] Etapa registrada na malha: reasoner
+[2026-07-22 10:47:59] [INFO] Etapa registrada na malha: executor
+[2026-07-22 10:47:59] [INFO] Etapa registrada na malha: reflection
+[2026-07-22 10:47:59] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-22 10:47:59] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-22 10:47:59] [INFO] Componente acoplado: pipeline
+[2026-07-22 10:47:59] [INFO] Componente acoplado: mind
+[2026-07-22 10:47:59] [INFO] Inicializando Genesis Core Evolution...
+[2026-07-22 10:47:59] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-22 10:47:59] [INFO] [ONLINE] logger
+[2026-07-22 10:47:59] [SUCCESS] EventBus online e operacional.
+[2026-07-22 10:47:59] [INFO] [ONLINE] event_bus
+[2026-07-22 10:47:59] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-22 10:47:59] [INFO] [ONLINE] config
+[2026-07-22 10:47:59] [INFO] [ONLINE] registry
+[2026-07-22 10:47:59] [INFO] IdentityManager online e identidade carregada.
+[2026-07-22 10:47:59] [INFO] [ONLINE] identity
+[2026-07-22 10:47:59] [INFO] [ONLINE] ai_service
+[2026-07-22 10:47:59] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:47:59] [INFO] [ONLINE] service_manager
+[2026-07-22 10:47:59] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:47:59] [INFO] [ONLINE] tool_manager
+[2026-07-22 10:47:59] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-22 10:47:59] [INFO] [ONLINE] runtime
+[2026-07-22 10:47:59] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 10:47:59] [INFO] [ONLINE] plugin_manager
+[2026-07-22 10:47:59] [INFO] [ONLINE] pipeline
+[2026-07-22 10:47:59] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-22 10:47:59] [INFO] [ONLINE] mind
+[2026-07-22 10:47:59] [INFO] Genesis Core Evolution ONLINE.
+[2026-07-22 10:48:32] [INFO] Encerrando Genesis Core...
+[2026-07-22 10:48:32] [INFO] Mente central deslogada.
+[2026-07-22 10:48:32] [INFO] [OFFLINE] mind
+[2026-07-22 10:48:32] [INFO] [OFFLINE] pipeline
+[2026-07-22 10:48:32] [INFO] Plugin Manager encerrado.
+[2026-07-22 10:48:32] [INFO] [OFFLINE] plugin_manager
+[2026-07-22 10:48:32] [INFO] Runtime Lattice encerrado.
+[2026-07-22 10:48:32] [INFO] [OFFLINE] runtime
+[2026-07-22 10:48:32] [INFO] Tool removida da Lattice: system_test
+[2026-07-22 10:48:32] [INFO] Tool Manager encerrado.
+[2026-07-22 10:48:32] [INFO] [OFFLINE] tool_manager
+[2026-07-22 10:48:32] [INFO] Service Manager encerrado.
+[2026-07-22 10:48:32] [INFO] [OFFLINE] service_manager
+[2026-07-22 10:48:32] [INFO] [OFFLINE] ai_service
+[2026-07-22 10:48:32] [INFO] IdentityManager encerrado.
+[2026-07-22 10:48:32] [INFO] [OFFLINE] identity
+[2026-07-22 10:48:32] [INFO] ConfigManager encerrado.
+[2026-07-22 10:48:32] [INFO] [OFFLINE] config
+[2026-07-22 10:48:32] [INFO] EventBus encerrado.
+[2026-07-22 10:48:32] [INFO] [OFFLINE] event_bus
+[2026-07-22 10:48:32] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-22 10:48:32] [INFO] [OFFLINE] logger
+[2026-07-22 10:48:32] [INFO] [OFFLINE] registry
+[2026-07-22 10:48:32] [INFO] Genesis Core desligado.
+[2026-07-22 15:37:55] [INFO] Componente acoplado: logger
+[2026-07-22 15:37:56] [INFO] Componente acoplado: event_bus
+[2026-07-22 15:37:56] [INFO] Componente acoplado: config
+[2026-07-22 15:37:56] [INFO] Componente acoplado: identity
+[2026-07-22 15:37:56] [INFO] Componente acoplado: ai_service
+[2026-07-22 15:37:56] [INFO] Componente acoplado: service_manager
+[2026-07-22 15:37:56] [INFO] Componente acoplado: tool_manager
+[2026-07-22 15:37:56] [INFO] Componente acoplado: runtime
+[2026-07-22 15:37:56] [INFO] Componente acoplado: plugin_manager
+[2026-07-22 15:37:56] [INFO] Construindo Thought Engine (Mark V - Evolution) com Memória e Malha Neural.
+[2026-07-22 15:37:56] [INFO] Tool integrada ao Lattice: system_test
+[2026-07-22 15:37:56] [INFO] Ferramenta registrada: system_test
+[2026-07-22 15:37:56] [INFO] Etapa registrada na malha: parser
+[2026-07-22 15:37:56] [INFO] Etapa registrada na malha: planner
+[2026-07-22 15:37:56] [INFO] Etapa registrada na malha: reasoner
+[2026-07-22 15:37:56] [INFO] Etapa registrada na malha: executor
+[2026-07-22 15:37:56] [INFO] Etapa registrada na malha: reflection
+[2026-07-22 15:37:56] [INFO] Etapa registrada na malha: memory_integration
+[2026-07-22 15:37:56] [SUCCESS] Thought Engine Mark V construída e integrada com sucesso.
+[2026-07-22 15:37:56] [INFO] Componente acoplado: pipeline
+[2026-07-22 15:37:56] [INFO] Componente acoplado: mind
+[2026-07-22 15:37:56] [INFO] Inicializando Genesis Core Evolution...
+[2026-07-22 15:37:56] [INFO] [LOGGER] Subsistema de log inicializado com sucesso.
+[2026-07-22 15:37:56] [INFO] [ONLINE] logger
+[2026-07-22 15:37:56] [SUCCESS] EventBus online e operacional.
+[2026-07-22 15:37:56] [INFO] [ONLINE] event_bus
+[2026-07-22 15:37:56] [INFO] ConfigManager online e configurações carregadas.
+[2026-07-22 15:37:56] [INFO] [ONLINE] config
+[2026-07-22 15:37:56] [INFO] [ONLINE] registry
+[2026-07-22 15:37:56] [INFO] IdentityManager online e identidade carregada.
+[2026-07-22 15:37:56] [INFO] [ONLINE] identity
+[2026-07-22 15:37:56] [INFO] [ONLINE] ai_service
+[2026-07-22 15:37:56] [SUCCESS] Service Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 15:37:56] [INFO] [ONLINE] service_manager
+[2026-07-22 15:37:56] [SUCCESS] Tool Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 15:37:56] [INFO] [ONLINE] tool_manager
+[2026-07-22 15:37:56] [SUCCESS] Runtime Lattice Mark IV online (Workers: 2).
+[2026-07-22 15:37:56] [INFO] [ONLINE] runtime
+[2026-07-22 15:37:56] [SUCCESS] Plugin Manager Mark IV (Neural Lattice) ONLINE.
+[2026-07-22 15:37:56] [INFO] [ONLINE] plugin_manager
+[2026-07-22 15:37:56] [INFO] [ONLINE] pipeline
+[2026-07-22 15:37:56] [INFO] Mente central unificada ONLINE no Mark IV.
+[2026-07-22 15:37:56] [INFO] [ONLINE] mind
+[2026-07-22 15:37:56] [INFO] Genesis Core Evolution ONLINE.
+[2026-07-22 15:38:10] [INFO] Encerrando Genesis Core...
+[2026-07-22 15:38:10] [INFO] Mente central deslogada.
+[2026-07-22 15:38:10] [INFO] [OFFLINE] mind
+[2026-07-22 15:38:10] [INFO] [OFFLINE] pipeline
+[2026-07-22 15:38:10] [INFO] Plugin Manager encerrado.
+[2026-07-22 15:38:10] [INFO] [OFFLINE] plugin_manager
+[2026-07-22 15:38:10] [INFO] Runtime Lattice encerrado.
+[2026-07-22 15:38:10] [INFO] [OFFLINE] runtime
+[2026-07-22 15:38:10] [INFO] Tool removida da Lattice: system_test
+[2026-07-22 15:38:10] [INFO] Tool Manager encerrado.
+[2026-07-22 15:38:10] [INFO] [OFFLINE] tool_manager
+[2026-07-22 15:38:10] [INFO] Service Manager encerrado.
+[2026-07-22 15:38:10] [INFO] [OFFLINE] service_manager
+[2026-07-22 15:38:10] [INFO] [OFFLINE] ai_service
+[2026-07-22 15:38:10] [INFO] IdentityManager encerrado.
+[2026-07-22 15:38:10] [INFO] [OFFLINE] identity
+[2026-07-22 15:38:10] [INFO] ConfigManager encerrado.
+[2026-07-22 15:38:10] [INFO] [OFFLINE] config
+[2026-07-22 15:38:10] [INFO] EventBus encerrado.
+[2026-07-22 15:38:10] [INFO] [OFFLINE] event_bus
+[2026-07-22 15:38:10] [INFO] [LOGGER] Encerrando subsistema de log...
+[2026-07-22 15:38:10] [INFO] [OFFLINE] logger
+[2026-07-22 15:38:10] [INFO] [OFFLINE] registry
+[2026-07-22 15:38:10] [INFO] Genesis Core desligado.

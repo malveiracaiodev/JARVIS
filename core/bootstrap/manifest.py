@@ -9,17 +9,19 @@ Descrição:
 Mapa estrutural de inicialização do Genesis.
 
 Responsável por:
+
 - Definir componentes
 - Ordem de boot
 - Dependências
 - Categorias
 - Prioridades
+- Construção do ecossistema
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+V - Evolution
 
 Autor:
 Caio Vitor Malveira
@@ -28,21 +30,37 @@ Caio Vitor Malveira
 
 from typing import Any, Dict, List
 
-from core.services.event_bus import EventBus
+
+# ======================================================
+# SERVIÇOS
+# ======================================================
+
+from core.services.logger import Logger
 from core.services.config_manager import ConfigManager
+from core.services.event_bus import EventBus
 from core.services.diagnostics import Diagnostics
+from core.services.ai_service import AIService
+
+
+# ======================================================
+# GERENCIADORES
+# ======================================================
+
+from core.managers.registry import Registry
 from core.agents.agent_manager import AgentManager
 
-# Módulos principais do ecossistema
-from core.services.logger import Logger
-from core.managers.registry import Registry
 
+
+# ======================================================
+# BOOT MANIFEST
+# ======================================================
 
 BOOT_COMPONENTS: List[Dict[str, Any]] = [
 
-    # ======================================================
+
+    # ==================================================
     # FUNDAMENTAÇÃO DO SISTEMA
-    # ======================================================
+    # ==================================================
 
     {
         "name": "logger",
@@ -53,6 +71,7 @@ BOOT_COMPONENTS: List[Dict[str, Any]] = [
         "required": True,
         "constructor": []
     },
+
 
     {
         "name": "config",
@@ -66,6 +85,7 @@ BOOT_COMPONENTS: List[Dict[str, Any]] = [
         ]
     },
 
+
     {
         "name": "event_bus",
         "category": "service",
@@ -78,9 +98,11 @@ BOOT_COMPONENTS: List[Dict[str, Any]] = [
         ]
     },
 
-    # ======================================================
+
+
+    # ==================================================
     # REGISTRO GLOBAL
-    # ======================================================
+    # ==================================================
 
     {
         "name": "registry",
@@ -94,9 +116,11 @@ BOOT_COMPONENTS: List[Dict[str, Any]] = [
         ]
     },
 
-    # ======================================================
+
+
+    # ==================================================
     # SISTEMA
-    # ======================================================
+    # ==================================================
 
     {
         "name": "diagnostics",
@@ -110,9 +134,27 @@ BOOT_COMPONENTS: List[Dict[str, Any]] = [
         ]
     },
 
-    # ======================================================
-    # INTELIGÊNCIA
-    # ======================================================
+
+
+    # ==================================================
+    # INTELIGÊNCIA ARTIFICIAL
+    # ==================================================
+
+    {
+        "name": "ai_service",
+        "category": "service",
+        "class": AIService,
+        "priority": 45,
+        "enabled": True,
+        "required": True,
+        "constructor": []
+    },
+
+
+
+    # ==================================================
+    # AGENTES COGNITIVOS
+    # ==================================================
 
     {
         "name": "agent_manager",
@@ -130,11 +172,17 @@ BOOT_COMPONENTS: List[Dict[str, Any]] = [
 ]
 
 
+
+# ======================================================
+# API
+# ======================================================
+
 def get_boot_components() -> List[Dict[str, Any]]:
     """
     Retorna componentes ativos
     ordenados pela prioridade.
     """
+
     return sorted(
         [
             component
@@ -144,6 +192,6 @@ def get_boot_components() -> List[Dict[str, Any]]:
                 True
             )
         ],
-        key=lambda x:
-            x["priority"]
+        key=lambda component:
+            component["priority"]
     )

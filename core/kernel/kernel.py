@@ -10,24 +10,26 @@ Núcleo coordenador central do Genesis Core.
 
 Responsável por:
 - Construção da Matriz
-- Injeção de dependências
-- Controle do ciclo de vida
 - Registro de componentes
-- Orquestração dos Managers
-- Inicialização da inteligência
+- Controle do ciclo de vida
+- Inicialização dos serviços
+- Orquestração dos módulos
 
 Arquitetura:
 Genesis Core
 
 Mark:
-III - Matrix
+V - Evolution
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
+
 from datetime import datetime
+
+
 
 # ======================================================
 # SERVICES
@@ -37,6 +39,9 @@ from core.services.logger import Logger
 from core.services.event_bus import EventBus
 from core.services.config_manager import ConfigManager
 from core.services.identity_manager import IdentityManager
+from core.services.ai_service import AIService
+
+
 
 # ======================================================
 # MANAGERS
@@ -47,8 +52,10 @@ from core.managers.service_manager import ServiceManager
 from core.managers.plugin_manager import PluginManager
 from core.managers.tool_manager import ToolManager
 
+
+
 # ======================================================
-# RUNTIME / COGNITION
+# COGNITION
 # ======================================================
 
 from core.runtime.engine import Runtime
@@ -56,63 +63,75 @@ from core.mind.mind import Mind
 from core.pipeline.pipeline_initializer import PipelineInitializer
 
 
+
+
 class Kernel:
     """
-    Orquestrador principal da Matriz Genesis.
+    Orquestrador central do Genesis Core.
 
-    O Kernel não executa inteligência.
-    Ele apenas constrói, conecta e controla
-    o ciclo de vida dos módulos.
+    O Kernel não pensa.
+
+    Ele apenas cria, conecta
+    e controla o organismo.
     """
 
+
+
     def __init__(self):
+
         self.name = "JARVIS CORE"
 
-        self.version = "Genesis Core Mark III"
+        self.version = (
+            "Genesis Core Mark V - Evolution"
+        )
 
         self.status = "CREATED"
 
         self.started_at = None
 
+
         self.components = {}
 
         self.failed_components = {}
 
+
         # Serviços
 
         self.logger = None
-
         self.event_bus = None
-
         self.config = None
-
         self.identity = None
+        self.ai_service = None
+
 
         # Managers
 
         self.registry = None
-
         self.service_manager = None
-
+        self.tool_manager = None
         self.plugin_manager = None
 
-        self.tool_manager = None
 
-        # Inteligência
+        # Cognição
 
         self.runtime = None
-
         self.pipeline = None
-
         self.mind = None
 
+
         self.build()
+
+
 
     # ==================================================
     # BUILD
     # ==================================================
 
     def build(self):
+
+
+        # Registry
+
         self.registry = Registry()
 
         self.register(
@@ -120,6 +139,10 @@ class Kernel:
             self.registry,
             "module"
         )
+
+
+
+        # Logger
 
         self.logger = Logger()
 
@@ -129,13 +152,24 @@ class Kernel:
             "service"
         )
 
+
+
+        # Event Bus
+
         self.event_bus = EventBus(
             self.logger
         )
 
-        self.logger.connect_event_bus(
-            self.event_bus
-        )
+
+        if hasattr(
+            self.logger,
+            "connect_event_bus"
+        ):
+
+            self.logger.connect_event_bus(
+                self.event_bus
+            )
+
 
         self.register(
             "event_bus",
@@ -143,9 +177,14 @@ class Kernel:
             "service"
         )
 
+
+
+        # Config
+
         self.config = ConfigManager(
             self.logger
         )
+
 
         self.register(
             "config",
@@ -153,10 +192,15 @@ class Kernel:
             "service"
         )
 
+
+
+        # Identity
+
         self.identity = IdentityManager(
             logger=self.logger,
             event_bus=self.event_bus
         )
+
 
         self.register(
             "identity",
@@ -164,29 +208,62 @@ class Kernel:
             "service"
         )
 
+
+
+        # ==================================================
+        # IA
+        # ==================================================
+
+        self.ai_service = AIService()
+
+
+        self.register(
+            "ai_service",
+            self.ai_service,
+            "service"
+        )
+
+
+
+        # ==================================================
+        # MANAGERS
+        # ==================================================
+
         self.service_manager = ServiceManager(
             logger=self.logger
         )
 
+
         self.register(
             "service_manager",
             self.service_manager,
-            "module"
+            "manager"
         )
+
+
 
         self.tool_manager = ToolManager(
             logger=self.logger
         )
 
+
         self.register(
             "tool_manager",
             self.tool_manager,
-            "module"
+            "manager"
         )
+
+
+
+        # ==================================================
+        # RUNTIME
+        # ==================================================
 
         workers = 2
 
+
         try:
+
             workers = self.config.get(
                 "runtime",
                 "workers",
@@ -194,13 +271,19 @@ class Kernel:
             )
 
         except Exception:
+
             pass
+
+
 
         if not isinstance(
             workers,
             int
         ):
+
             workers = 2
+
+
 
         self.runtime = Runtime(
             logger=self.logger,
@@ -208,11 +291,18 @@ class Kernel:
             worker_pool_size=workers
         )
 
+
         self.register(
             "runtime",
             self.runtime,
-            "module"
+            "runtime"
         )
+
+
+
+        # ==================================================
+        # PLUGINS
+        # ==================================================
 
         self.plugin_manager = PluginManager(
             logger=self.logger,
@@ -221,11 +311,14 @@ class Kernel:
             config=self.config
         )
 
+
         self.register(
             "plugin_manager",
             self.plugin_manager,
-            "module"
+            "manager"
         )
+
+
 
         # ==================================================
         # THOUGHT ENGINE
@@ -236,11 +329,14 @@ class Kernel:
             tool_manager=self.tool_manager
         ).build()
 
+
         self.register(
             "pipeline",
             self.pipeline,
-            "module"
+            "cognitive"
         )
+
+
 
         # ==================================================
         # MIND
@@ -253,11 +349,14 @@ class Kernel:
             pipeline=self.pipeline
         )
 
+
         self.register(
             "mind",
             self.mind,
-            "module"
+            "cognitive"
         )
+
+
 
     # ==================================================
     # REGISTRY
@@ -269,10 +368,16 @@ class Kernel:
         component,
         category="module"
     ):
+
+
         self.components[name] = component
 
-        if self.registry:
+
+
+        if self.registry and name != "registry":
+
             try:
+
                 self.registry.register(
                     name,
                     component,
@@ -280,146 +385,227 @@ class Kernel:
                 )
 
             except Exception as error:
-                self.failed_components[name] = str(error)
+
+                self.failed_components[name] = str(
+                    error
+                )
+
+
 
         self.log(
             f"Componente acoplado: {name}"
         )
+
+
+
+    # ==================================================
+    # ACCESS
+    # ==================================================
+
+    def get(
+        self,
+        name
+    ):
+
+        return self.components.get(
+            name
+        )
+
+
+
+    def has(
+        self,
+        name
+    ):
+
+        return name in self.components
+
+
+
+    def list_components(self):
+
+        return list(
+            self.components.keys()
+        )
+
+
 
     # ==================================================
     # BOOT
     # ==================================================
 
     def boot(self):
+
+
         self.status = "BOOTING"
 
         self.started_at = datetime.now()
 
+
+
         self.log(
-            "Inicializando Genesis Core Matrix..."
+            "Inicializando Genesis Core Evolution..."
         )
 
-        boot_order = [
+
+
+        order = [
+
             "logger",
             "event_bus",
             "config",
             "registry",
             "identity",
+            "ai_service",
             "service_manager",
             "tool_manager",
             "runtime",
             "plugin_manager",
             "pipeline",
             "mind"
+
         ]
 
-        for name in boot_order:
+
+
+        for name in order:
+
+
             component = self.components.get(
                 name
             )
 
+
             if not component:
+
                 continue
 
+
+
             try:
+
+
                 if hasattr(
                     component,
                     "initialize"
                 ):
+
                     component.initialize()
+
 
                 elif hasattr(
                     component,
                     "start"
                 ):
+
                     component.start()
+
+
 
                 self.log(
                     f"[ONLINE] {name}"
                 )
 
+
             except Exception as error:
+
+
                 self.failed_components[name] = str(
                     error
                 )
 
-                if self.logger:
-                    self.logger.error(
-                        f"Falha iniciando {name}: {error}"
-                    )
+
+                self.log(
+                    f"[ERRO] {name}: {error}"
+                )
+
+
 
         self.status = "ONLINE"
 
-        if self.event_bus:
-            try:
-                self.event_bus.emit(
-                    "system.ready",
-                    {
-                        "time":
-                        datetime.now().isoformat()
-                    }
-                )
 
-            except Exception:
-                pass
 
         self.log(
-            "Genesis Core Matrix ONLINE."
+            "Genesis Core Evolution ONLINE."
         )
+
+
 
     # ==================================================
     # SHUTDOWN
     # ==================================================
 
     def shutdown(self):
+
+
         self.status = "SHUTDOWN"
+
 
         self.log(
             "Encerrando Genesis Core..."
         )
 
-        components = list(
-            self.components.items()
-        )
 
-        components.reverse()
+        for name, component in reversed(
+            list(self.components.items())
+        ):
 
-        for name, component in components:
+
             try:
+
+
                 if hasattr(
                     component,
                     "shutdown"
                 ):
+
                     component.shutdown()
+
 
                 elif hasattr(
                     component,
                     "stop"
                 ):
+
                     component.stop()
+
+
 
                 self.log(
                     f"[OFFLINE] {name}"
                 )
 
+
+
             except Exception as error:
+
+
                 self.log(
                     f"Erro encerrando {name}: {error}"
                 )
 
+
+
         self.status = "OFFLINE"
+
+
 
         self.log(
             "Genesis Core desligado."
         )
+
+
 
     # ==================================================
     # HEALTH
     # ==================================================
 
     def uptime(self):
+
         if not self.started_at:
+
             return 0
+
 
         return (
             datetime.now()
@@ -427,33 +613,33 @@ class Kernel:
             self.started_at
         ).total_seconds()
 
+
+
     def health(self):
-        online = 0
-
-        for component in self.components.values():
-            try:
-                if hasattr(
-                    component,
-                    "is_online"
-                ) and component.is_online():
-                    online += 1
-
-            except Exception:
-                pass
 
         return {
-            "name": self.name,
-            "version": self.version,
-            "status": self.status,
-            "components": len(
-                self.components
-            ),
-            "online": online,
-            "failed": len(
-                self.failed_components
-            ),
-            "uptime": self.uptime()
+
+            "name":
+                self.name,
+
+            "version":
+                self.version,
+
+            "status":
+                self.status,
+
+            "components":
+                len(self.components),
+
+            "failed":
+                len(self.failed_components),
+
+            "uptime":
+                self.uptime()
+
         }
+
+
 
     # ==================================================
     # LOG
@@ -463,12 +649,16 @@ class Kernel:
         self,
         message
     ):
+
+
         if self.logger:
+
             self.logger.info(
                 message
             )
 
         else:
+
             print(
                 f"[KERNEL] {message}"
             )
