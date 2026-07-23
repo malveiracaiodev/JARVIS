@@ -6,66 +6,211 @@ Arquivo:
 core/ai/ai_router.py
 
 Descrição:
-Sistema responsável pelo roteamento
-das requisições de inteligência.
+Sistema de roteamento cognitivo da camada IA.
 
-Decide se uma entrada deve:
+Responsável por decidir o fluxo:
 
-- passar pelo provider IA
-- ir para Thought Engine
-- executar comando
-- consultar memória
+Entrada
+   |
+   v
+AIRouter
+   |
+   +--> Thought Engine
+   |
+   +--> Tool Execution
+   |
+   +--> Memory
+   |
+   +--> Provider IA
+
 
 Arquitetura:
 Genesis Core
 
 Mark:
 V - Evolution
+
+Autor:
+Caio Vitor Malveira
 =========================================
 """
+
 
 from __future__ import annotations
 
 
+from dataclasses import dataclass, field
+from typing import Any
+
+
+
+
+
+@dataclass(slots=True)
+class RouteDecision:
+    """
+    Resultado de uma decisão de roteamento.
+    """
+
+
+    route: str
+
+    confidence: float
+
+    reason: str
+
+    metadata: dict[str, Any] = field(
+        default_factory=dict
+    )
+
+
+
+    def to_dict(self):
+
+        return {
+
+            "route":
+                self.route,
+
+            "confidence":
+                self.confidence,
+
+            "reason":
+                self.reason,
+
+            "metadata":
+                self.metadata
+
+        }
+
+
+
+
+
 class AIRouter:
     """
-    Roteador cognitivo da camada IA.
+    Roteador cognitivo do Genesis.
+
+    Decide qual núcleo deve processar
+    uma entrada.
     """
+
+
+
+    VALID_ROUTES = {
+
+        "chat",
+
+        "mind",
+
+        "command",
+
+        "memory",
+
+        "tool"
+
+    }
+
 
 
     def __init__(self):
 
+
         self.rules = {
 
+
             "command": [
+
                 "execute",
+
                 "executar",
+
                 "abrir",
+
                 "fechar",
+
                 "iniciar",
+
                 "rodar",
+
+                "criar arquivo",
+
+                "apagar",
+
+                "instalar"
+
             ],
+
 
 
             "mind": [
 
                 "planeje",
+
                 "analise",
+
                 "pense",
+
                 "decida",
-                "crie plano",
-                "resolva"
+
+                "estratégia",
+
+                "estrategia",
+
+                "resolva",
+
+                "crie plano"
 
             ],
+
+
+
+            "memory": [
+
+                "lembra",
+
+                "lembrar",
+
+                "memória",
+
+                "memoria",
+
+                "recorde",
+
+                "salve"
+
+            ],
+
+
+
+            "tool": [
+
+                "pesquise",
+
+                "procure",
+
+                "busque",
+
+                "execute ferramenta",
+
+                "use ferramenta"
+
+            ],
+
 
 
             "chat": [
 
                 "oi",
+
                 "olá",
+
                 "ola",
+
                 "bom dia",
+
                 "boa tarde",
+
                 "boa noite"
 
             ]
@@ -74,25 +219,96 @@ class AIRouter:
 
 
 
+        self.priority = [
+
+            "command",
+
+            "tool",
+
+            "memory",
+
+            "mind",
+
+            "chat"
+
+        ]
+
+
+
+
+
     # =====================================================
-    # ROUTE
+    # ROUTE PRINCIPAL
     # =====================================================
 
 
     def route(
         self,
-        prompt: str
+        prompt: str,
+        context=None
     ) -> dict:
 
 
+        if not prompt:
+
+
+            return RouteDecision(
+
+                route="chat",
+
+                confidence=0.0,
+
+                reason="empty_input"
+
+            ).to_dict()
+
+
+
         text = (
+
             prompt
+
             .lower()
+
             .strip()
+
         )
 
 
+
+        # contexto influencia decisão
+
+        if context:
+
+
+            if getattr(
+                context,
+                "intention",
+                None
+            ):
+
+
+                return RouteDecision(
+
+                    route=context.intention,
+
+                    confidence=0.95,
+
+                    reason="context_intention"
+
+                ).to_dict()
+
+
+
+        matches = {}
+
+
+
         for category, words in self.rules.items():
+
+
+            score = 0
+
 
 
             for word in words:
@@ -100,41 +316,85 @@ class AIRouter:
 
                 if word in text:
 
-
-                    return {
-
-                        "route": category,
-
-                        "confidence": 0.9,
-
-                        "reason":
-                            f"matched:{word}"
-
-                    }
+                    score += 1
 
 
 
-        return {
+            if score:
 
 
-            "route":
-                "chat",
+                matches[category] = score
 
 
-            "confidence":
-                0.5,
 
 
-            "reason":
-                "default"
+
+        if matches:
 
 
-        }
+            selected = max(
+
+                matches,
+
+                key=matches.get
+
+            )
+
+
+
+            confidence = min(
+
+                0.5 +
+
+                (
+                    matches[selected]
+                    *
+                    0.15
+                ),
+
+                0.99
+
+            )
+
+
+
+            return RouteDecision(
+
+                route=selected,
+
+                confidence=confidence,
+
+                reason="keyword_match",
+
+                metadata={
+
+                    "matches":
+                        matches
+
+                }
+
+            ).to_dict()
+
+
+
+
+
+        return RouteDecision(
+
+            route="chat",
+
+            confidence=0.5,
+
+            reason="default"
+
+        ).to_dict()
+
+
 
 
 
     # =====================================================
-    # REGISTRO DE REGRA
+    # REGRAS DINÂMICAS
     # =====================================================
 
 
@@ -150,9 +410,37 @@ class AIRouter:
             self.rules[category] = []
 
 
+
         self.rules[category].append(
+
             keyword.lower()
+
         )
+
+
+
+
+
+    def remove_rule(
+        self,
+        category: str,
+        keyword: str
+    ):
+
+
+        if category in self.rules:
+
+
+            if keyword.lower() in self.rules[category]:
+
+
+                self.rules[category].remove(
+
+                    keyword.lower()
+
+                )
+
+
 
 
 
@@ -161,17 +449,26 @@ class AIRouter:
     # =====================================================
 
 
-    def status(
-        self
-    ) -> dict:
+    def status(self):
 
 
         return {
 
+
+            "routes":
+
+                list(
+                    self.rules.keys()
+                ),
+
+
             "rules":
+
                 self.rules,
 
-            "categories":
-                list(self.rules.keys())
+
+            "priority":
+
+                self.priority
 
         }

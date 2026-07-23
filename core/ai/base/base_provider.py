@@ -6,22 +6,32 @@ Arquivo:
 core/ai/base/base_provider.py
 
 Descrição:
-Classe base para todos os Providers IA.
+Classe base oficial para Providers IA.
+
+Responsável por:
+
+- Identidade do provider
+- Estado operacional
+- Métricas
+- Configuração
+- Hooks
+- Validação
+- Integração AIContext
 
 Arquitetura:
 Genesis Core
 
 Mark:
 V - Evolution
+
+Autor:
+Caio Vitor Malveira
 =========================================
 """
 
-
 from __future__ import annotations
 
-
 from abc import ABC, abstractmethod
-
 from typing import Any
 
 
@@ -31,13 +41,9 @@ from core.interfaces.ai_provider_interface import (
 
 
 from core.ai.models.ai_request import AIRequest
-
 from core.ai.models.ai_response import AIResponse
-
 from core.ai.models.provider_info import ProviderInfo
-
 from core.ai.models.provider_state import ProviderState
-
 
 
 
@@ -45,6 +51,10 @@ class BaseProvider(
     AIProviderInterface,
     ABC
 ):
+    """
+    Implementação base compartilhada
+    entre todos os Providers.
+    """
 
 
     def __init__(
@@ -75,13 +85,13 @@ class BaseProvider(
 
 
 
+        # Configuração padrão
+
         self.timeout = 60
 
         self.max_tokens = None
 
         self.temperature = 0.7
-
-
 
 
 
@@ -91,41 +101,39 @@ class BaseProvider(
 
 
     @property
-    def provider_name(self):
+    def provider_name(self) -> str:
 
         return self._provider_name
 
 
 
     @property
-    def model_name(self):
+    def model_name(self) -> str:
 
         return self._model_name
 
 
 
     @property
-    def version(self):
+    def version(self) -> str:
 
         return self._version
 
 
 
     @property
-    def state(self):
+    def state(self) -> ProviderState:
 
         return self._state
 
 
 
-
-
     # =====================================================
-    # CICLO
+    # CICLO DE VIDA
     # =====================================================
 
 
-    def initialize(self):
+    def initialize(self) -> bool:
 
 
         self.state.initialize(
@@ -143,47 +151,42 @@ class BaseProvider(
 
 
 
-
-
-    def shutdown(self):
+    def shutdown(self) -> None:
 
         self.state.shutdown()
 
 
 
-
-
-    def available(self):
+    def available(self) -> bool:
 
         return self.state.online
 
 
 
-
-
     # =====================================================
-    # CONFIG
+    # CONFIGURAÇÃO
     # =====================================================
 
 
     def configure(
         self,
-        **kwargs
-    ):
+        **kwargs: Any
+    ) -> None:
 
 
         for key, value in kwargs.items():
 
 
-            if hasattr(self, key):
+            if hasattr(
+                self,
+                key
+            ):
 
                 setattr(
                     self,
                     key,
                     value
                 )
-
-
 
 
 
@@ -194,22 +197,19 @@ class BaseProvider(
 
     def before_generate(
         self,
-        request
-    ):
+        request: AIRequest
+    ) -> AIRequest:
 
         return request
 
 
 
-
     def after_generate(
         self,
-        response
-    ):
+        response: AIResponse
+    ) -> AIResponse:
 
         return response
-
-
 
 
 
@@ -220,16 +220,15 @@ class BaseProvider(
 
     def validate_request(
         self,
-        request
-    ):
+        request: AIRequest
+    ) -> None:
 
 
         if request is None:
 
             raise ValueError(
-                "AIRequest inválido."
+                "AIRequest inexistente."
             )
-
 
 
         if not request.prompt:
@@ -240,38 +239,46 @@ class BaseProvider(
 
 
 
-
-
     # =====================================================
     # MÉTRICAS
     # =====================================================
 
 
+    def start_request(self):
+
+        self.state.begin_request()
+
+
+
+    def finish_request(self):
+
+        self.state.finish_request()
+
+
+
     def register_success(
         self,
-        latency=0.0,
-        input_tokens=0,
-        output_tokens=0
+        latency: float = 0.0,
+        input_tokens: int = 0,
+        output_tokens: int = 0
     ):
 
 
         self.state.register_success(
 
-            latency,
+            latency=latency,
 
-            input_tokens,
+            input_tokens=input_tokens,
 
-            output_tokens
+            output_tokens=output_tokens
 
         )
 
 
 
-
-
     def register_failure(
         self,
-        error=None
+        error: str | None = None
     ):
 
 
@@ -281,22 +288,27 @@ class BaseProvider(
 
 
 
+    def reset_stats(self) -> dict:
 
+        """
+        Limpa métricas mantendo
+        estado do provider.
+        """
 
-    def reset_stats(self):
 
         self.state.reset()
 
 
+        return self.state.to_dict()
 
 
 
     # =====================================================
-    # STATUS
+    # INFORMAÇÕES
     # =====================================================
 
 
-    def info(self):
+    def info(self) -> ProviderInfo:
 
 
         return ProviderInfo(
@@ -307,26 +319,34 @@ class BaseProvider(
 
             version=self.version,
 
-            online=self.available()
+            online=self.available(),
+
+            healthy=self.state.healthy,
+
+            metadata={
+
+                "state":
+
+                    self.state.to_dict()
+
+            }
 
         )
 
 
 
+    def stats(self) -> dict:
 
-
-    def stats(self):
 
         return self.state.to_dict()
 
 
 
-
-
-    def health(self):
+    def health(self) -> dict:
 
 
         return {
+
 
             "healthy":
                 self.state.healthy,
@@ -341,11 +361,13 @@ class BaseProvider(
 
 
             "uptime":
-                self.state.uptime
+                self.state.uptime,
+
+
+            "active_requests":
+                self.state.active_requests
 
         }
-
-
 
 
 
@@ -360,8 +382,8 @@ class BaseProvider(
         request: AIRequest,
         **kwargs: Any
     ) -> AIResponse:
-        pass
 
+        pass
 
 
 
@@ -371,8 +393,8 @@ class BaseProvider(
         messages: list[dict],
         **kwargs
     ) -> AIResponse:
-        pass
 
+        pass
 
 
 
@@ -380,10 +402,9 @@ class BaseProvider(
     def embeddings(
         self,
         text: str
-    ):
+    ) -> Any:
+
         pass
-
-
 
 
 
@@ -402,6 +423,8 @@ class BaseProvider(
 
             f"model='{self.model_name}', "
 
-            f"online={self.available()})"
+            f"online={self.available()}"
+
+            ")"
 
         )

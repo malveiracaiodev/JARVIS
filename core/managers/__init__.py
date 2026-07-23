@@ -3,41 +3,60 @@
 GENESIS CORE
 
 Pacote:
-managers
+core.managers
 
 Descrição:
-Camada de gerenciamento estrutural
-do Genesis Core (Mark IV - Neural Lattice).
+Camada de gerenciamento central do
+Genesis Core.
 
 Responsável por:
 
-- Registro global de componentes (Registry)
-- Controle de serviços (ServiceManager)
-- Gerenciamento de plugins (PluginManager)
-- Orquestração de ferramentas (ToolManager)
-- Integração de estados entre módulos na Lattice
+- Registro global de componentes
+- Controle de serviços
+- Gerenciamento de plugins
+- Orquestração de ferramentas
+- Controle da inteligência artificial
+- Integração entre módulos da Neural Lattice
 
 Arquitetura:
+
 Genesis Core
 
 Mark:
-IV - Neural Lattice
+V - Evolution
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
+
 from .registry import Registry
+
 from .service_manager import ServiceManager
+
 from .plugin_manager import PluginManager
+
 from .tool_manager import ToolManager
 
-__version__ = "4.0-Lattice"
+from .ai_manager import AIManager
+
+
+
+__version__ = "5.0-Evolution"
+
+
 
 __all__ = [
+
     "Registry",
+
     "ServiceManager",
+
     "PluginManager",
-    "ToolManager"
+
+    "ToolManager",
+
+    "AIManager"
+
 ]

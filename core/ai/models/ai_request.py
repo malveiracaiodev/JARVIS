@@ -8,50 +8,51 @@ core/ai/models/ai_request.py
 Descrição:
 Modelo oficial de requisição da camada IA.
 
-Representa tudo que o Genesis envia
-para um Provider de Inteligência Artificial.
+Representa uma solicitação enviada pelo
+Genesis Core para um Provider.
 
-Responsável por transportar:
+O Request contém o objetivo da execução.
 
-- Prompt
-- Histórico de conversa
-- Persona
-- Configurações do modelo
-- Contexto cognitivo
-- Metadados
+O estado cognitivo permanece no AIContext.
 
 Arquitetura:
+
 Genesis Core
 
 Mark:
 V - Evolution
-
-Autor:
-Caio Vitor Malveira
 =========================================
 """
 
+
 from __future__ import annotations
 
+
 from dataclasses import dataclass, field
+
 from datetime import datetime
+
 from uuid import uuid4
+
 from typing import Any
 
-from core.ai.models.ai_message import AIMessage
+
+from core.ai.models.ai_context import AIContext
 
 
 
 @dataclass(slots=True)
 class AIRequest:
     """
-    Estrutura padrão de uma requisição IA.
+    Solicitação de processamento IA.
     """
+
 
 
     # =====================================================
     # IDENTIDADE
     # =====================================================
+
 
     request_id: str = field(
         default_factory=lambda: str(uuid4())
@@ -63,58 +64,95 @@ class AIRequest:
     )
 
 
+
+    session_id: str | None = None
+
+
+
     # =====================================================
     # CONTEÚDO
     # =====================================================
 
+
     prompt: str = ""
 
 
-    system_prompt: str = ""
 
+    system_prompt: str | None = None
 
-    messages: list[AIMessage] = field(
-        default_factory=list
-    )
 
 
     # =====================================================
-    # PERSONA / COGNIÇÃO
+    # CONTEXTO COGNITIVO
     # =====================================================
 
-    persona: str = "jarvis"
 
+    context: AIContext | None = None
 
-    intention: str | None = None
-
-
-    priority: str = "normal"
 
 
     # =====================================================
-    # CONFIGURAÇÃO DO MODELO
+    # PROVIDER
     # =====================================================
+
+
+    preferred_provider: str | None = None
+
+
+    model: str | None = None
+
+
+
+    # =====================================================
+    # PARÂMETROS DE GERAÇÃO
+    # =====================================================
+
 
     temperature: float = 0.7
+
+
+    top_p: float = 1.0
 
 
     max_tokens: int | None = None
 
 
-    model: str | None = None
+    seed: int | None = None
+
+
+    timeout: float | None = None
 
 
     stream: bool = False
 
 
 
+    stop_sequences: list[str] = field(
+        default_factory=list
+    )
+
+
+
     # =====================================================
-    # CONTEXTO
+    # FERRAMENTAS
     # =====================================================
 
-    context: dict[str, Any] = field(
-        default_factory=dict
+
+    allowed_tools: list[str] = field(
+        default_factory=list
     )
+
+
+
+    attachments: list[Any] = field(
+        default_factory=list
+    )
+
+
+
+    # =====================================================
+    # METADATA
+    # =====================================================
 
 
     metadata: dict[str, Any] = field(
@@ -127,94 +165,91 @@ class AIRequest:
     # UTILIDADES
     # =====================================================
 
-    def add_message(
+
+    def add_tool(
         self,
-        message: AIMessage
-    ) -> None:
-        """
-        Adiciona uma mensagem ao histórico.
-        """
+        tool_name: str
+    ):
 
 
-        self.messages.append(
-            message
-        )
+        if tool_name not in self.allowed_tools:
 
-
-
-    def message_dicts(self) -> list[dict]:
-        """
-        Converte mensagens para formato
-        aceito pelos providers.
-        """
-
-
-        return [
-
-            message.to_dict()
-
-            for message in self.messages
-
-        ]
+            self.allowed_tools.append(
+                tool_name
+            )
 
 
 
-    def has_history(self) -> bool:
-        """
-        Verifica se existe contexto
-        conversacional.
-        """
+    def has_context(self) -> bool:
 
 
-        return len(
-            self.messages
-        ) > 0
+        return self.context is not None
 
 
 
-    def to_dict(self) -> dict[str, Any]:
-        """
-        Serialização para logs/debug.
-        """
+    def to_dict(self):
 
 
         return {
 
+
             "request_id":
                 self.request_id,
+
+
+            "created_at":
+                self.created_at.isoformat(),
+
+
+            "session_id":
+                self.session_id,
+
 
             "prompt":
                 self.prompt,
 
+
             "system_prompt":
                 self.system_prompt,
 
-            "persona":
-                self.persona,
 
-            "intention":
-                self.intention,
+            "context":
 
-            "priority":
-                self.priority,
+                self.context.to_dict()
 
-            "temperature":
-                self.temperature,
+                if self.context
 
-            "max_tokens":
-                self.max_tokens,
+                else None,
+
+
+
+            "provider":
+                self.preferred_provider,
+
 
             "model":
                 self.model,
 
+
+            "temperature":
+                self.temperature,
+
+
+            "top_p":
+                self.top_p,
+
+
+            "max_tokens":
+                self.max_tokens,
+
+
             "stream":
                 self.stream,
 
-            "messages":
-                self.message_dicts(),
 
-            "context":
-                self.context,
+            "tools":
+                self.allowed_tools,
+
 
             "metadata":
                 self.metadata
@@ -223,7 +258,8 @@ class AIRequest:
 
 
 
-    def __repr__(self) -> str:
+    def __repr__(self):
+
 
         return (
 
@@ -231,9 +267,9 @@ class AIRequest:
 
             f"id='{self.request_id[:8]}', "
 
-            f"persona='{self.persona}', "
+            f"model='{self.model}', "
 
-            f"prompt='{self.prompt[:40]}'"
+            f"stream={self.stream}"
 
             ")"
 

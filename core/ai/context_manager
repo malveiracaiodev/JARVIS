@@ -1,0 +1,507 @@
+"""
+=========================================
+GENESIS CORE
+
+Arquivo:
+core/ai/context_manager.py
+
+Descrição:
+Gerenciador de contextos cognitivos
+da camada IA.
+
+Responsável por:
+
+- Criar contextos
+- Recuperar conversas
+- Controlar mensagens
+- Gerenciar personas
+- Integrar memória temporária
+- Preparar histórico para providers
+
+Arquitetura:
+Genesis Core
+
+Mark:
+V - Evolution
+
+Autor:
+Caio Vitor Malveira
+=========================================
+"""
+
+
+from __future__ import annotations
+
+
+from typing import Any
+
+
+from core.ai.models.ai_context import AIContext
+
+from core.ai.models.ai_message import AIMessage
+
+
+
+
+
+class ContextManager:
+    """
+    Gerenciador oficial de contextos IA.
+
+    Mantém estados de conversação
+    ativos do Genesis Core.
+    """
+
+
+
+    def __init__(self):
+
+        self.contexts: dict[
+            str,
+            AIContext
+        ] = {}
+
+
+
+        self.active_context: str | None = None
+
+
+
+
+
+    # =====================================================
+    # CRIAÇÃO
+    # =====================================================
+
+
+    def create(
+        self,
+        user_id: str | None = None,
+        user_name: str | None = None,
+        persona: str | None = None
+    ) -> AIContext:
+        """
+        Cria um novo contexto.
+        """
+
+
+        context = AIContext(
+
+            user_id=user_id,
+
+            user_name=user_name,
+
+            persona=persona
+
+        )
+
+
+        self.contexts[
+            context.context_id
+        ] = context
+
+
+
+        self.active_context = (
+            context.context_id
+        )
+
+
+
+        return context
+
+
+
+
+
+    # =====================================================
+    # BUSCA
+    # =====================================================
+
+
+    def get(
+        self,
+        context_id: str
+    ) -> AIContext:
+        """
+        Recupera contexto.
+        """
+
+
+        if context_id not in self.contexts:
+
+
+            raise KeyError(
+
+                f"Contexto não encontrado: {context_id}"
+
+            )
+
+
+
+        return self.contexts[
+            context_id
+        ]
+
+
+
+
+
+    def current(
+        self
+    ) -> AIContext | None:
+        """
+        Retorna contexto ativo.
+        """
+
+
+        if self.active_context is None:
+
+            return None
+
+
+
+        return self.contexts.get(
+
+            self.active_context
+
+        )
+
+
+
+
+
+    def set_active(
+        self,
+        context_id: str
+    ) -> None:
+
+
+        if context_id not in self.contexts:
+
+            raise KeyError(
+
+                "Contexto inválido."
+
+            )
+
+
+
+        self.active_context = context_id
+
+
+
+
+
+    # =====================================================
+    # MENSAGENS
+    # =====================================================
+
+
+    def add_message(
+        self,
+        message: AIMessage,
+        context_id: str | None = None
+    ) -> None:
+        """
+        Adiciona mensagem ao contexto.
+        """
+
+
+        context = self.resolve(
+
+            context_id
+
+        )
+
+
+        context.add_message(
+            message
+        )
+
+
+
+
+
+    def user_message(
+        self,
+        content: str,
+        context_id: str | None = None
+    ):
+
+
+        context = self.resolve(
+
+            context_id
+
+        )
+
+
+        context.add_user_message(
+
+            content
+
+        )
+
+
+
+
+
+    def assistant_message(
+        self,
+        content: str,
+        context_id: str | None = None
+    ):
+
+
+        context = self.resolve(
+
+            context_id
+
+        )
+
+
+        context.add_assistant_message(
+
+            content
+
+        )
+
+
+
+
+
+    # =====================================================
+    # PERSONA
+    # =====================================================
+
+
+    def set_persona(
+        self,
+        persona: str,
+        context_id: str | None = None
+    ):
+
+
+        context = self.resolve(
+
+            context_id
+
+        )
+
+
+        context.persona = persona
+
+
+
+
+
+    # =====================================================
+    # MEMÓRIA TEMPORÁRIA
+    # =====================================================
+
+
+    def remember(
+        self,
+        data: dict[str, Any],
+        context_id: str | None = None
+    ):
+
+
+        context = self.resolve(
+
+            context_id
+
+        )
+
+
+        context.remember(
+
+            data
+
+        )
+
+
+
+
+
+    def memories(
+        self,
+        context_id: str | None = None
+    ):
+
+
+        context = self.resolve(
+
+            context_id
+
+        )
+
+
+        return context.memories
+
+
+
+
+
+    # =====================================================
+    # PROVIDER
+    # =====================================================
+
+
+    def bind_provider(
+        self,
+        provider: str,
+        model: str,
+        context_id: str | None = None
+    ):
+
+
+        context = self.resolve(
+
+            context_id
+
+        )
+
+
+        context.provider = provider
+
+        context.model = model
+
+
+
+
+
+    # =====================================================
+    # HISTÓRICO
+    # =====================================================
+
+
+    def history(
+        self,
+        context_id: str | None = None
+    ):
+
+
+        context = self.resolve(
+
+            context_id
+
+        )
+
+
+        return context.history()
+
+
+
+
+
+    # =====================================================
+    # RESOLUÇÃO
+    # =====================================================
+
+
+    def resolve(
+        self,
+        context_id: str | None
+    ) -> AIContext:
+        """
+        Resolve contexto informado
+        ou usa o ativo.
+        """
+
+
+        if context_id:
+
+            return self.get(
+                context_id
+            )
+
+
+
+        context = self.current()
+
+
+
+        if context is None:
+
+
+            return self.create()
+
+
+
+        return context
+
+
+
+
+
+    # =====================================================
+    # REMOÇÃO
+    # =====================================================
+
+
+    def delete(
+        self,
+        context_id: str
+    ):
+
+
+        self.contexts.pop(
+
+            context_id,
+
+            None
+
+        )
+
+
+
+        if self.active_context == context_id:
+
+            self.active_context = None
+
+
+
+
+
+    def clear(self):
+
+        self.contexts.clear()
+
+        self.active_context = None
+
+
+
+
+
+    # =====================================================
+    # STATUS
+    # =====================================================
+
+
+    def status(self):
+
+
+        return {
+
+
+            "contexts":
+
+                len(
+                    self.contexts
+                ),
+
+
+            "active":
+
+                self.active_context,
+
+
+            "ids":
+
+                list(
+                    self.contexts.keys()
+                )
+
+        }

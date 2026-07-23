@@ -6,14 +6,15 @@ Arquivo:
 core/ai/provider_registry.py
 
 Descrição:
-Registro central de Providers de IA.
+Registro central de Providers IA.
 
 Responsável por:
 
-- Armazenar providers ativos
-- Localizar providers
-- Controlar ciclo de vida
-- Diagnóstico da camada IA
+- Armazenamento de providers
+- Descoberta
+- Ciclo de vida
+- Diagnóstico
+- Seleção saudável
 
 Arquitetura:
 Genesis Core
@@ -26,6 +27,7 @@ Caio Vitor Malveira
 =========================================
 """
 
+
 from __future__ import annotations
 
 
@@ -33,29 +35,33 @@ from core.interfaces.ai_provider_interface import (
     AIProviderInterface
 )
 
+
 from core.ai.exceptions import (
     InvalidProviderError
 )
 
 
 
+
+
 class ProviderRegistry:
     """
-    Registro central dos Providers IA.
+    Registro oficial dos providers IA.
 
-    Mantém providers carregados
-    pelo Genesis Core.
+    Mantém os cérebros disponíveis
+    para o Genesis.
     """
 
 
 
-    def __init__(self) -> None:
-
+    def __init__(self):
 
         self._providers: dict[
             str,
             AIProviderInterface
         ] = {}
+
+
 
 
 
@@ -66,10 +72,11 @@ class ProviderRegistry:
 
     def register(
         self,
-        provider: AIProviderInterface
+        provider: AIProviderInterface,
+        initialize: bool = True
     ) -> None:
         """
-        Registra um provider.
+        Adiciona provider ao Genesis.
         """
 
 
@@ -83,9 +90,19 @@ class ProviderRegistry:
         )
 
 
-        self._providers[
-            name
-        ] = provider
+
+        if initialize:
+
+
+            if not provider.available():
+
+                provider.initialize()
+
+
+
+        self._providers[name] = provider
+
+
 
 
 
@@ -93,9 +110,6 @@ class ProviderRegistry:
         self,
         provider_name: str
     ) -> None:
-        """
-        Remove provider e encerra.
-        """
 
 
         name = self.normalize(
@@ -103,8 +117,9 @@ class ProviderRegistry:
         )
 
 
-        provider = self._providers.get(
-            name
+        provider = self._providers.pop(
+            name,
+            None
         )
 
 
@@ -121,19 +136,13 @@ class ProviderRegistry:
 
 
 
-            del self._providers[
-                name
-            ]
 
 
-
-    def clear(self) -> None:
-        """
-        Remove todos os providers.
-        """
+    def clear(self):
 
 
         for provider in self._providers.values():
+
 
             try:
 
@@ -149,6 +158,8 @@ class ProviderRegistry:
 
 
 
+
+
     # =====================================================
     # BUSCA
     # =====================================================
@@ -158,9 +169,6 @@ class ProviderRegistry:
         self,
         provider_name: str
     ) -> AIProviderInterface:
-        """
-        Busca provider.
-        """
 
 
         name = self.normalize(
@@ -168,15 +176,45 @@ class ProviderRegistry:
         )
 
 
+
         if name not in self._providers:
 
 
             raise InvalidProviderError(
+
                 f"Provider não encontrado: {provider_name}"
+
             )
 
 
+
         return self._providers[name]
+
+
+
+
+
+    def get_available(
+        self
+    ) -> list[AIProviderInterface]:
+        """
+        Retorna somente providers online.
+        """
+
+
+        return [
+
+            provider
+
+            for provider
+
+            in self._providers.values()
+
+            if provider.available()
+
+        ]
+
+
 
 
 
@@ -184,24 +222,23 @@ class ProviderRegistry:
         self,
         provider_name: str
     ) -> bool:
-        """
-        Verifica existência.
-        """
 
 
         return (
+
             self.normalize(provider_name)
+
             in self._providers
+
         )
+
+
 
 
 
     def all(
         self
     ) -> list[AIProviderInterface]:
-        """
-        Retorna todos.
-        """
 
 
         return list(
@@ -210,17 +247,18 @@ class ProviderRegistry:
 
 
 
+
+
     def names(
         self
     ) -> list[str]:
-        """
-        Retorna nomes registrados.
-        """
 
 
         return list(
             self._providers.keys()
         )
+
+
 
 
 
@@ -232,12 +270,10 @@ class ProviderRegistry:
     def status(
         self
     ) -> dict:
-        """
-        Retorna diagnóstico completo.
-        """
 
 
         result = {}
+
 
 
         for name, provider in self._providers.items():
@@ -247,24 +283,31 @@ class ProviderRegistry:
 
 
                 "provider":
+
                     provider.provider_name,
 
 
                 "model":
+
                     provider.model_name,
 
 
                 "online":
+
                     provider.available(),
 
 
-                "state":
-                    provider.state.to_dict()
+                "stats":
+
+                    provider.stats()
 
             }
 
 
+
         return result
+
+
 
 
 
@@ -272,14 +315,13 @@ class ProviderRegistry:
     def count(
         self
     ) -> int:
-        """
-        Quantidade de providers.
-        """
 
 
         return len(
             self._providers
         )
+
+
 
 
 
@@ -292,37 +334,67 @@ class ProviderRegistry:
     def normalize(
         name: str
     ) -> str:
-        """
-        Padroniza nomes.
-        """
 
 
         return (
+
             name
+
             .strip()
+
             .lower()
+
             .replace(
                 " ",
                 "_"
             )
+
         )
+
+
 
 
 
     @staticmethod
     def _validate(
         provider
-    ) -> None:
-        """
-        Valida provider.
-        """
+    ):
 
 
-        if not isinstance(
-            provider,
-            AIProviderInterface
-        ):
+        required = [
 
-            raise InvalidProviderError(
-                "Objeto não é um AIProvider válido."
-            )
+            "provider_name",
+
+            "model_name",
+
+            "initialize",
+
+            "shutdown",
+
+            "available",
+
+            "generate",
+
+            "chat",
+
+            "stats"
+
+        ]
+
+
+
+        for item in required:
+
+
+            if not hasattr(
+                provider,
+                item
+            ):
+
+
+                raise InvalidProviderError(
+
+                    f"Provider inválido. "
+                    f"Ausente: {item}"
+
+                )

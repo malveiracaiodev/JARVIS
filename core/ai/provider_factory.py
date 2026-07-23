@@ -15,36 +15,36 @@ Responsável por:
 - Criar instâncias
 - Resolver aliases
 - Validar implementações
-- Descobrir providers disponíveis
+- Descoberta de providers
+- Configuração dinâmica
 
 Arquitetura:
 Genesis Core
 
 Mark:
 V - Evolution
+
+Autor:
+Caio Vitor Malveira
 =========================================
 """
 
 from __future__ import annotations
 
-from typing import Type
+
+from typing import (
+    Type,
+    Any
+)
 
 
 from core.interfaces.ai_provider_interface import (
     AIProviderInterface
 )
 
+
 from core.ai.exceptions import (
     InvalidProviderError
-)
-
-
-from core.ai.providers.mock_provider import (
-    MockProvider
-)
-
-from core.ai.providers.ollama_provider import (
-    OllamaProvider
 )
 
 
@@ -53,52 +53,79 @@ class ProviderFactory:
     """
     Fábrica oficial de Providers IA.
 
-    O Genesis nunca cria providers
-    diretamente.
+    O Genesis nunca instancia
+    providers diretamente.
 
-    Tudo passa por aqui.
+    Tudo passa por esta camada.
     """
 
+
+
+    # =====================================================
+    # REGISTRO INTERNO
+    # =====================================================
 
 
     _providers: dict[
         str,
         Type[AIProviderInterface]
-    ] = {
-
-
-        "mock":
-            MockProvider,
-
-
-        "ollama":
-            OllamaProvider,
-
-
-    }
+    ] = {}
 
 
 
-    _aliases = {
-
+    _aliases: dict[str, str] = {
 
         "local":
             "ollama",
 
+        "llama":
+            "ollama",
 
         "simulation":
             "mock",
 
-
         "test":
-            "mock",
-
-
-        "llama":
-            "ollama"
-
+            "mock"
 
     }
+
+
+
+    # =====================================================
+    # REGISTRO PADRÃO
+    # =====================================================
+
+
+    @classmethod
+    def bootstrap(cls):
+        """
+        Registra providers oficiais.
+
+        Executado uma vez
+        durante inicialização.
+        """
+
+
+        from core.ai.providers.mock_provider import (
+            MockProvider
+        )
+
+
+        from core.ai.providers.ollama_provider import (
+            OllamaProvider
+        )
+
+
+        cls.register(
+            "mock",
+            MockProvider
+        )
+
+
+        cls.register(
+            "ollama",
+            OllamaProvider
+        )
 
 
 
@@ -110,10 +137,14 @@ class ProviderFactory:
     @classmethod
     def create(
         cls,
-        provider_name: str
+        provider_name: str,
+        initialize: bool = True,
+        **kwargs: Any
     ) -> AIProviderInterface:
         """
-        Cria e inicializa um provider.
+        Cria um provider.
+
+        Permite configuração dinâmica.
         """
 
 
@@ -122,11 +153,18 @@ class ProviderFactory:
         )
 
 
+
+        if not cls.exists(name):
+
+            cls.bootstrap()
+
+
+
         if not cls.exists(name):
 
             raise InvalidProviderError(
 
-                f"Provider não suportado: {provider_name}"
+                f"Provider não encontrado: {provider_name}"
 
             )
 
@@ -136,30 +174,32 @@ class ProviderFactory:
 
 
 
-        provider = provider_class()
+        provider = provider_class(
+            **kwargs
+        )
 
 
 
-        if not isinstance(
-            provider,
-            AIProviderInterface
-        ):
-
-            raise InvalidProviderError(
-
-                f"{name} não implementa AIProviderInterface"
-
-            )
+        cls.validate(
+            provider
+        )
 
 
 
-        if not provider.initialize():
+        if initialize:
 
-            raise InvalidProviderError(
 
-                f"Falha ao inicializar provider: {name}"
+            success = provider.initialize()
 
-            )
+
+            if not success:
+
+
+                raise InvalidProviderError(
+
+                    f"Falha ao inicializar provider: {name}"
+
+                )
 
 
 
@@ -183,11 +223,6 @@ class ProviderFactory:
         """
 
 
-        normalized = cls.normalize(
-            name
-        )
-
-
         if not issubclass(
             provider_class,
             AIProviderInterface
@@ -195,14 +230,17 @@ class ProviderFactory:
 
             raise InvalidProviderError(
 
-                "Classe provider inválida."
+                "Provider inválido."
 
             )
 
 
+
         cls._providers[
-            normalized
+            cls.normalize(name)
         ] = provider_class
+
+
 
 
 
@@ -211,20 +249,15 @@ class ProviderFactory:
         cls,
         name: str
     ) -> None:
-        """
-        Remove provider.
-        """
 
 
-        normalized = cls.resolve_alias(
-
+        name = cls.resolve_alias(
             cls.normalize(name)
-
         )
 
 
         cls._providers.pop(
-            normalized,
+            name,
             None
         )
 
@@ -240,19 +273,18 @@ class ProviderFactory:
         cls,
         name: str
     ) -> bool:
-        """
-        Verifica provider existente.
-        """
 
 
-        normalized = cls.resolve_alias(
+        return (
 
-            cls.normalize(name)
+            cls.normalize(
+                cls.resolve_alias(name)
+            )
+
+            in cls._providers
 
         )
 
-
-        return normalized in cls._providers
 
 
 
@@ -260,9 +292,12 @@ class ProviderFactory:
     def available(
         cls
     ) -> list[str]:
-        """
-        Lista providers registrados.
-        """
+
+
+        if not cls._providers:
+
+            cls.bootstrap()
+
 
 
         return list(
@@ -271,29 +306,31 @@ class ProviderFactory:
 
 
 
+
     @classmethod
     def info(
         cls
     ) -> dict:
-        """
-        Informações dos providers.
-        """
 
 
         return {
 
-            name: {
+
+            name:
+            {
 
                 "class":
                     provider.__name__
 
             }
 
+
             for name, provider
 
             in cls._providers.items()
 
         }
+
 
 
 
@@ -305,10 +342,7 @@ class ProviderFactory:
     @classmethod
     def create_default(
         cls
-    ) -> AIProviderInterface:
-        """
-        Provider padrão.
-        """
+    ):
 
 
         return cls.create(
@@ -318,7 +352,31 @@ class ProviderFactory:
 
 
     # =====================================================
-    # UTIL
+    # VALIDAÇÃO
+    # =====================================================
+
+
+    @staticmethod
+    def validate(
+        provider
+    ):
+
+
+        if not isinstance(
+            provider,
+            AIProviderInterface
+        ):
+
+            raise InvalidProviderError(
+
+                "Objeto não implementa AIProviderInterface"
+
+            )
+
+
+
+    # =====================================================
+    # UTILIDADES
     # =====================================================
 
 

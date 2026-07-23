@@ -8,15 +8,26 @@ core/ai/providers/mock_provider.py
 Descrição:
 Provider simulado do Genesis Core.
 
-Executa respostas locais sem depender de:
+Modelo artificial local utilizado para
+validar a arquitetura de IA sem depender
+de modelos externos.
 
-- Ollama
-- APIs externas
-- Internet
-- GPU
+Responsabilidades:
 
-Utilizado para validar toda a arquitetura
-da camada de Inteligência Artificial.
+- Simular geração de texto
+- Validar pipeline IA
+- Testar requests/responses
+- Gerar métricas
+
+Não possui:
+
+- Persona
+- Identidade
+- Memória
+- Personalidade
+
+Essas responsabilidades pertencem
+ao Genesis.
 
 Arquitetura:
 Genesis Core
@@ -29,7 +40,9 @@ Caio Vitor Malveira
 =========================================
 """
 
+
 from __future__ import annotations
+
 
 from time import perf_counter
 from typing import Any
@@ -42,40 +55,26 @@ from core.ai.models.ai_response import AIResponse
 
 
 
+
 class MockProvider(BaseProvider):
     """
-    Provider local de simulação.
+    Simulação de modelo IA.
 
-    Representa um LLM falso para testes
-    do Genesis Core.
+    Atua como um LLM local falso.
     """
 
 
 
-    def __init__(self) -> None:
-
+    def __init__(self):
 
         super().__init__(
 
             provider_name="mock",
 
-            model_name="Genesis Simulation",
+            model_name="Genesis-Mock-LLM",
 
-            version="5.0"
+            version="5.1"
 
-        )
-
-
-        self.state.provider_name = (
-            self.provider_name
-        )
-
-        self.state.provider_version = (
-            self.version
-        )
-
-        self.state.current_model = (
-            self.model_name
         )
 
 
@@ -83,6 +82,7 @@ class MockProvider(BaseProvider):
     # =====================================================
     # GENERATE
     # =====================================================
+
 
     def generate(
         self,
@@ -94,10 +94,16 @@ class MockProvider(BaseProvider):
         start = perf_counter()
 
 
+
         try:
 
 
-            self.validate_input(
+            request = self._normalize_request(
+                request
+            )
+
+
+            self.validate_request(
                 request
             )
 
@@ -105,16 +111,8 @@ class MockProvider(BaseProvider):
             self.state.register_generation()
 
 
-            if isinstance(
-                request,
-                AIRequest
-            ):
 
-                prompt = request.prompt
-
-            else:
-
-                prompt = request
+            prompt = request.prompt
 
 
 
@@ -123,14 +121,17 @@ class MockProvider(BaseProvider):
             )
 
 
-            content = self._build_response(
-                prompt
+
+            content = self._simulate_generation(
+                request
             )
+
 
 
             output_tokens = len(
                 content.split()
             )
+
 
 
             latency = (
@@ -140,12 +141,22 @@ class MockProvider(BaseProvider):
             )
 
 
+
             self.register_success(
-                latency
+
+                latency,
+
+                input_tokens,
+
+                output_tokens
+
             )
 
 
+
             return AIResponse(
+
+                request_id=request.request_id,
 
                 success=True,
 
@@ -157,14 +168,18 @@ class MockProvider(BaseProvider):
 
                 latency=latency,
 
+                persona=request.persona,
+
                 prompt_tokens=input_tokens,
 
                 completion_tokens=output_tokens,
 
                 total_tokens=(
+
                     input_tokens
                     +
                     output_tokens
+
                 ),
 
                 metadata={
@@ -183,39 +198,42 @@ class MockProvider(BaseProvider):
         except Exception as error:
 
 
+
             latency = (
+
                 perf_counter()
+
                 -
+
                 start
+
             )
 
 
-            self.state.register_failure(
+            self.register_failure(
                 str(error)
             )
 
 
-            return AIResponse(
 
-                success=False,
+            return AIResponse.failure(
 
-                content="",
+                error=str(error),
 
                 provider=self.provider_name,
 
-                model=self.model_name,
-
-                latency=latency,
-
-                error=str(error)
+                model=self.model_name
 
             )
+
+
 
 
 
     # =====================================================
     # CHAT
     # =====================================================
+
 
     def chat(
         self,
@@ -227,16 +245,19 @@ class MockProvider(BaseProvider):
         self.state.register_chat()
 
 
+
         if not messages:
 
-
             return self.generate(
-                ""
+                AIRequest(
+                    prompt=""
+                )
             )
 
 
 
         last = messages[-1]
+
 
 
         if isinstance(
@@ -256,8 +277,14 @@ class MockProvider(BaseProvider):
 
 
         return self.generate(
-            prompt
+
+            AIRequest(
+                prompt=prompt
+            )
+
         )
+
+
 
 
 
@@ -265,27 +292,15 @@ class MockProvider(BaseProvider):
     # EMBEDDINGS
     # =====================================================
 
+
     def embeddings(
         self,
         text: str
     ) -> list[float]:
 
 
-        """
-        Mock simples de embeddings.
-
-        Futuramente será substituído
-        por Ollama/OpenAI/etc.
-        """
-
-
         self.state.register_embedding()
 
-
-        size = min(
-            len(text),
-            10
-        )
 
 
         return [
@@ -294,27 +309,23 @@ class MockProvider(BaseProvider):
                 ord(char)
             )
 
-            for char in text[:size]
+            for char in text[:10]
 
         ]
 
 
 
+
+
     # =====================================================
-    # VALIDAÇÃO
+    # NORMALIZAÇÃO
     # =====================================================
 
-    def validate_input(
+
+    def _normalize_request(
         self,
         request
-    ):
-
-
-        if request is None:
-
-            raise ValueError(
-                "Request vazio."
-            )
+    ) -> AIRequest:
 
 
         if isinstance(
@@ -322,181 +333,101 @@ class MockProvider(BaseProvider):
             AIRequest
         ):
 
-            if not request.prompt:
-
-                raise ValueError(
-                    "Prompt vazio."
-                )
+            return request
 
 
-        elif isinstance(
+
+        if isinstance(
             request,
             str
         ):
 
-            if not request.strip():
+            return AIRequest(
 
-                raise ValueError(
-                    "Prompt vazio."
-                )
+                prompt=request
 
-
-        else:
-
-            raise TypeError(
-                "Formato de request inválido."
             )
 
 
 
+        raise TypeError(
+
+            "MockProvider recebeu formato inválido."
+
+        )
+
+
+
+
+
     # =====================================================
-    # RESPOSTAS SIMULADAS
+    # SIMULAÇÃO DO MODELO
     # =====================================================
 
-    def _build_response(
+
+    def _simulate_generation(
         self,
-        prompt: str
+        request: AIRequest
     ) -> str:
 
 
-        text = prompt.lower().strip()
+        prompt = (
+            request.prompt
+            .lower()
+            .strip()
+        )
 
 
 
-        if any(
-            item in text
-
-            for item in [
-
-                "oi",
-
-                "olá",
-
-                "ola",
-
-                "bom dia",
-
-                "boa tarde",
-
-                "boa noite"
-
-            ]
-
-        ):
+        if not prompt:
 
 
             return (
 
-                "Olá, Senhor. "
-                "Genesis Core operacional. "
-                "Todos os sistemas principais "
-                "estão funcionando."
+                "Não recebi nenhum conteúdo "
+                "para processar."
 
             )
 
 
 
-        if "quem é você" in text:
+        if "status" in prompt:
 
 
             return (
 
-                "Sou JARVIS, núcleo de "
-                "inteligência artificial do "
-                "Genesis Core."
+                "Status do processamento:\n\n"
+
+                "- Provider: ONLINE\n"
+
+                "- Modelo: Genesis-Mock-LLM\n"
+
+                "- Processamento: concluído"
 
             )
 
 
 
-        if "status" in text:
+        if "teste" in prompt:
 
 
             return (
 
-                "Genesis Core Status:\n\n"
-
-                "- Kernel: ONLINE\n"
-
-                "- Mind: ONLINE\n"
-
-                "- Thought Engine: ONLINE\n"
-
-                "- AIService: ONLINE\n"
-
-                "- Provider: Genesis Mock"
-
-            )
-
-
-
-        if "pipeline" in text:
-
-
-            return (
-
-                "Pipeline cognitiva ativa:\n"
-
-                "Parser → Planner → Reasoner → "
-                "Executor → Reflection → Memory"
-
-            )
-
-
-
-        if "rafiki" in text:
-
-
-            return (
-
-                "Persona Rafiki registrada. "
-                "Aguardando conexão com "
-                "PersonaManager."
-
-            )
-
-
-
-        if "memória" in text or "memoria" in text:
-
-
-            return (
-
-                "Sistema de memória preparado "
-                "para integração com a camada "
-                "cognitiva."
-
-            )
-
-
-
-        if "ia" in text:
-
-
-            return (
-
-                "Genesis Mock é uma simulação "
-                "local de provider IA. "
-                "Providers reais como Ollama, "
-                "Gemini ou OpenAI podem assumir "
-                "esta função."
-
-            )
-
-
-
-        if (
-            "teste" in text
-            or
-            "testar" in text
-        ):
-
-
-            return (
-
-                "Teste executado com sucesso. "
-                "Provider Mock respondendo "
+                "Teste concluído com sucesso. "
+                "O modelo simulado respondeu "
                 "corretamente."
+
+            )
+
+
+
+        if "quem é você" in prompt:
+
+
+            return (
+
+                "Sou um modelo de simulação "
+                "integrado ao Genesis Core."
 
             )
 
@@ -504,8 +435,8 @@ class MockProvider(BaseProvider):
 
         return (
 
-            "Genesis Mock recebeu sua mensagem:\n\n"
+            "Resposta simulada do modelo:\n\n"
 
-            f'"{prompt}"'
+            f"{request.prompt}"
 
         )
