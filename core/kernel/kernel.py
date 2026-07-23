@@ -53,73 +53,130 @@ from core.managers.plugin_manager import PluginManager
 from core.managers.tool_manager import ToolManager
 
 
+from core.managers.persona_manager import PersonaManager
+
+
+
+# ======================================================
+# MEMORY
+# ======================================================
+
+from core.memory.memory_coordinator import MemoryCoordinator
+
+
 
 # ======================================================
 # COGNITION
 # ======================================================
 
 from core.runtime.engine import Runtime
+
 from core.mind.mind import Mind
+
 from core.pipeline.pipeline_initializer import PipelineInitializer
 
 
 
 
+
 class Kernel:
+
+
     """
     Orquestrador central do Genesis Core.
 
-    O Kernel não pensa.
+    O Kernel não possui inteligência.
 
     Ele apenas cria, conecta
-    e controla o organismo.
+    e controla os componentes.
     """
 
 
 
     def __init__(self):
 
+
         self.name = "JARVIS CORE"
+
 
         self.version = (
             "Genesis Core Mark V - Evolution"
         )
 
+
         self.status = "CREATED"
+
 
         self.started_at = None
 
 
+
         self.components = {}
+
 
         self.failed_components = {}
 
 
-        # Serviços
+
+        # ===============================
+        # SERVICES
+        # ===============================
+
 
         self.logger = None
+
         self.event_bus = None
+
         self.config = None
+
         self.identity = None
+
         self.ai_service = None
 
 
-        # Managers
+
+        # ===============================
+        # MANAGERS
+        # ===============================
+
 
         self.registry = None
+
         self.service_manager = None
+
         self.tool_manager = None
+
         self.plugin_manager = None
 
+        self.persona_manager = None
 
-        # Cognição
+
+
+        # ===============================
+        # MEMORY
+        # ===============================
+
+
+        self.memory = None
+
+
+
+        # ===============================
+        # COGNITION
+        # ===============================
+
 
         self.runtime = None
+
         self.pipeline = None
+
         self.mind = None
 
 
+
         self.build()
+
+
 
 
 
@@ -134,6 +191,7 @@ class Kernel:
 
         self.registry = Registry()
 
+
         self.register(
             "registry",
             self.registry,
@@ -146,6 +204,7 @@ class Kernel:
 
         self.logger = Logger()
 
+
         self.register(
             "logger",
             self.logger,
@@ -154,7 +213,7 @@ class Kernel:
 
 
 
-        # Event Bus
+        # EventBus
 
         self.event_bus = EventBus(
             self.logger
@@ -211,7 +270,37 @@ class Kernel:
 
 
         # ==================================================
-        # IA
+        # PERSONAS
+        # ==================================================
+
+        self.persona_manager = PersonaManager()
+
+
+        self.register(
+            "persona_manager",
+            self.persona_manager,
+            "manager"
+        )
+
+
+
+        # ==================================================
+        # MEMORY
+        # ==================================================
+
+        self.memory = MemoryCoordinator()
+
+
+        self.register(
+            "memory",
+            self.memory,
+            "cognitive"
+        )
+
+
+
+        # ==================================================
+        # AI SERVICE
         # ==================================================
 
         self.ai_service = AIService()
@@ -286,9 +375,13 @@ class Kernel:
 
 
         self.runtime = Runtime(
+
             logger=self.logger,
+
             event_bus=self.event_bus,
+
             worker_pool_size=workers
+
         )
 
 
@@ -305,10 +398,15 @@ class Kernel:
         # ==================================================
 
         self.plugin_manager = PluginManager(
+
             logger=self.logger,
+
             event_bus=self.event_bus,
+
             registry=self.registry,
+
             config=self.config
+
         )
 
 
@@ -325,9 +423,13 @@ class Kernel:
         # ==================================================
 
         self.pipeline = PipelineInitializer(
+
             logger=self.logger,
+
             tool_manager=self.tool_manager
+
         ).build()
+
 
 
         self.register(
@@ -343,10 +445,15 @@ class Kernel:
         # ==================================================
 
         self.mind = Mind(
+
             logger=self.logger,
+
             event_bus=self.event_bus,
+
             engine=self.runtime,
+
             pipeline=self.pipeline
+
         )
 
 
@@ -355,6 +462,28 @@ class Kernel:
             self.mind,
             "cognitive"
         )
+
+
+
+        # ==================================================
+        # CONNECTIONS
+        # ==================================================
+
+        self.ai_service.connect_persona_manager(
+            self.persona_manager
+        )
+
+
+        self.ai_service.connect_memory(
+            self.memory
+        )
+
+
+        self.ai_service.connect_mind(
+            self.mind
+        )
+
+
 
 
 
@@ -384,11 +513,10 @@ class Kernel:
                     category
                 )
 
+
             except Exception as error:
 
-                self.failed_components[name] = str(
-                    error
-                )
+                self.failed_components[name] = str(error)
 
 
 
@@ -397,36 +525,6 @@ class Kernel:
         )
 
 
-
-    # ==================================================
-    # ACCESS
-    # ==================================================
-
-    def get(
-        self,
-        name
-    ):
-
-        return self.components.get(
-            name
-        )
-
-
-
-    def has(
-        self,
-        name
-    ):
-
-        return name in self.components
-
-
-
-    def list_components(self):
-
-        return list(
-            self.components.keys()
-        )
 
 
 
@@ -438,6 +536,7 @@ class Kernel:
 
 
         self.status = "BOOTING"
+
 
         self.started_at = datetime.now()
 
@@ -452,16 +551,31 @@ class Kernel:
         order = [
 
             "logger",
+
             "event_bus",
+
             "config",
+
             "registry",
+
             "identity",
+
+            "persona_manager",
+
+            "memory",
+
             "ai_service",
+
             "service_manager",
+
             "tool_manager",
+
             "runtime",
+
             "plugin_manager",
+
             "pipeline",
+
             "mind"
 
         ]
@@ -493,6 +607,7 @@ class Kernel:
                     component.initialize()
 
 
+
                 elif hasattr(
                     component,
                     "start"
@@ -505,6 +620,7 @@ class Kernel:
                 self.log(
                     f"[ONLINE] {name}"
                 )
+
 
 
             except Exception as error:
@@ -531,6 +647,8 @@ class Kernel:
 
 
 
+
+
     # ==================================================
     # SHUTDOWN
     # ==================================================
@@ -544,6 +662,7 @@ class Kernel:
         self.log(
             "Encerrando Genesis Core..."
         )
+
 
 
         for name, component in reversed(
@@ -560,6 +679,7 @@ class Kernel:
                 ):
 
                     component.shutdown()
+
 
 
                 elif hasattr(
@@ -596,48 +716,65 @@ class Kernel:
 
 
 
+
+
     # ==================================================
     # HEALTH
     # ==================================================
 
     def uptime(self):
 
+
         if not self.started_at:
 
             return 0
 
 
+
         return (
+
             datetime.now()
+
             -
+
             self.started_at
+
         ).total_seconds()
 
 
 
     def health(self):
 
+
         return {
+
 
             "name":
                 self.name,
 
+
             "version":
                 self.version,
+
 
             "status":
                 self.status,
 
+
             "components":
                 len(self.components),
 
+
             "failed":
                 len(self.failed_components),
+
 
             "uptime":
                 self.uptime()
 
         }
+
+
 
 
 
@@ -653,11 +790,14 @@ class Kernel:
 
         if self.logger:
 
+
             self.logger.info(
                 message
             )
 
+
         else:
+
 
             print(
                 f"[KERNEL] {message}"

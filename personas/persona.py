@@ -6,65 +6,53 @@ Arquivo:
 personas/persona.py
 
 Descrição:
-Classe base universal para personalidades
-do Genesis Core.
+Classe base universal de identidade
+cognitiva do Genesis Core.
 
 Responsável por:
 
-- Identidade do agente
-- Estilo de comunicação
-- Regras comportamentais
-- Preferências cognitivas
-- Integração com Response Engine
-- Preparação de contexto
+- Identidade
+- Personalidade
+- Regras
+- Contexto
+- Memória
+- Capacidades
 
 Arquitetura:
 Genesis Core
 
 Mark:
-IV - Thought Engine
-
-Autor:
-Caio Vitor Malveira
+V - Evolution
 =========================================
 """
 
 
 from datetime import datetime
+from typing import Any
 import json
-import os
 
 
 
 class Persona:
 
-    """
-    Classe base para qualquer personalidade
-    existente no Genesis.
-
-    Exemplos:
-
-    - Jarvis
-    - Rafiki
-    - Futuras personas
-    """
-
 
     def __init__(
         self,
-        name,
-        role,
-        description="",
-        tone="neutral",
+        name: str,
+        role: str,
+        description: str = "",
+        tone: str = "neutral",
         traits=None,
         rules=None,
-        capabilities=None
+        capabilities=None,
+        system_prompt: str = "",
+        metadata=None
     ):
 
 
-        # ==========================================
+        # ==============================
         # IDENTIDADE
-        # ==========================================
+        # ==============================
 
         self.name = name
 
@@ -73,44 +61,59 @@ class Persona:
         self.description = description
 
 
-
-        # ==========================================
-        # COMPORTAMENTO
-        # ==========================================
+        # ==============================
+        # PERSONALIDADE
+        # ==============================
 
         self.tone = tone
 
-
         self.traits = traits or []
-
 
         self.rules = rules or []
 
 
+        # ==============================
+        # IA CONTEXTO
+        # ==============================
 
-        # ==========================================
-        # ACESSOS
-        # ==========================================
+        self.system_prompt = system_prompt
+
+
+        # ==============================
+        # CAPACIDADES
+        # ==============================
 
         self.capabilities = capabilities or []
 
 
+        # ==============================
+        # METADATA
+        # ==============================
 
-        # ==========================================
-        # CONEXÕES
-        # ==========================================
+        self.metadata = metadata or {
 
-        self.response_engine = None
+            "version": "1.0",
+
+            "type": "persona"
+
+        }
+
+
+        # ==============================
+        # SERVIÇOS
+        # ==============================
 
         self.memory = None
 
         self.tools = None
 
+        self.ai_manager = None
 
 
-        # ==========================================
+
+        # ==============================
         # ESTADO
-        # ==========================================
+        # ==============================
 
         self.created_at = (
             datetime.now()
@@ -119,18 +122,9 @@ class Persona:
 
 
 
-    # ==================================================
+    # ==================================
     # CONEXÕES
-    # ==================================================
-
-
-    def connect_response_engine(
-        self,
-        engine
-    ):
-
-        self.response_engine = engine
-
+    # ==================================
 
 
     def connect_memory(
@@ -151,9 +145,18 @@ class Persona:
 
 
 
-    # ==================================================
+    def connect_ai(
+        self,
+        manager
+    ):
+
+        self.ai_manager = manager
+
+
+
+    # ==================================
     # IDENTIDADE
-    # ==================================================
+    # ==================================
 
 
     def identity(self):
@@ -163,175 +166,202 @@ class Persona:
             "name":
                 self.name,
 
+
             "role":
                 self.role,
+
 
             "description":
                 self.description,
 
-            "tone":
-                self.tone,
 
-            "traits":
-                self.traits
+            "metadata":
+                self.metadata
 
         }
 
 
 
-    # ==================================================
-    # CONTEXTO COGNITIVO
-    # ==================================================
+    # ==================================
+    # CONTEXTO PARA IA
+    # ==================================
 
 
     def build_context(
         self,
-        message
+        message: str
     ):
-
-        """
-        Cria o contexto enviado
-        ao Response Engine.
-
-        Cada persona pode sobrescrever.
-        """
 
 
         return {
 
 
             "persona":
+
                 self.name,
 
 
+
+            "system_prompt":
+
+                self.system_prompt,
+
+
+
             "role":
+
                 self.role,
 
 
+
             "tone":
+
                 self.tone,
 
 
+
             "traits":
+
                 self.traits,
 
 
+
             "rules":
+
                 self.rules,
 
 
+
+            "capabilities":
+
+                self.capabilities,
+
+
+
             "message":
+
                 message
 
         }
 
 
 
-    # ==================================================
-    # PROCESSAMENTO
-    # ==================================================
-
-
-    def respond(
-        self,
-        message
-    ):
-        """
-        Gera resposta utilizando o Response Engine conectado.
-        Levanta exceção caso o motor não esteja acoplado.
-        """
-        if not self.response_engine:
-            raise RuntimeError(
-                f"Erro na Persona '{self.name}': "
-                "Response Engine não foi conectado ao ciclo cognitivo."
-            )
-
-        context = self.build_context(
-            message
-        )
-
-        return self.response_engine.generate(
-            context
-        )
-
-
-
-    # ==================================================
-    # FERRAMENTAS
-    # ==================================================
+    # ==================================
+    # CAPACIDADES
+    # ==================================
 
 
     def can_use(
         self,
-        capability
+        capability: str
     ):
 
-        return (
-            capability
-            in self.capabilities
-        )
+        return capability in self.capabilities
 
 
 
-    # ==================================================
+    # ==================================
     # MEMÓRIA
-    # ==================================================
+    # ==================================
 
 
     def remember(
         self,
-        data
+        data: Any
     ):
 
-        if self.memory:
 
-            self.memory.store(
-                {
-                    "persona":
-                        self.name,
+        if not self.memory:
 
-                    "data":
-                        data,
-
-                    "time":
-                        datetime.now()
-                        .isoformat()
-                }
-            )
+            return False
 
 
 
-    # ==================================================
+        return self.memory.store(
+
+            {
+
+                "persona":
+
+                    self.name,
+
+
+                "data":
+
+                    data,
+
+
+                "timestamp":
+
+                    datetime.now()
+                    .isoformat()
+
+            },
+
+
+            memory_type="long_term"
+
+        )
+
+
+
+    # ==================================
     # SERIALIZAÇÃO
-    # ==================================================
+    # ==================================
 
 
     def to_dict(self):
 
         return {
 
+
             "name":
+
                 self.name,
 
+
             "role":
+
                 self.role,
 
+
             "description":
+
                 self.description,
 
+
+            "system_prompt":
+
+                self.system_prompt,
+
+
             "tone":
+
                 self.tone,
 
+
             "traits":
+
                 self.traits,
 
+
             "rules":
+
                 self.rules,
 
+
             "capabilities":
+
                 self.capabilities,
 
+
+            "metadata":
+
+                self.metadata,
+
+
             "created_at":
+
                 self.created_at
 
         }
@@ -343,11 +373,6 @@ class Persona:
         path
     ):
 
-        """
-        Salva configuração
-        da persona em JSON.
-        """
-
 
         with open(
             path,
@@ -355,29 +380,29 @@ class Persona:
             encoding="utf-8"
         ) as file:
 
+
             json.dump(
+
                 self.to_dict(),
+
                 file,
+
                 indent=4,
+
                 ensure_ascii=False
+
             )
-
-
-
-    # ==================================================
-    # REPRESENTAÇÃO
-    # ==================================================
-
-
-    def __str__(self):
-
-        return (
-            f"{self.name} - "
-            f"{self.role}"
-        )
 
 
 
     def info(self):
 
         return self.to_dict()
+
+
+
+    def __str__(self):
+
+        return (
+            f"{self.name} - {self.role}"
+        )

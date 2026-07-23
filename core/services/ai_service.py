@@ -6,33 +6,28 @@ Arquivo:
 core/services/ai_service.py
 
 Descrição:
-Serviço de integração da camada IA.
+Serviço oficial da inteligência Genesis.
 
 Responsável por:
 
-- Expor IA ao Genesis
-- Gerenciar ciclo de vida
+- Expor camada IA ao Kernel
+- Controlar ciclo de vida
+- Integrar Persona
+- Integrar Memória
+- Integrar Mind
 - Encaminhar requisições
-- Integrar Kernel e Managers
-
-A lógica cognitiva pertence ao AIManager.
 
 Arquitetura:
 Genesis Core
 
 Mark:
 V - Evolution
-
-Autor:
-Caio Vitor Malveira
 =========================================
 """
 
 from __future__ import annotations
 
-
 from typing import Any
-
 
 from core.base.module import Module
 
@@ -44,17 +39,9 @@ from core.ai.models.ai_response import AIResponse
 
 
 class AIService(Module):
-    """
-    Serviço oficial da camada IA.
-
-    Atua como ponte entre o Genesis
-    e o AIManager.
-    """
 
 
-
-    def __init__(self) -> None:
-
+    def __init__(self):
 
         super().__init__(
             name="ai_service"
@@ -63,44 +50,25 @@ class AIService(Module):
 
         self.ai_manager = AIManager()
 
+
         self.provider_name = "mock"
 
 
+        self.persona_manager = None
+        self.memory = None
+        self.mind = None
 
-    # =====================================================
+
+
+    # ==================================================
     # LOG
-    # =====================================================
-
+    # ==================================================
 
     def _log(
         self,
-        message: str,
-        level: str = "info"
+        message,
+        level="info"
     ):
-
-
-        if hasattr(
-            self,
-            "logger"
-        ):
-
-
-            method = getattr(
-                self.logger,
-                level,
-                None
-            )
-
-
-            if method:
-
-                method(
-                    message
-                )
-
-                return
-
-
 
         print(
             f"[AIService:{level.upper()}] {message}"
@@ -108,15 +76,14 @@ class AIService(Module):
 
 
 
-    # =====================================================
-    # CICLO DE VIDA
-    # =====================================================
-
+    # ==================================================
+    # INICIALIZAÇÃO
+    # ==================================================
 
     def initialize(
         self,
-        provider: str = "mock"
-    ) -> bool:
+        provider="mock"
+    ):
 
 
         try:
@@ -125,17 +92,17 @@ class AIService(Module):
             self.provider_name = provider
 
 
-
             self.ai_manager.initialize(
                 provider
             )
 
 
+            self._connect_dependencies()
+
 
             self._log(
-                f"AIService online. Provider: {provider}"
+                f"AIService ONLINE - Provider: {provider}"
             )
-
 
 
             return True
@@ -146,7 +113,7 @@ class AIService(Module):
 
 
             self._log(
-                f"Falha ao iniciar IA: {error}",
+                str(error),
                 "error"
             )
 
@@ -155,38 +122,38 @@ class AIService(Module):
 
 
 
+    # ==================================================
+    # DEPENDÊNCIAS
+    # ==================================================
 
-    def shutdown(
-        self
+    def connect_persona_manager(
+        self,
+        manager
     ):
 
 
-        try:
+        self.persona_manager = manager
 
 
-            self.ai_manager.shutdown()
-
-
-
-        except Exception as error:
-
-
-            self._log(
-                f"Erro ao desligar IA: {error}",
-                "error"
-            )
-
-
-
-        self._log(
-            "AIService encerrado."
+        self.ai_manager.connect_persona_manager(
+            manager
         )
 
 
 
-    # =====================================================
-    # CONEXÕES
-    # =====================================================
+    def connect_memory(
+        self,
+        memory
+    ):
+
+
+        self.memory = memory
+
+
+        self.ai_manager.connect_memory(
+            memory
+        )
+
 
 
     def connect_mind(
@@ -195,9 +162,7 @@ class AIService(Module):
     ):
 
 
-        """
-        Conecta Thought Engine.
-        """
+        self.mind = mind
 
 
         self.ai_manager.connect_mind(
@@ -205,31 +170,39 @@ class AIService(Module):
         )
 
 
-        self._log(
-            "Mind conectado ao AIManager."
-        )
+
+    def _connect_dependencies(self):
+
+
+        if self.persona_manager:
+
+            self.ai_manager.connect_persona_manager(
+                self.persona_manager
+            )
+
+
+        if self.memory:
+
+            self.ai_manager.connect_memory(
+                self.memory
+            )
+
+
+        if self.mind:
+
+            self.ai_manager.connect_mind(
+                self.mind
+            )
 
 
 
-    def register_provider(
-        self,
-        provider
-    ):
-
-
-        self.ai_manager.register_provider(
-            provider
-        )
-
-
-    # =====================================================
-    # REQUISIÇÕES
-    # =====================================================
-
+    # ==================================================
+    # IA
+    # ==================================================
 
     def ask(
         self,
-        prompt: str
+        prompt:str
     ) -> AIResponse:
 
 
@@ -241,9 +214,9 @@ class AIService(Module):
 
     def generate(
         self,
-        request: AIRequest,
-        **kwargs: Any
-    ) -> AIResponse:
+        request:AIRequest,
+        **kwargs:Any
+    ):
 
 
         return self.ai_manager.generate(
@@ -255,9 +228,9 @@ class AIService(Module):
 
     def chat(
         self,
-        messages: list[dict],
+        messages:list[dict],
         **kwargs
-    ) -> AIResponse:
+    ):
 
 
         return self.ai_manager.chat(
@@ -267,14 +240,13 @@ class AIService(Module):
 
 
 
-    # =====================================================
-    # CONTROLE
-    # =====================================================
-
+    # ==================================================
+    # PROVIDERS
+    # ==================================================
 
     def set_provider(
         self,
-        provider_name: str
+        provider_name
     ):
 
 
@@ -293,25 +265,42 @@ class AIService(Module):
 
 
 
-    # =====================================================
+    # ==================================================
     # STATUS
-    # =====================================================
+    # ==================================================
 
-
-    def ai_status(
-        self
-    ) -> dict:
+    def status(self):
 
 
         return {
 
+
             "service":
                 "AIService",
+
 
             "provider":
                 self.provider_name,
 
-            "manager":
+
+            "ai":
                 self.ai_manager.status()
 
+
         }
+
+
+
+    # ==================================================
+    # DESLIGAMENTO
+    # ==================================================
+
+    def shutdown(self):
+
+
+        self.ai_manager.shutdown()
+
+
+        self._log(
+            "AIService OFFLINE"
+        )

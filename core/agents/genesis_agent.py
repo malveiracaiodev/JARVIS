@@ -6,59 +6,61 @@ Arquivo:
 core/agents/genesis_agent.py
 
 Descrição:
-Agente inteligente base do Genesis Core (Mark IV - Neural Lattice).
 
-Responsável por unir:
-- Agent
+Agente cognitivo base do Genesis Core.
+
+Responsabilidades:
+
+- Identidade cognitiva
 - Persona
-- Response Engine
-- Memory
-- Tools
-- Neural Lattice Cognitive Pipeline
+- Perfil
+- Construção de contexto
+- Delegação ao Mind
+- Registro das interações
+
+O processamento cognitivo pertence ao Mind.
 
 Arquitetura:
-User
- |
+
 Agent
- |
-Persona
- |
-Thought Engine / Neural Lattice
- |
-Response Engine
- |
-Tools
+    │
+GenesisAgent
+    │
+Mind
+    │
+Thought Engine
+    │
+AIManager
 
 Mark:
-IV - Neural Lattice
-
-Autor:
-Caio Vitor Malveira
+V - Evolution
 =========================================
 """
 
-from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from __future__ import annotations
+
+from typing import Any, Dict, Optional
 
 from core.agents.agent import Agent
-from core.runtime.component_state import ComponentState
 
 
 class GenesisAgent(Agent):
     """
-    Agente inteligente universal otimizado para o padrão Mark IV (Neural Lattice).
+    Agente cognitivo padrão do Genesis.
 
-    Todos os agentes do Genesis (Jarvis, Rafiki, Vision, Programmer, etc.)
-    devem herdar desta classe.
+    Todos os agentes especializados devem
+    herdar desta classe.
     """
 
     def __init__(
         self,
         name: str,
-        persona: Optional[Any] = None,
+        persona=None,
         description: str = "",
-        capabilities: Optional[List[str]] = None,
-    ) -> None:
+        capabilities=None,
+        profile: Optional[Dict[str, Any]] = None
+    ):
+
         super().__init__(
             name=name,
             description=description,
@@ -66,131 +68,193 @@ class GenesisAgent(Agent):
         )
 
         # =====================================
-        # PERSONALIDADE
+        # PERSONA
         # =====================================
+
         self.persona = persona
 
         # =====================================
-        # INTELIGÊNCIA / NEURAL LATTICE
+        # PERFIL COGNITIVO
         # =====================================
-        self.response_engine: Optional[Any] = None
-        self.pipeline: Optional[Any] = None
-        self.tools: Optional[Any] = None
-        self.knowledge: Optional[Any] = None
+
+        self.profile = profile or {
+
+            "type": "general",
+
+            "reasoning": "adaptive",
+
+            "version": "5.0"
+
+        }
 
         # =====================================
         # ESTADO
         # =====================================
-        self.last_response: Optional[Dict[str, Any]] = None
-        self.lattice_state: ComponentState = ComponentState.OFFLINE
 
-    # =========================================
-        # CONEXÕES
-    # =========================================
+        self.last_thought = None
 
-    def connect_persona(self, persona: Any) -> None:
-        """Conecta ou atualiza a persona do agente."""
+    # ==================================================
+    # PERSONA
+    # ==================================================
+
+    def connect_persona(self, persona):
+
         self.persona = persona
 
-    def connect_response_engine(self, engine: Any) -> None:
-        """Conecta o motor de resposta e o propaga para a persona."""
-        self.response_engine = engine
-        if self.persona and hasattr(self.persona, "connect_response_engine"):
-            self.persona.connect_response_engine(engine)
+    # ==================================================
+    # CONTEXTO
+    # ==================================================
 
-    def connect_tools(self, tools: Any) -> None:
-        """Conecta o gerenciador de ferramentas (ToolManager)."""
-        self.tools = tools
-        if self.persona and hasattr(self.persona, "connect_tools"):
-            self.persona.connect_tools(tools)
+    def build_context(
+        self,
+        message: Any
+    ) -> Dict[str, Any]:
 
-    def connect_memory(self, memory: Any) -> None:
-        """Conecta o sistema de memória persistente."""
-        super().connect_memory(memory)
-        if self.persona and hasattr(self.persona, "connect_memory"):
-            self.persona.connect_memory(memory)
+        context = {
 
-    def connect_pipeline(self, pipeline: Any) -> None:
-        """Conecta o Thought Engine / Cognitive Pipeline da Neural Lattice."""
-        self.pipeline = pipeline
-        self.lattice_state = ComponentState.ONLINE
+            "agent": self.name,
 
-    # =========================================
-    # PROCESSAMENTO
-    # =========================================
+            "profile": self.profile,
 
-    def think(self, message: str) -> Union[str, Dict[str, Any]]:
-        """
-        Processa a mensagem do usuário através da Neural Lattice.
+            "message": message
 
-        Fluxo inteligente:
-        - Se o Pipeline cognitivo estiver ativo, delega o fluxo completo (Parser -> Planner -> Reasoner -> Executor -> Reflection).
-        - Se não, recorre ao motor tradicional via Persona/Response Engine.
-        """
-        if not self.persona:
-            return f"{self.name}: Persona não configurada na Neural Lattice."
+        }
 
-        try:
-            response: Any = None
+        if self.persona:
 
-            # 1. Fluxo Cognitivo Avançado via Pipeline (Thought Engine)
-            if self.pipeline and hasattr(self.pipeline, "run"):
-                thought_result = self.pipeline.run(message, agent=self.name)
-                # Extrai a resposta formatada ou o resultado da execução se disponível
-                response = thought_result.get("result") or thought_result
+            context["persona"] = (
 
-            # 2. Fluxo Padrão via Response Engine / Persona
-            elif self.response_engine and hasattr(self.persona, "respond"):
-                response = self.persona.respond(message)
+                self.persona.build_context(
+                    message
+                )
 
-            else:
-                response = f"{self.name}: Processando informação na malha neural."
+            )
 
-            # Registra o histórico da última interação
-            self.last_response = {
-                "message": message,
-                "response": response,
-                "time": datetime.now().isoformat()
+        return context
+
+    # ==================================================
+    # PENSAMENTO
+    # ==================================================
+
+    def think(
+        self,
+        message: Any
+    ):
+
+        if not self.active:
+
+            return {
+
+                "status": "inactive",
+
+                "agent": self.name
+
             }
 
-            # Armazena na memória persistente de forma segura
-            if hasattr(self, "remember"):
-                self.remember(self.last_response)
+        context = self.build_context(message)
 
-            return response
+        if self.mind:
 
-        except Exception as e:
-            error_msg = f"Erro no agente da Lattice {self.name}: {e}"
-            return error_msg
+            result = self.mind.process(
 
-    # =========================================
-    # EXECUÇÃO DE FERRAMENTAS
-    # =========================================
+                message=message,
 
-    def use_tool(self, tool: str, data: Optional[Any] = None) -> Any:
-        """Executa uma ferramenta de forma segura através do ToolManager conectado."""
-        if not self.tools:
-            return "ToolManager não conectado à Neural Lattice."
+                agent=self,
 
-        if hasattr(self.tools, "execute"):
-            return self.tools.execute(tool, data)
+                context=context
 
-        return None
+            )
 
-    # =========================================
-    # INFORMAÇÕES
-    # =========================================
+        else:
 
-    def info(self) -> Dict[str, Any]:
-        """Retorna o dicionário de status e metadados atualizados do agente."""
+            result = {
+
+                "status": "mind_offline",
+
+                "context": context
+
+            }
+
+        self.last_thought = result
+
+        self.remember({
+
+            "input": message,
+
+            "output": result
+
+        })
+
+        if (
+
+            self.memory_manager
+
+            and
+
+            hasattr(
+                self.memory_manager,
+                "store"
+            )
+
+        ):
+
+            self.memory_manager.store(
+
+                {
+
+                    "agent": self.name,
+
+                    "input": message,
+
+                    "output": result
+
+                },
+
+                memory_type="short_term"
+
+            )
+
+        return result
+
+    # ==================================================
+    # FERRAMENTAS
+    # ==================================================
+
+    def use_tool(
+        self,
+        tool: str,
+        data: Any = None
+    ):
+
+        return self.execute(
+            tool,
+            data
+        )
+
+    # ==================================================
+    # STATUS
+    # ==================================================
+
+    def info(self):
+
         data = super().info()
 
         data.update({
-            "persona": self.persona.name if self.persona and hasattr(self.persona, "name") else str(self.persona),
-            "response_engine": self.response_engine is not None,
-            "tools": self.tools is not None,
-            "pipeline": self.pipeline is not None,
-            "lattice_state": str(self.lattice_state)
+
+            "persona":
+
+                getattr(
+                    self.persona,
+                    "name",
+                    None
+                ),
+
+            "profile":
+                self.profile,
+
+            "last_thought":
+                self.last_thought is not None
+
         })
 
         return data

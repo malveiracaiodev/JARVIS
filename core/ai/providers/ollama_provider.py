@@ -37,7 +37,6 @@ Caio Vitor Malveira
 =========================================
 """
 
-
 from __future__ import annotations
 
 
@@ -45,30 +44,22 @@ from time import perf_counter
 
 from typing import Any
 
-
 import requests
 
 
 
 from core.ai.base.base_provider import BaseProvider
 
-
 from core.ai.models.ai_request import AIRequest
 
 from core.ai.models.ai_response import AIResponse
 
 
-
 from core.ai.exceptions import (
-
     ProviderConnectionError,
-
     ProviderTimeoutError,
-
     ProviderGenerationError,
-
     EmbeddingError
-
 )
 
 
@@ -76,10 +67,6 @@ from core.ai.exceptions import (
 
 
 class OllamaProvider(BaseProvider):
-    """
-    Provider para modelos locais Ollama.
-    """
-
 
 
     def __init__(
@@ -95,7 +82,7 @@ class OllamaProvider(BaseProvider):
 
             model_name=model_name,
 
-            version="3.0"
+            version="5.0"
 
         )
 
@@ -103,11 +90,14 @@ class OllamaProvider(BaseProvider):
         self.host = host.rstrip("/")
 
 
+        self.timeout = 120
+
+
 
 
 
     # =====================================================
-    # CICLO DE VIDA
+    # INIT
     # =====================================================
 
 
@@ -143,11 +133,9 @@ class OllamaProvider(BaseProvider):
 
             self.state.metadata.update({
 
-                "host":
-                    self.host
+                "host": self.host
 
             })
-
 
 
             return True
@@ -159,7 +147,7 @@ class OllamaProvider(BaseProvider):
 
             raise ProviderTimeoutError(
 
-                f"Ollama timeout: {error}"
+                str(error)
 
             )
 
@@ -170,9 +158,11 @@ class OllamaProvider(BaseProvider):
 
             raise ProviderConnectionError(
 
-                f"Ollama indisponível: {error}"
+                f"Ollama offline: {error}"
 
             )
+
+
 
 
 
@@ -186,7 +176,7 @@ class OllamaProvider(BaseProvider):
     def generate(
         self,
         request: AIRequest,
-        **kwargs: Any
+        **kwargs:Any
     ) -> AIResponse:
 
 
@@ -213,17 +203,14 @@ class OllamaProvider(BaseProvider):
                     self.model_name,
 
 
-
                 "prompt":
 
                     request.prompt,
 
 
-
                 "stream":
 
                     False,
-
 
 
                 "options":
@@ -233,6 +220,11 @@ class OllamaProvider(BaseProvider):
                     "temperature":
 
                         request.temperature,
+
+
+                    "top_p":
+
+                        request.top_p,
 
 
                     "num_predict":
@@ -245,14 +237,29 @@ class OllamaProvider(BaseProvider):
 
 
 
+
+
             if request.system_prompt:
+
+
+                payload["system"] = request.system_prompt
+
+
+
+
+
+            elif request.context:
 
 
                 payload["system"] = (
 
-                    request.system_prompt
+                    f"Você é {request.context.persona}. "
+
+                    "Responda como assistente do Genesis Core."
 
                 )
+
+
 
 
 
@@ -272,11 +279,11 @@ class OllamaProvider(BaseProvider):
 
 
 
-            data = response.json()
+            data=response.json()
 
 
 
-            content = data.get(
+            content=data.get(
 
                 "response",
 
@@ -286,12 +293,22 @@ class OllamaProvider(BaseProvider):
 
 
 
-            latency = (
+            if not content.strip():
+
+
+                raise ProviderGenerationError(
+
+                    "Ollama retornou resposta vazia."
+
+                )
+
+
+
+            latency=(
 
                 perf_counter()
 
                 -
-
                 start
 
             )
@@ -310,23 +327,28 @@ class OllamaProvider(BaseProvider):
 
                 request_id=request.request_id,
 
+
                 success=True,
+
 
                 content=content,
 
+
                 provider=self.provider_name,
 
-                model=request.model or self.model_name,
+
+                model=payload["model"],
+
 
                 persona=request.persona,
 
+
                 latency=latency,
+
 
                 metadata={
 
-                    "ollama":
-
-                        data
+                    "ollama":data
 
                 }
 
@@ -334,19 +356,18 @@ class OllamaProvider(BaseProvider):
 
 
 
+
         except requests.Timeout:
 
 
             self.register_failure(
-
-                "Timeout"
-
+                "timeout"
             )
 
 
             raise ProviderTimeoutError(
 
-                "Tempo excedido pelo Ollama"
+                "Ollama excedeu tempo limite."
 
             )
 
@@ -390,6 +411,8 @@ class OllamaProvider(BaseProvider):
 
 
 
+
+
     # =====================================================
     # CHAT
     # =====================================================
@@ -397,19 +420,20 @@ class OllamaProvider(BaseProvider):
 
     def chat(
         self,
-        messages: list[dict],
-        **kwargs: Any
+        messages:list[dict],
+        **kwargs
     ) -> AIResponse:
 
 
-        start = perf_counter()
+
+        start=perf_counter()
 
 
 
         try:
 
 
-            payload = {
+            payload={
 
 
                 "model":
@@ -423,11 +447,9 @@ class OllamaProvider(BaseProvider):
                     ),
 
 
-
                 "messages":
 
                     messages,
-
 
 
                 "stream":
@@ -438,7 +460,7 @@ class OllamaProvider(BaseProvider):
 
 
 
-            response = requests.post(
+            response=requests.post(
 
                 f"{self.host}/api/chat",
 
@@ -449,27 +471,23 @@ class OllamaProvider(BaseProvider):
             )
 
 
-
             response.raise_for_status()
 
 
 
-            data = response.json()
+            data=response.json()
 
 
 
-            content = (
+            content=(
 
-                data
-
-                .get(
+                data.get(
 
                     "message",
 
                     {}
 
                 )
-
                 .get(
 
                     "content",
@@ -482,12 +500,21 @@ class OllamaProvider(BaseProvider):
 
 
 
-            latency = (
+            if not content.strip():
+
+                raise ProviderGenerationError(
+
+                    "Resposta vazia."
+
+                )
+
+
+
+            latency=(
 
                 perf_counter()
 
                 -
-
                 start
 
             )
@@ -516,13 +543,12 @@ class OllamaProvider(BaseProvider):
 
                 metadata={
 
-                    "ollama":
-
-                        data
+                    "ollama":data
 
                 }
 
             )
+
 
 
 
@@ -546,6 +572,7 @@ class OllamaProvider(BaseProvider):
 
 
 
+
     # =====================================================
     # EMBEDDINGS
     # =====================================================
@@ -553,14 +580,14 @@ class OllamaProvider(BaseProvider):
 
     def embeddings(
         self,
-        text: str
+        text:str
     ):
 
 
         try:
 
 
-            response = requests.post(
+            response=requests.post(
 
                 f"{self.host}/api/embeddings",
 
@@ -569,7 +596,6 @@ class OllamaProvider(BaseProvider):
                     "model":
 
                         self.model_name,
-
 
                     "prompt":
 
@@ -587,7 +613,7 @@ class OllamaProvider(BaseProvider):
 
 
 
-            data = response.json()
+            data=response.json()
 
 
 
@@ -597,7 +623,9 @@ class OllamaProvider(BaseProvider):
 
             return data.get(
 
-                "embedding"
+                "embedding",
+
+                []
 
             )
 

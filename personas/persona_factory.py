@@ -7,39 +7,41 @@ personas/persona_factory.py
 
 Descrição:
 
-Fábrica dinâmica responsável pela criação
-de Personas do Genesis Core.
+Factory dinâmica de Personas.
 
-Responsabilidades:
+Responsável por:
 
-- Ler identity.json.
-- Resolver módulos dinamicamente.
-- Criar personalidades.
-- Separar configuração de implementação.
-- Permitir expansão por plugins.
+- Carregar identity.json
+- Resolver classes dinamicamente
+- Injetar configuração
+- Criar personas customizadas
+- Suportar plugins futuros
 
 Arquitetura:
 
-Identity JSON
-      |
-      ▼
- Persona Factory
-      |
-      ▼
- Dynamic Loader
-      |
- ┌────┴────┐
- ▼         ▼
-Jarvis   Rafiki
+Identity
+   |
+   ↓
+PersonaFactory
+   |
+   ↓
+Dynamic Loader
+   |
+   ├── Jarvis
+   ├── Rafiki
+   └── Custom Personas
 
 
 Mark:
-IV - Thought Engine
+V - Evolution
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
+
+
+from __future__ import annotations
 
 
 import json
@@ -55,18 +57,6 @@ from personas.persona import Persona
 
 
 class PersonaFactory:
-
-
-    """
-    Criador dinâmico de Personas.
-
-    A Factory não conhece nenhuma Persona
-    específica.
-
-    Ela apenas interpreta a identidade
-    declarada no JSON.
-    """
-
 
 
     def __init__(
@@ -93,11 +83,8 @@ class PersonaFactory:
 
 
 
-
-
-
     # ==================================================
-    # CARREGAMENTO IDENTITY
+    # LOAD IDENTITY
     # ==================================================
 
 
@@ -108,8 +95,9 @@ class PersonaFactory:
             self.identity_path
         ):
 
-
-            self.identity = {}
+            print(
+                "[PERSONA FACTORY] Identity não encontrado."
+            )
 
             return
 
@@ -125,9 +113,7 @@ class PersonaFactory:
             ) as file:
 
 
-                self.identity = json.load(
-                    file
-                )
+                self.identity = json.load(file)
 
 
 
@@ -135,10 +121,11 @@ class PersonaFactory:
 
 
             print(
+
                 "[PERSONA FACTORY] Erro:",
                 error
-            )
 
+            )
 
             self.identity = {}
 
@@ -146,37 +133,46 @@ class PersonaFactory:
 
 
 
-
-
-
     # ==================================================
-    # CRIAÇÃO PRINCIPAL
+    # CREATE
     # ==================================================
 
 
     def create(
         self,
-        name
+        name=None
     ):
 
 
-        name = name.lower()
+        if not name:
+
+
+            name = self.identity.get(
+
+                "default_persona",
+
+                "jarvis"
+
+            )
 
 
 
-        personas = self.identity.get(
-
-            "personas",
-
-            {}
-
-        )
+        name = name.lower().strip()
 
 
 
-        config = personas.get(
+        config = (
 
-            name
+            self.identity
+
+            .get(
+                "personas",
+                {}
+            )
+
+            .get(
+                name
+            )
 
         )
 
@@ -191,20 +187,18 @@ class PersonaFactory:
 
 
 
-        module_path = config.get(
-
+        module = config.get(
             "module"
-
         )
 
 
 
-        if module_path:
+        if module:
 
 
             instance = self.load_module(
 
-                module_path,
+                module,
 
                 config
 
@@ -212,6 +206,7 @@ class PersonaFactory:
 
 
             if instance:
+
 
                 return instance
 
@@ -227,11 +222,8 @@ class PersonaFactory:
 
 
 
-
-
-
     # ==================================================
-    # CARREGAMENTO DINÂMICO
+    # DYNAMIC LOADER
     # ==================================================
 
 
@@ -257,9 +249,7 @@ class PersonaFactory:
 
 
             module = importlib.import_module(
-
                 module_name
-
             )
 
 
@@ -274,7 +264,21 @@ class PersonaFactory:
 
 
 
-            return persona_class()
+            persona = persona_class()
+
+
+
+            self.apply_config(
+
+                persona,
+
+                config
+
+            )
+
+
+
+            return persona
 
 
 
@@ -283,10 +287,8 @@ class PersonaFactory:
 
             print(
 
-                "[PERSONA FACTORY] Falha carregando",
-
+                "[PERSONA FACTORY] Falha:",
                 module_path,
-
                 error
 
             )
@@ -298,10 +300,132 @@ class PersonaFactory:
 
 
 
+    # ==================================================
+    # INJETAR CONFIGURAÇÃO
+    # ==================================================
+
+
+    def apply_config(
+        self,
+        persona,
+        config
+    ):
+
+
+        personality = config.get(
+
+            "personality",
+
+            {}
+
+        )
+
+
+        persona.name = config.get(
+
+            "name",
+
+            persona.name
+
+        )
+
+
+        persona.role = config.get(
+
+            "role",
+
+            persona.role
+
+        )
+
+
+        persona.description = config.get(
+
+            "description",
+
+            persona.description
+
+        )
+
+
+        persona.tone = personality.get(
+
+            "tone",
+
+            persona.tone
+
+        )
+
+
+        persona.traits = [
+
+
+            personality.get(
+
+                "style",
+
+                ""
+
+            ),
+
+
+            personality.get(
+
+                "humor",
+
+                ""
+
+            )
+
+        ]
+
+
+
+        persona.capabilities = config.get(
+
+            "capabilities",
+
+            persona.capabilities
+
+        )
+
+
+        persona.system_prompt = config.get(
+
+            "system_prompt",
+
+            getattr(
+                persona,
+                "system_prompt",
+                ""
+            )
+
+        )
+
+
+        persona.metadata = config.get(
+
+            "metadata",
+
+            {
+
+                "version": "1.0",
+
+                "type": "persona"
+
+            }
+
+        )
+
+
+        return persona
+
+
+
 
 
     # ==================================================
-    # PERSONA CONFIGURÁVEL
+    # GENERIC PERSONA
     # ==================================================
 
 
@@ -311,24 +435,21 @@ class PersonaFactory:
     ):
 
 
-        personas = self.identity.get(
+        config = (
 
-            "personas",
+            self.identity
 
-            {}
+            .get(
+                "personas",
+                {}
+            )
 
-        )
-
-
-
-        config = personas.get(
-
-            name,
-
-            {}
+            .get(
+                name,
+                {}
+            )
 
         )
-
 
 
         personality = config.get(
@@ -353,7 +474,6 @@ class PersonaFactory:
             ),
 
 
-
             role=config.get(
 
                 "role",
@@ -361,7 +481,6 @@ class PersonaFactory:
                 "Agente Genesis"
 
             ),
-
 
 
             description=config.get(
@@ -373,7 +492,6 @@ class PersonaFactory:
             ),
 
 
-
             tone=personality.get(
 
                 "tone",
@@ -383,30 +501,19 @@ class PersonaFactory:
             ),
 
 
-
             traits=[
 
-
                 personality.get(
-
                     "style",
-
                     ""
-
                 ),
 
-
-
                 personality.get(
-
                     "humor",
-
                     ""
-
                 )
 
             ],
-
 
 
             capabilities=config.get(
@@ -414,6 +521,24 @@ class PersonaFactory:
                 "capabilities",
 
                 []
+
+            ),
+
+
+            system_prompt=config.get(
+
+                "system_prompt",
+
+                ""
+
+            ),
+
+
+            metadata=config.get(
+
+                "metadata",
+
+                {}
 
             )
 
@@ -423,11 +548,8 @@ class PersonaFactory:
 
 
 
-
-
-
     # ==================================================
-    # PADRÃO
+    # DEFAULT
     # ==================================================
 
 
@@ -446,16 +568,10 @@ class PersonaFactory:
             role="Agente Genesis",
 
 
-            description=(
-
-                "Personalidade padrão do sistema."
-
-            ),
-
+            description="Persona padrão do sistema.",
 
 
             tone="neutro",
-
 
 
             traits=[
@@ -470,28 +586,24 @@ class PersonaFactory:
 
 
 
-
-
-
     # ==================================================
-    # LISTAGEM
+    # LIST
     # ==================================================
 
 
-    def available(
-        self
-    ):
+    def available(self):
 
 
         return list(
 
-            self.identity.get(
+            self.identity
 
+            .get(
                 "personas",
-
                 {}
+            )
 
-            ).keys()
+            .keys()
 
         )
 
@@ -499,11 +611,8 @@ class PersonaFactory:
 
 
 
-
-
-
     # ==================================================
-    # IDENTIDADE COMPLETA
+    # SYSTEM IDENTITY
     # ==================================================
 
 

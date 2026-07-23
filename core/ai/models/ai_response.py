@@ -6,23 +6,10 @@ Arquivo:
 core/ai/models/ai_response.py
 
 Descrição:
-Modelo oficial de resposta da camada
-de Inteligência Artificial.
+Modelo oficial de resposta da camada IA.
 
 Representa a resposta produzida por
 qualquer Provider integrado ao Genesis.
-
-Responsável por transportar:
-
-- Conteúdo gerado
-- Informações do Provider
-- Modelo utilizado
-- Tokens
-- Streaming
-- Tool Calling
-- Métricas
-- Diagnóstico
-- Metadados
 
 Arquitetura:
 Genesis Core
@@ -43,12 +30,14 @@ from typing import Any
 from uuid import uuid4
 
 
+
 @dataclass(slots=True)
 class AIResponse:
     """
     Estrutura padrão de resposta
     produzida pela camada IA.
     """
+
 
     # =====================================================
     # IDENTIDADE
@@ -58,11 +47,14 @@ class AIResponse:
         default_factory=lambda: str(uuid4())
     )
 
+
     request_id: str | None = None
+
 
     created_at: datetime = field(
         default_factory=datetime.now
     )
+
 
     # =====================================================
     # RESULTADO
@@ -70,9 +62,13 @@ class AIResponse:
 
     success: bool = True
 
+
     content: str = ""
 
-    persona: str | None = None
+
+    persona: str = "jarvis"
+
+
 
     # =====================================================
     # PROVIDER
@@ -80,7 +76,10 @@ class AIResponse:
 
     provider: str = ""
 
+
     model: str = ""
+
+
 
     # =====================================================
     # STREAMING
@@ -88,13 +87,18 @@ class AIResponse:
 
     stream: bool = False
 
-    completed: bool = True
+
+    completed: bool = False
+
 
     chunks: list[str] = field(
         default_factory=list
     )
 
-    finish_reason: str = "completed"
+
+    finish_reason: str | None = None
+
+
 
     # =====================================================
     # TOOL CALLING
@@ -104,6 +108,8 @@ class AIResponse:
         default_factory=list
     )
 
+
+
     # =====================================================
     # MULTIMODAL
     # =====================================================
@@ -112,11 +118,15 @@ class AIResponse:
         default_factory=list
     )
 
+
+
     # =====================================================
     # PERFORMANCE
     # =====================================================
 
     latency: float = 0.0
+
+
 
     # =====================================================
     # TOKENS
@@ -124,9 +134,13 @@ class AIResponse:
 
     prompt_tokens: int = 0
 
+
     completion_tokens: int = 0
 
+
     total_tokens: int = 0
+
+
 
     # =====================================================
     # DIAGNÓSTICO
@@ -134,13 +148,17 @@ class AIResponse:
 
     error: str | None = None
 
+
     warnings: list[str] = field(
         default_factory=list
     )
 
+
     metadata: dict[str, Any] = field(
         default_factory=dict
     )
+
+
 
     # =====================================================
     # PROPRIEDADES
@@ -154,6 +172,8 @@ class AIResponse:
 
         return not self.success
 
+
+
     @property
     def empty(self) -> bool:
         """
@@ -161,139 +181,218 @@ class AIResponse:
         """
 
         return not bool(
-            self.content.strip()
+            (self.content or "").strip()
         )
+
+
+
+    @property
+    def has_content(self) -> bool:
+        """
+        Verifica se existe conteúdo.
+        """
+
+        return not self.empty
+
+
 
     @property
     def has_chunks(self) -> bool:
-        """
-        Indica se existem chunks.
-        """
+        return bool(
+            self.chunks
+        )
 
-        return bool(self.chunks)
+
 
     @property
     def has_tool_calls(self) -> bool:
-        """
-        Indica se houve Tool Calling.
-        """
+        return bool(
+            self.tool_calls
+        )
 
-        return bool(self.tool_calls)
+
 
     @property
     def has_attachments(self) -> bool:
-        """
-        Indica se existem anexos.
-        """
+        return bool(
+            self.attachments
+        )
 
-        return bool(self.attachments)
+
 
     # =====================================================
-    # UTILIDADES
+    # STREAMING
     # =====================================================
 
     def add_chunk(
         self,
         chunk: str
     ) -> None:
-        """
-        Adiciona um chunk recebido
-        durante streaming.
-        """
 
-        self.chunks.append(chunk)
+        self.chunks.append(
+            chunk
+        )
+
 
         self.content += chunk
+
+
+
+    def complete(
+        self,
+        reason: str = "stop"
+    ) -> None:
+        """
+        Finaliza resposta.
+        """
+
+        self.completed = True
+
+        self.finish_reason = reason
+
+
+
+    # =====================================================
+    # TOOL CALLING
+    # =====================================================
 
     def add_tool_call(
         self,
         tool_call: dict[str, Any]
     ) -> None:
-        """
-        Registra uma chamada de ferramenta.
-        """
 
-        self.tool_calls.append(tool_call)
+        self.tool_calls.append(
+            tool_call
+        )
+
+
+
+    # =====================================================
+    # ANEXOS
+    # =====================================================
 
     def add_attachment(
         self,
         attachment: Any
     ) -> None:
-        """
-        Adiciona um anexo retornado
-        pelo Provider.
-        """
 
         self.attachments.append(
             attachment
         )
 
+
+
+    # =====================================================
+    # AVISOS
+    # =====================================================
+
     def add_warning(
         self,
         warning: str
     ) -> None:
-        """
-        Registra um aviso.
-        """
 
         self.warnings.append(
             warning
         )
 
+
+
     # =====================================================
     # SERIALIZAÇÃO
     # =====================================================
 
-    def to_dict(self) -> dict[str, Any]:
-        """
-        Serialização completa.
-        """
+    def to_dict(
+        self
+    ) -> dict[str, Any]:
 
         return {
 
-            "response_id": self.response_id,
+            "response_id":
+                self.response_id,
 
-            "request_id": self.request_id,
 
-            "created_at": self.created_at.isoformat(),
+            "request_id":
+                self.request_id,
 
-            "success": self.success,
 
-            "content": self.content,
+            "created_at":
+                self.created_at.isoformat(),
 
-            "persona": self.persona,
 
-            "provider": self.provider,
+            "success":
+                self.success,
 
-            "model": self.model,
 
-            "stream": self.stream,
+            "content":
+                self.content,
 
-            "completed": self.completed,
 
-            "finish_reason": self.finish_reason,
+            "persona":
+                self.persona,
 
-            "chunks": list(self.chunks),
 
-            "tool_calls": list(self.tool_calls),
+            "provider":
+                self.provider,
 
-            "attachments": list(self.attachments),
 
-            "latency": self.latency,
+            "model":
+                self.model,
 
-            "prompt_tokens": self.prompt_tokens,
 
-            "completion_tokens": self.completion_tokens,
+            "stream":
+                self.stream,
 
-            "total_tokens": self.total_tokens,
 
-            "error": self.error,
+            "completed":
+                self.completed,
 
-            "warnings": list(self.warnings),
 
-            "metadata": dict(self.metadata)
+            "finish_reason":
+                self.finish_reason,
+
+
+            "chunks":
+                list(self.chunks),
+
+
+            "tool_calls":
+                list(self.tool_calls),
+
+
+            "attachments":
+                list(self.attachments),
+
+
+            "latency":
+                self.latency,
+
+
+            "prompt_tokens":
+                self.prompt_tokens,
+
+
+            "completion_tokens":
+                self.completion_tokens,
+
+
+            "total_tokens":
+                self.total_tokens,
+
+
+            "error":
+                self.error,
+
+
+            "warnings":
+                list(self.warnings),
+
+
+            "metadata":
+                dict(self.metadata)
 
         }
+
+
 
     # =====================================================
     # CONSTRUTORES
@@ -304,11 +403,10 @@ class AIResponse:
         cls,
         error: str,
         provider: str = "unknown",
-        model: str = "unknown"
+        model: str = "unknown",
+        persona: str = "jarvis"
     ) -> "AIResponse":
-        """
-        Cria uma resposta de erro.
-        """
+
 
         return cls(
 
@@ -320,22 +418,27 @@ class AIResponse:
 
             model=model,
 
+            persona=persona,
+
             error=error,
 
-            completed=True
+            completed=True,
+
+            finish_reason="error"
 
         )
+
+
 
     @classmethod
     def success_response(
         cls,
         content: str,
         provider: str,
-        model: str
+        model: str,
+        persona: str = "jarvis"
     ) -> "AIResponse":
-        """
-        Cria uma resposta simples.
-        """
+
 
         return cls(
 
@@ -345,9 +448,17 @@ class AIResponse:
 
             provider=provider,
 
-            model=model
+            model=model,
+
+            persona=persona,
+
+            completed=True,
+
+            finish_reason="stop"
 
         )
+
+
 
     # =====================================================
     # DEBUG
@@ -355,14 +466,19 @@ class AIResponse:
 
     def __repr__(self) -> str:
 
-        preview = self.content.replace(
+
+        preview = (
+            self.content or ""
+        ).replace(
             "\n",
             " "
         )
 
+
         if len(preview) > 40:
 
             preview = preview[:40] + "..."
+
 
         return (
 
@@ -374,7 +490,7 @@ class AIResponse:
 
             f"success={self.success}, "
 
-            f"stream={self.stream}, "
+            f"completed={self.completed}, "
 
             f"content='{preview}'"
 

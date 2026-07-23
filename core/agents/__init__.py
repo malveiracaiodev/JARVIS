@@ -2,40 +2,87 @@
 =========================================
 GENESIS CORE
 
-Arquivo:
-core/agents/__init__.py
+Pacote:
+core.agents
 
 Descrição:
-Inicializador e ponto de exportação do pacote
-core.agents do Genesis Core (Mark IV).
+Camada responsável pelo ecossistema
+de agentes cognitivos do Genesis Core.
+
+Responsável por:
+
+- Classe base Agent
+- Agentes cognitivos Genesis
+- Criação dinâmica de agentes
+- Gerenciamento do ciclo de vida
+
+Arquitetura:
+
+Kernel
+   |
+   ▼
+AgentManager
+   |
+   ▼
+AgentFactory
+   |
+   ▼
+GenesisAgent
+   |
+   ▼
+Persona
+
+
+Mark:
+V - Evolution
 =========================================
 """
 
-from typing import List, Optional
 
 # ==================================================
-# CLASSE BASE DE AGENTES
+# BASE
 # ==================================================
+
 from .agent import Agent
 
-# ==================================================
-# AGENTE RAIZ GENESIS
-# ==================================================
-try:
-    from .genesis_agent import GenesisAgent
-except ImportError:
-    GenesisAgent = None  # type: ignore
+
 
 # ==================================================
-# GERENCIADOR
+# AGENTE COGNITIVO GENESIS
 # ==================================================
+
+from .genesis_agent import GenesisAgent
+
+
+
+# ==================================================
+# FACTORY
+# ==================================================
+
+from .agent_factory import AgentFactory
+
+
+
+# ==================================================
+# GERENCIAMENTO
+# ==================================================
+
 from .agent_manager import AgentManager
 
+
+
 # ==================================================
-# EXPORTAÇÃO PÚBLICA
+# API PÚBLICA
 # ==================================================
-__all__: List[str] = [
+
+__all__ = [
+
     "Agent",
+
     "GenesisAgent",
-    "AgentManager",
+
+    "AgentFactory",
+
+    "AgentManager"
+
 ]

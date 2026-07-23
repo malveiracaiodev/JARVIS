@@ -6,112 +6,633 @@ Arquivo:
 core/memory/memory_coordinator.py
 
 Descrição:
-Coordenador e fachada central dos sistemas 
-de memória do Genesis Core.
 
-Responsável por unificar o acesso à ShortTermMemory
-e LongTermMemory, oferecendo um ponto único 
-de entrada para o Thought Engine e o Pipeline Cognitivo.
+Fachada central da arquitetura de memória
+do Genesis Core.
+
+Responsável por:
+
+- Coordenar memória de curto prazo
+- Coordenar memória de longo prazo
+- Recuperação contextual
+- Integração com Thought Engine
+- Preparação de contexto cognitivo
+- Persistência
 
 Arquitetura:
-Genesis Core
+
+Thought Engine
+      |
+      v
+MemoryCoordinator
+      |
+  +---+---+
+  |       |
+ STM     LTM
+
 
 Mark:
-V - Evolution (Memory Layer)
+V - Evolution Memory Layer
 
 Autor:
 Caio Vitor Malveira
 =========================================
 """
 
-from core.interfaces.memory_interface import MemoryInterface
-from core.memory.short_term_memory import ShortTermMemory
-from core.memory.long_term_memory import LongTermMemory
+
+from __future__ import annotations
+
+
 import threading
 
+from datetime import datetime
+from typing import Any
+
+
+from core.interfaces.memory_interface import MemoryInterface
+
+from core.memory.short_term_memory import ShortTermMemory
+from core.memory.long_term_memory import LongTermMemory
+
+
+
+
+
 class MemoryCoordinator(MemoryInterface):
+
+
     """
-    Fachada que gerencia múltiplos backends de memória (Curto e Longo Prazo),
-    roteando comandos de acordo com a criticidade e escopo da informação.
+    Coordenador universal de memória.
+
+    Atua como ponte entre:
+
+    - Pipeline Cognitivo
+    - Thought Engine
+    - Personas
+    - Agentes
+    - Conhecimento persistente
     """
 
-    def __init__(self, memory_manager=None):
+
+
+    def __init__(
+        self,
+        memory_manager=None,
+        logger=None
+    ):
+
+
         self._short_term = ShortTermMemory()
-        self._long_term = LongTermMemory(memory_manager=memory_manager)
+
+
+        self._long_term = LongTermMemory(
+            memory_manager=memory_manager
+        )
+
+
+        self.logger = logger
+
+
         self._lock = threading.RLock()
 
-    def store(self, data, memory_type="short_term"):
-        """
-        Roteia o armazenamento para o backend apropriado.
-        - 'short_term', 'working' -> ShortTermMemory
-        - 'long_term', 'episodic', 'semantic' -> LongTermMemory
-        """
-        with self._lock:
-            if memory_type in ["long_term", "episodic", "semantic"]:
-                return self._long_term.store(data, memory_type=memory_type)
-            else:
-                return self._short_term.store(data, memory_type=memory_type)
 
-    def retrieve(self, query, context=None):
-        """Busca combinada em ambas as camadas de memória (Curto e Longo Prazo)."""
+        self._cache = {}
+
+
+        self._stats = {
+
+            "stored": 0,
+
+            "retrieved": 0,
+
+            "searches": 0,
+
+            "forgotten": 0
+
+        }
+
+
+
+
+
+    # =====================================================
+    # STORE
+    # =====================================================
+
+
+    def store(
+        self,
+        data: Any,
+        memory_type: str = "short_term"
+    ):
+
+
         with self._lock:
-            st_results = self._short_term.retrieve(query, context=context)
-            lt_results = self._long_term.retrieve(query, context=context)
-            
-            return {
-                "short_term": st_results,
-                "long_term": lt_results
+
+
+            try:
+
+
+                if memory_type in (
+                    "long_term",
+                    "episodic",
+                    "semantic"
+                ):
+
+
+                    result = self._long_term.store(
+
+                        data,
+
+                        memory_type=memory_type
+
+                    )
+
+
+                else:
+
+
+                    result = self._short_term.store(
+
+                        data,
+
+                        memory_type=memory_type
+
+                    )
+
+
+
+                self._stats["stored"] += 1
+
+
+                return result
+
+
+
+            except Exception as error:
+
+
+                self._log(
+                    "Memory store error",
+                    error
+                )
+
+
+                return None
+
+
+
+
+
+    # =====================================================
+    # MEMÓRIA COGNITIVA
+    # =====================================================
+
+
+    def remember_fact(
+        self,
+        fact: str,
+        importance: int = 5
+    ):
+
+
+        return self.store(
+
+            {
+
+                "type":
+                    "fact",
+
+                "content":
+                    fact,
+
+                "importance":
+                    importance,
+
+                "created_at":
+                    datetime.now().isoformat()
+
+            },
+
+            memory_type="semantic"
+
+        )
+
+
+
+
+
+    def remember_event(
+        self,
+        event: str
+    ):
+
+
+        return self.store(
+
+            {
+
+                "type":
+                    "event",
+
+                "content":
+                    event,
+
+                "created_at":
+                    datetime.now().isoformat()
+
+            },
+
+            memory_type="episodic"
+
+        )
+
+
+
+
+
+
+
+    # =====================================================
+    # RETRIEVE
+    # =====================================================
+
+
+    def retrieve(
+        self,
+        query,
+        context=None
+    ):
+
+
+        with self._lock:
+
+
+            cache_key = str(query)
+
+
+            if cache_key in self._cache:
+
+                return self._cache[cache_key]
+
+
+
+            short = self._short_term.retrieve(
+
+                query,
+
+                context=context
+
+            )
+
+
+            long = self._long_term.retrieve(
+
+                query,
+
+                context=context
+
+            )
+
+
+
+            result = {
+
+
+                "query":
+                    query,
+
+
+                "short_term":
+                    short,
+
+
+                "long_term":
+                    long
+
+
             }
 
-    def search(self, query, limit=10):
-        """Executa busca unificada priorizando resultados recentes e persistidos."""
+
+
+            self._cache[cache_key] = result
+
+
+            self._stats["retrieved"] += 1
+
+
+
+            return result
+
+
+
+
+
+    # =====================================================
+    # CONTEXTO PARA IA
+    # =====================================================
+
+
+    def build_context(
+        self,
+        query
+    ):
+
+
+        memories = self.retrieve(
+            query
+        )
+
+
+        return {
+
+
+            "memory":
+
+                memories,
+
+
+            "summary":
+
+                self._summarize(
+                    memories
+                )
+
+        }
+
+
+
+
+
+    def _summarize(
+        self,
+        memories
+    ):
+
+
+        return {
+
+            "short_count":
+
+                len(
+                    memories.get(
+                        "short_term",
+                        []
+                    )
+                ),
+
+
+            "long_count":
+
+                len(
+                    memories.get(
+                        "long_term",
+                        []
+                    )
+                )
+
+        }
+
+
+
+
+
+    # =====================================================
+    # SEARCH
+    # =====================================================
+
+
+    def search(
+        self,
+        query,
+        limit=10
+    ):
+
+
         with self._lock:
-            lt_matches = self._long_term.search(query, limit=limit)
-            st_matches = self._short_term.search(query, limit=limit)
-            
+
+
+            self._stats["searches"] += 1
+
+
+
             return {
-                "short_term": st_matches,
-                "long_term": lt_matches
+
+
+                "short_term":
+
+                    self._short_term.search(
+
+                        query,
+
+                        limit=limit
+
+                    ),
+
+
+
+                "long_term":
+
+                    self._long_term.search(
+
+                        query,
+
+                        limit=limit
+
+                    )
+
             }
+
+
+
+
+
+
+    # =====================================================
+    # CLEAR
+    # =====================================================
+
 
     def clear(self):
-        """Limpa a memória volátil e opcionalmente emite aviso sobre a persistente."""
-        with self._lock:
-            st_msg = self._short_term.clear()
-            return f"Coordinator Reset -> {st_msg} (Long-term memory preserved)."
 
-    def forget(self, memory_id):
-        """Tenta remover o ID em ambos os backends."""
+
         with self._lock:
+
+
+            self._cache.clear()
+
+
+            return self._short_term.clear()
+
+
+
+
+
+
+
+    # =====================================================
+    # FORGET
+    # =====================================================
+
+
+    def forget(
+        self,
+        memory_id
+    ):
+
+
+        with self._lock:
+
+
+            self._stats["forgotten"] += 1
+
+
+
             if memory_id.startswith("stm_"):
-                return self._short_term.forget(memory_id)
-            elif memory_id.startswith("ltm_"):
-                return self._long_term.forget(memory_id)
-            
-            # Varredura geral caso o prefixo não seja explícito
-            st_removed = self._short_term.forget(memory_id)
-            lt_removed = self._long_term.forget(memory_id)
-            return st_removed or lt_removed
+
+
+                return self._short_term.forget(
+                    memory_id
+                )
+
+
+
+            if memory_id.startswith("ltm_"):
+
+
+                return self._long_term.forget(
+                    memory_id
+                )
+
+
+
+            return (
+
+                self._short_term.forget(
+                    memory_id
+                )
+
+                or
+
+                self._long_term.forget(
+                    memory_id
+                )
+
+            )
+
+
+
+
+
+
+    # =====================================================
+    # PERSISTÊNCIA
+    # =====================================================
+
 
     def save(self):
-        """Força persistência na camada de longo prazo."""
+
+
         with self._lock:
+
             return self._long_term.save()
 
+
+
+
+
     def load(self):
-        """Carrega dados persistidos."""
+
+
         with self._lock:
+
             return self._long_term.load()
 
+
+
+
+
+
+    # =====================================================
+    # STATUS
+    # =====================================================
+
+
     def status(self):
-        """Retorna o status consolidado de todo o sub-sistema de memória."""
-        with self._lock:
-            return {
-                "name": self.name(),
-                "short_term_status": self._short_term.status(),
-                "long_term_status": self._long_term.status(),
-                "status": "operational"
-            }
+
+
+        return {
+
+
+            "name":
+
+                self.name(),
+
+
+
+            "status":
+
+                "operational",
+
+
+
+            "short_term":
+
+                self._short_term.status(),
+
+
+
+            "long_term":
+
+                self._long_term.status(),
+
+
+
+            "statistics":
+
+                self._stats
+
+        }
+
+
+
+
+
+
+    # =====================================================
+    # UTIL
+    # =====================================================
+
+
+    def _log(
+        self,
+        message,
+        error=None
+    ):
+
+
+        if self.logger:
+
+
+            self.logger.error(
+                message,
+                error
+            )
+
+
+        else:
+
+
+            print(
+                "[MEMORY]",
+                message,
+                error
+            )
+
+
+
+
 
     def name(self):
+
         return "memory.coordinator"

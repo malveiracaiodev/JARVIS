@@ -6,260 +6,359 @@ Arquivo:
 core/agents/agent.py
 
 Descrição:
-Classe base universal para agentes
-inteligentes do Genesis Core.
 
-Responsável por:
-- Ciclo de vida
+Classe base universal para todos os
+agentes do Genesis Core.
+
+Responsabilidades:
+
 - Identidade
+- Ciclo de vida
+- Estado
 - Memória local
 - Comunicação
-- Integração cognitiva
+- Eventos
+- Conexões
 
-A inteligência é delegada para:
-- ResponseEngine
-- PersonalityEngine
+Não possui inteligência.
+
+Toda cognição pertence ao:
+
+- GenesisAgent
 - Mind
-- ToolManager
-
-Arquitetura:
-Genesis Core
+- Thought Engine
+- AIManager
 
 Mark:
-III - Matrix
-
-Autor:
-Caio Vitor Malveira
+V - Evolution
 =========================================
 """
 
+from __future__ import annotations
+
 import threading
+
 from collections import deque
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
-from core.base.module import (
-    Module,
-    ModuleStatus
-)
+from core.base.module import Module, ModuleStatus
 
 
 class Agent(Module):
     """
-    Classe base de agentes do Genesis Core.
+    Infraestrutura base de qualquer agente.
 
-    Exemplos:
-    - Jarvis
-    - Rafiki
-    - Vision
-    - Programmer
+    Não executa raciocínio.
+
+    Apenas fornece a estrutura comum
+    utilizada pelos agentes do Genesis.
     """
 
     def __init__(
         self,
         name: str,
-        personality: Optional[Dict[str, Any]] = None,
         description: str = "",
         capabilities: Optional[List[str]] = None
     ) -> None:
+
         super().__init__(
             name=name,
             description=description,
-            version="3.1",
+            version="5.0",
             tags=[
                 "agent",
-                "cognitive"
+                "genesis"
             ],
             capabilities=capabilities or []
         )
 
-        # =========================================
+        # =====================================
         # IDENTIDADE
-        # =========================================
-        self.personality: Dict[str, Any] = personality or {}
-        self.identity: Dict[str, Any] = {}
+        # =====================================
 
-        # =========================================
-        # MEMÓRIA
-        # =========================================
-        self.memory: deque = deque(maxlen=500)
+        self.identity = {
+            "name": name,
+            "created_at": datetime.now().isoformat()
+        }
 
-        # =========================================
-        # SISTEMAS CONECTADOS
-        # =========================================
-        self.mind: Optional[Any] = None
-        self.memory_manager: Optional[Any] = None
-        self.event_bus: Optional[Any] = None
+        # =====================================
+        # MEMÓRIA LOCAL
+        # =====================================
 
-        # Inteligência compartilhada
-        self.response_engine: Optional[Any] = None
-        self.personality_engine: Optional[Any] = None
-        self.tool_manager: Optional[Any] = None
-        self.research_engine: Optional[Any] = None
+        self.memory = deque(maxlen=500)
 
-        # =========================================
+        # =====================================
+        # CONEXÕES
+        # =====================================
+
+        self.mind = None
+        self.memory_manager = None
+        self.event_bus = None
+        self.tool_manager = None
+
+        # =====================================
         # CONTROLE
-        # =========================================
-        self._agent_lock = threading.RLock()
+        # =====================================
 
-    # =========================================
+        self.active = True
+
+        self.last_input = None
+        self.last_output = None
+
+        self._lock = threading.RLock()
+
+    # ==================================================
     # CICLO DE VIDA
-    # =========================================
+    # ==================================================
 
-    def initialize(self) -> None:
-        """Inicializa o agente de forma segura utilizando bloqueio de thread."""
-        with self._agent_lock:
-            self.set_status(ModuleStatus.INITIALIZING)
-            self.on_start()
-            self.set_status(ModuleStatus.ONLINE)
+    def initialize(self):
 
-    def shutdown(self) -> None:
-        """Encerra o agente de forma segura."""
-        with self._agent_lock:
-            self.on_stop()
-            self.set_status(ModuleStatus.OFFLINE)
+        with self._lock:
 
-    # =========================================
-    # CONEXÕES
-    # =========================================
-
-    def connect_mind(self, mind: Any) -> None:
-        """Conecta o módulo Mind ao agente."""
-        self.mind = mind
-
-    def connect_memory(self, memory: Any) -> None:
-        """Conecta o gerenciador de memória persistente ao agente."""
-        self.memory_manager = memory
-
-    def connect_event_bus(self, event_bus: Any) -> None:
-        """Conecta o barramento de eventos (EventBus)."""
-        self.event_bus = event_bus
-
-    def connect_intelligence(
-        self,
-        response_engine: Optional[Any] = None,
-        personality_engine: Optional[Any] = None,
-        research_engine: Optional[Any] = None
-    ) -> None:
-        """Configura os motores de inteligência e resposta compartilhados."""
-        if response_engine is not None:
-            self.response_engine = response_engine
-        if personality_engine is not None:
-            self.personality_engine = personality_engine
-        if research_engine is not None:
-            self.research_engine = research_engine
-
-    def connect_tools(self, tool_manager: Any) -> None:
-        """Conecta o gerenciador de ferramentas ao agente."""
-        self.tool_manager = tool_manager
-
-    # =========================================
-    # RECEBER MENSAGEM
-    # =========================================
-
-    def receive(self, message: Any) -> Union[str, Any]:
-        """Processa a recepção de uma mensagem, gravando histórico e acionando pensamento."""
-        with self._agent_lock:
-            self.remember({
-                "type": "input",
-                "content": message
-            })
-
-            try:
-                self.on_message(message)
-                return self.think(message)
-
-            except Exception as error:
-                error_str = str(error)
-                self.set_error(error_str)
-                return f"Erro cognitivo: {error_str}"
-
-    # =========================================
-    # PENSAMENTO
-    # =========================================
-
-    def think(self, message: Any) -> Union[str, Any]:
-        """
-        Gera a linha de raciocínio ou resposta.
-        Delegado primariamente ao ResponseEngine se conectado.
-        """
-        if self.response_engine and hasattr(self.response_engine, "generate"):
-            return self.response_engine.generate(
-                message,
-                persona=self.personality,
-                agent=self.name
+            self.set_status(
+                ModuleStatus.INITIALIZING
             )
 
-        return f"{self.name}: Núcleo cognitivo ativo."
+            self.on_start()
 
-    # =========================================
-    # EXECUÇÃO
-    # =========================================
+            self.active = True
 
-    def execute(self, command: Any) -> Any:
-        """Executa um comando ou ferramenta através do ToolManager conectado."""
-        if self.tool_manager and hasattr(self.tool_manager, "execute"):
-            return self.tool_manager.execute(command)
+            self.set_status(
+                ModuleStatus.ONLINE
+            )
+
+    def shutdown(self):
+
+        with self._lock:
+
+            self.on_stop()
+
+            self.active = False
+
+            self.set_status(
+                ModuleStatus.OFFLINE
+            )
+
+    # ==================================================
+    # CONEXÕES
+    # ==================================================
+
+    def connect_mind(self, mind):
+
+        self.mind = mind
+
+    def connect_memory(self, memory):
+
+        self.memory_manager = memory
+
+    def connect_event_bus(self, event_bus):
+
+        self.event_bus = event_bus
+
+    def connect_tools(self, tool_manager):
+
+        self.tool_manager = tool_manager
+
+    # ==================================================
+    # COMUNICAÇÃO
+    # ==================================================
+
+    def receive(
+        self,
+        message: Any
+    ):
+
+        with self._lock:
+
+            self.last_input = message
+
+            self.remember({
+
+                "type": "input",
+
+                "content": message
+
+            })
+
+            self.on_message(message)
+
+            response = self.think(message)
+
+            self.last_output = response
+
+            self.remember({
+
+                "type": "output",
+
+                "content": response
+
+            })
+
+            return response
+
+    # ==================================================
+    # PENSAMENTO
+    # ==================================================
+
+    def think(
+        self,
+        message: Any
+    ):
+        """
+        Método sobrescrito pelo GenesisAgent.
+        """
+
+        return {
+
+            "status": "no_cognitive_layer",
+
+            "agent": self.name,
+
+            "message": message
+
+        }
+
+    # ==================================================
+    # FERRAMENTAS
+    # ==================================================
+
+    def execute(
+        self,
+        tool: str,
+        data: Any = None
+    ):
+
+        if self.tool_manager is None:
+
+            return None
+
+        if hasattr(
+            self.tool_manager,
+            "execute"
+        ):
+
+            return self.tool_manager.execute(
+                tool,
+                data
+            )
 
         return None
 
-    # =========================================
+    # ==================================================
     # MEMÓRIA
-    # =========================================
+    # ==================================================
 
-    def remember(self, data: Any) -> None:
-        """Armazena um registro no deque de memória local do agente."""
-        with self._agent_lock:
-            self.memory.append({
-                "data": data,
-                "time": datetime.now().isoformat()
-            })
+    def remember(
+        self,
+        data: Any
+    ):
 
-    def recall(self) -> List[Dict[str, Any]]:
-        """Retorna uma cópia da lista de memórias locais armazenadas."""
-        with self._agent_lock:
-            return list(self.memory)
+        self.memory.append({
 
-    # =========================================
+            "time": datetime.now().isoformat(),
+
+            "data": data
+
+        })
+
+    def recall(self):
+
+        return list(
+            self.memory
+        )
+
+    def clear_memory(self):
+
+        self.memory.clear()
+
+    # ==================================================
     # EVENTOS
-    # =========================================
+    # ==================================================
 
-    def on_start(self) -> None:
-        """Hook executado na inicialização do agente."""
+    def emit(
+        self,
+        event: str,
+        data: Any = None
+    ):
+
+        if (
+
+            self.event_bus
+
+            and
+
+            hasattr(
+                self.event_bus,
+                "publish"
+            )
+
+        ):
+
+            self.event_bus.publish(
+                event,
+                data
+            )
+
+    # ==================================================
+    # HOOKS
+    # ==================================================
+
+    def on_start(self):
+
         pass
 
-    def on_stop(self) -> None:
-        """Hook executado no encerramento do agente."""
+    def on_stop(self):
+
         pass
 
-    def on_message(self, message: Any) -> None:
-        """Hook executado ao receber mensagens."""
+    def on_message(
+        self,
+        message
+    ):
+
         pass
 
-    # =========================================
-    # SAÍDA
-    # =========================================
-
-    def speak(self, text: str) -> None:
-        """Exibe a fala formatada do agente na saída padrão."""
-        print(f"[{self.name.upper()}] -> {text}")
-
-    # =========================================
-    # INFORMAÇÕES
-    # =========================================
+    # ==================================================
+    # STATUS
+    # ==================================================
 
     def info(self) -> Dict[str, Any]:
-        """Retorna um dicionário atualizado com os metadados de status e saúde do agente."""
+
         data = super().info()
 
-        with self._agent_lock:
-            memory_len = len(self.memory)
-
         data.update({
-            "personality": self.personality,
-            "memory_size": memory_len,
-            "mind_connected": self.mind is not None,
-            "response_engine": self.response_engine is not None
+
+            "active": self.active,
+
+            "identity": self.identity,
+
+            "memory_size": len(self.memory),
+
+            "mind_connected":
+                self.mind is not None,
+
+            "memory_connected":
+                self.memory_manager is not None,
+
+            "tools_connected":
+                self.tool_manager is not None,
+
+            "event_bus_connected":
+                self.event_bus is not None,
+
+            "last_input":
+                self.last_input,
+
+            "last_output":
+                self.last_output
+
         })
 
         return data
+
+    def __repr__(self):
+
+        return (
+            f"<Agent {self.name}>"
+        )
